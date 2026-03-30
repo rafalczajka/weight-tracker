@@ -7,4 +7,5 @@ typer==0.24.1
 httpx==0.28.1
 attrs==25.4.0
 python-dateutil==2.9.0.post0
+openapi-python-client==0.28.3
 -e ./generated_client

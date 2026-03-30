@@ -37,9 +37,3 @@ Generate and install locally:
 ```
 ./app-cli/generate_client.sh
 ```
-
-Generator dependency:
-
-```
-pip install -r app-cli/requirements-dev.txt
-```
