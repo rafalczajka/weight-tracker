@@ -5,11 +5,13 @@ set -e
 root_dir=$(git rev-parse --show-toplevel)
 
 . "$root_dir/scripts/venv.sh"
-set_venv_python "$root_dir"
+set_venv_python "$root_dir/app-cli"
 
-dotnet restore
+dotnet restore "$root_dir/app-api"
 
-"$VENV_PY" -m pip install -r "$root_dir/app-cli/requirements.txt"
+cd "$root_dir/app-cli"
+"$VENV_PY" -m pip install -r "requirements.txt"
+sh "generate_client.sh"
 
-sh "$root_dir/app-cli/generate_client.sh"
-sh "$root_dir/install.sh"
+cd "$root_dir"
+sh "install.sh"

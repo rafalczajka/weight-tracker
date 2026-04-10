@@ -12,6 +12,7 @@ from ...types import Response
 def _get_kwargs(
     date: str,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/api/weights/{date}".format(

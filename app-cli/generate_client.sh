@@ -4,7 +4,7 @@ set -e
 root_dir=$(git rev-parse --show-toplevel)
 
 . "$root_dir/scripts/venv.sh"
-set_venv_python "$root_dir"
+set_venv_python "$root_dir/app-cli"
 
 openapi_path="${1:-$root_dir/app-api/src/WeightTracker.Api/openapi.json}"
 output_path="${2:-$root_dir/app-cli/generated_client}"
