@@ -1,8 +1,8 @@
-msal==1.35.1
-plotly==6.6.0
+msal==1.36.0
+plotly==6.7.0
 pyinstaller==6.19.0
 pyyaml==6.0.3
-ruff==0.15.9
+ruff==0.15.10
 typer==0.24.1
 httpx==0.28.1
 attrs==26.1.0
