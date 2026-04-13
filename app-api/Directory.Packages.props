@@ -16,7 +16,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
     <PackageVersion Include="NSwag.MSBuild" Version="14.7.0" />
     <PackageVersion Include="PxBunny.Result" Version="0.0.1" />
-    <PackageVersion Include="PxBunny.Result.Generator" Version="0.0.2" />
+    <PackageVersion Include="PxBunny.Result.Generator" Version="0.0.4" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
