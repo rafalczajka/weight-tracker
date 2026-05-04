@@ -5,5 +5,13 @@
   },
   "python.analysis.extraPaths": [
     "./app-cli/generated_client"
-  ]
+  ],
+  "files.exclude": {
+    "**/.venv": true,
+    "**/.venv-*": true
+  },
+  "search.exclude": {
+    "**/.venv": true,
+    "**/.venv-*": true
+  }
 }

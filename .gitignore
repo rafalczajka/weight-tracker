@@ -1,6 +1,7 @@
 ﻿.idea/
 .vs/
 .venv/
+.venv-*/
 
 *.suo
 *.user
