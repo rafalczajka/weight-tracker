@@ -6,7 +6,6 @@ root_dir=$(git rev-parse --show-toplevel)
 
 . "$root_dir/scripts/venv.sh"
 set_venv_python "$root_dir/app-cli"
-APP_VENV_PY="$VENV_PY"
 
 echo "Loading environment variables..."
 
@@ -16,7 +15,7 @@ echo "Creating executable..."
 
 rm -rf "$root_dir/app-cli/dist"
 
-"$APP_VENV_PY" -m PyInstaller "$root_dir/app-cli/wtrack/__main__.py" \
+"$VENV_PY" -m PyInstaller "$root_dir/app-cli/wtrack/__main__.py" \
   --name "$CLI_APP_NAME" \
   --distpath "$root_dir/app-cli/dist" \
   --workpath "$root_dir/app-cli/build" \

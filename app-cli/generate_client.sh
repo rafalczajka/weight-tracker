@@ -5,9 +5,7 @@ root_dir=$(git rev-parse --show-toplevel)
 
 . "$root_dir/scripts/venv.sh"
 set_venv_python "$root_dir/app-cli"
-APP_VENV_PY="$VENV_PY"
-set_venv_python "$root_dir/app-cli" ".venv-tools"
-TOOLS_VENV_PY="$VENV_PY"
+set_tools_venv_python "$root_dir/app-cli"
 
 openapi_path="${1:-$root_dir/app-api/src/WeightTracker.Api/openapi.json}"
 output_path="${2:-$root_dir/app-cli/generated_client}"
@@ -27,4 +25,4 @@ fi
 "$TOOLS_VENV_PY" -m ruff check --fix-only "$output_path"
 "$TOOLS_VENV_PY" -m ruff format "$output_path"
 
-"$APP_VENV_PY" -m pip install -e "$output_path"
+"$VENV_PY" -m pip install -e "$output_path"
