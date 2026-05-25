@@ -6,7 +6,7 @@
   <ItemGroup>
     <PackageVersion Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageVersion Include="AspNetCore.Authentication.ApiKey" Version="9.0.0" />
-    <PackageVersion Include="coverlet.collector" Version="10.0.0" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="FastEndpoints" Version="8.1.0" />
     <PackageVersion Include="FastEndpoints.Security" Version="8.1.0" />
     <PackageVersion Include="FastEndpoints.Swagger" Version="8.1.0" />
