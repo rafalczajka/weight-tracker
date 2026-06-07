@@ -1,8 +1,8 @@
 msal==1.37.0
-plotly==6.7.0
+plotly==6.8.0
 pyinstaller==6.20.0
 pyyaml==6.0.3
-typer==0.26.4
+typer==0.26.7
 httpx==0.28.1
 attrs==26.1.0
 python-dateutil==2.9.0.post0
