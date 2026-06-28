@@ -7,13 +7,13 @@
     <PackageVersion Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageVersion Include="AspNetCore.Authentication.ApiKey" Version="9.0.0" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
-    <PackageVersion Include="FastEndpoints" Version="8.1.0" />
-    <PackageVersion Include="FastEndpoints.Security" Version="8.1.0" />
-    <PackageVersion Include="FastEndpoints.Swagger" Version="8.1.0" />
+    <PackageVersion Include="FastEndpoints" Version="8.2.0" />
+    <PackageVersion Include="FastEndpoints.Security" Version="8.2.0" />
+    <PackageVersion Include="FastEndpoints.Swagger" Version="8.2.0" />
     <PackageVersion Include="Microsoft.Extensions.Azure" Version="1.14.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.9" />
-    <PackageVersion Include="Microsoft.Identity.Web" Version="4.10.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+    <PackageVersion Include="Microsoft.Identity.Web" Version="4.11.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
     <PackageVersion Include="NSwag.MSBuild" Version="14.7.1" />
     <PackageVersion Include="PxBunny.Result" Version="0.0.1" />
     <PackageVersion Include="PxBunny.Result.Generator" Version="0.0.4" />
