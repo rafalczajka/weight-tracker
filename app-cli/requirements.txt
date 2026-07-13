@@ -1,5 +1,5 @@
 msal==1.37.0
-plotly==6.8.0
+plotly==6.9.0
 pyinstaller==6.21.0
 pyyaml==6.0.3
 typer==0.26.8
