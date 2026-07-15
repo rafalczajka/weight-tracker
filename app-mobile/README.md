@@ -1,97 +1,85 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Weight Tracker Mobile
 
-# Getting Started
+React Native application for adding one weight entry for the current UTC day.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Configuration
 
-## Step 1: Start Metro
-
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
-
-To start the Metro dev server, run the following command from the root of your React Native project:
+Create the local configuration file before running checks or building the application:
 
 ```sh
-# Using npm
+cp config.template.json config.json
+```
+
+On PowerShell, use:
+
+```powershell
+Copy-Item config.template.json config.json
+```
+
+Fill in the following values in `config.json`:
+
+- `api.baseUrl`: Weight Tracker API base URL without a trailing slash.
+- `auth.clientId`: application client ID of the Entra registration shared by the CLI, mobile client, and API scope.
+- `auth.tenantId`: directory tenant ID containing the app registration.
+
+`config.json` is ignored by Git and must be created manually in each checkout. Its values are bundled with the mobile application and must not contain secrets.
+
+## Microsoft Entra setup
+
+Use the existing single-tenant Weight Tracker app registration shared with the CLI and API:
+
+1. Add `com.weighttracker.auth://oauth/redirect/` as a **Mobile and desktop applications** redirect URI.
+2. Ensure it exposes the `api://<clientId>/access_as_user` delegated scope.
+3. Grant consent for the delegated permission when required by the tenant policy.
+4. Copy its application client ID and directory tenant ID to `config.json`.
+
+The mobile application is a public client. Do not create or embed a client secret.
+
+## Project structure
+
+- `src/App.tsx` provides the application shell and composes authentication with the weight-entry feature.
+- `src/auth` handles Entra authentication, session state, and refresh-token storage.
+- `src/features/weight-entry` contains the form, validation, and controller for adding today's weight.
+- `src/ui` contains the shared theme and controls.
+- `src/api.ts` sends the weight to the API.
+- `android` and `ios` contain the native React Native projects and OAuth redirect configuration.
+
+## Run on Android
+
+Install dependencies:
+
+```sh
+npm ci
+```
+
+Start Metro:
+
+```sh
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
+In another terminal, build and install the application:
 
 ```sh
-# Using npm
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### iOS
+## Run on iOS
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+Install CocoaPods dependencies on macOS before the first build or after changing native packages:
 
 ```sh
+cd ios
 bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
 bundle exec pod install
+cd ..
+npm run ios
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## Checks
 
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npm run lint
+npm run typecheck
+npm test -- --runInBand
 ```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

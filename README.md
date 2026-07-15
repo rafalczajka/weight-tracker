@@ -13,7 +13,7 @@ python -m venv app-cli/.venv-tools
 
 Install dependencies:
 
-``` powershell
+```powershell
 # windows
 cd app-cli
 ./.venv/Scripts/python.exe -m pip install -r requirements.txt
@@ -30,7 +30,6 @@ cd app-cli
 ## githooks setup
 
 `git config core.hooksPath .githooks`
-
 
 ## CLI App Usage
 
@@ -59,3 +58,7 @@ Generate and install locally:
 ```
 ./app-cli/generate_client.sh
 ```
+
+## Mobile App
+
+`app-mobile` is a simplified React Native client for adding today's weight. See [app-mobile/README.md](app-mobile/README.md) for Microsoft Entra configuration and run instructions.
