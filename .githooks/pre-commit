@@ -21,4 +21,16 @@ if [ -n "$files" ]; then
   "$TOOLS_VENV_PY" -m ruff format $files
 fi
 
+cd "$root_dir/app-mobile"
+
+mobile_files=$(git diff --cached --name-only --diff-filter=d --relative -- "*.js" "*.jsx" "*.ts" "*.tsx" "*.mjs" "*.cjs")
+
+if [ -n "$mobile_files" ]; then
+  echo -e "\n✨ Linting and formatting mobile files..."
+  npm exec -- eslint --fix $mobile_files
+  npm exec -- prettier --write $mobile_files
+  git add $mobile_files
+  npm exec -- eslint --max-warnings=0 $mobile_files
+fi
+
 echo -e "\n🎉 Pre-commit status: success 🎉\n"
