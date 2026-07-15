@@ -37,11 +37,15 @@ updates:
         patterns:
           - "*"
 
-  # - package-ecosystem: npm
-  #   directory: /app-mobile
-  #   schedule:
-  #     interval: weekly
-  #   groups:
-  #     npm:
-  #       patterns:
-  #         - "*"
+  - package-ecosystem: npm
+    directory: /app-mobile
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+    groups:
+      npm:
+        patterns:
+          - "*"
