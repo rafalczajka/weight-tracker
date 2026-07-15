@@ -58,7 +58,3 @@ Generate and install locally:
 ```
 ./app-cli/generate_client.sh
 ```
-
-## Mobile App
-
-`app-mobile` is a simplified React Native client for adding today's weight. See [app-mobile/README.md](app-mobile/README.md) for Microsoft Entra configuration and run instructions.
