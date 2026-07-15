@@ -176,6 +176,7 @@ cython_debug/
 **/local.settings.json
 app-cli/config.yaml
 app-cli/config.prod.yaml
+app-mobile/config.json
 
 # Other files and directories
 TODOs.md

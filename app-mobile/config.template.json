@@ -1,0 +1,9 @@
+{
+  "api": {
+    "baseUrl": ""
+  },
+  "auth": {
+    "clientId": "",
+    "tenantId": ""
+  }
+}
