@@ -10,6 +10,9 @@ set_tools_venv_python "$root_dir/app-cli"
 
 dotnet restore "$root_dir/app-api"
 
+cd "$root_dir"
+corepack pnpm install --frozen-lockfile
+
 cd "$root_dir/app-cli"
 "$VENV_PY" -m pip install -r "requirements.txt"
 "$TOOLS_VENV_PY" -m pip install -r "requirements-tools.txt"

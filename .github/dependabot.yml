@@ -38,7 +38,9 @@ updates:
           - "*"
 
   - package-ecosystem: npm
-    directory: /app-mobile
+    directories:
+      - /
+      - /app-mobile
     schedule:
       interval: weekly
     ignore:

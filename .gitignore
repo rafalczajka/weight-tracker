@@ -1,14 +1,102 @@
-﻿.idea/
-.vs/
-.venv/
-.venv-*/
+﻿# =============================================================================
+# New workspace configuration
+# =============================================================================
 
+# This section is intentionally self-contained. It can remain unchanged after
+# the legacy applications and their ignore rules are removed.
+
+# Local environment, editors, and operating systems
+.idea/
+.vs/
+.env
+.env.*
+!.env.example
+!.env.template
+Thumbs.db
+Desktop.ini
+.DS_Store
+TODOs.md
+*.log
+
+# Node.js / TypeScript / pnpm / Turborepo
+node_modules/
+.pnpm-store/
+.turbo/
+.cache/
+coverage/
+build/
+dist/
+*.tsbuildinfo
+.eslintcache
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# .NET
 *.suo
 *.user
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
 [Bb]in/
 [Oo]bj/
 _UpgradeReport_Files/
-[Pp]ackages/
+TestResults/
+artifacts/
+*.nupkg
+*.snupkg
+*.coverage
+*.coveragexml
+/app-api/[Pp]ackages/
+/api/[Pp]ackages/
+**/*.Development.json
+**/*.dev.json
+**/local.settings.json
+
+# React Native / Android
+.gradle/
+.kotlin/
+.cxx/
+local.properties
+*.iml
+*.hprof
+*.keystore
+!debug.keystore
+**/android/app/release/
+
+# React Native / iOS
+Pods/
+DerivedData/
+xcuserdata/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xccheckout
+*.moved-aside
+*.hmap
+*.ipa
+*.xcuserstate
+**/.xcode.env.local
+**/.bundle/
+**/vendor/bundle/
+
+# React Native / Metro
+*.jsbundle
+.metro-health-check*
+
+# =============================================================================
+# Legacy applications and existing project-wide configuration
+# =============================================================================
+
+.idea/
+.venv/
+.venv-*/
 
 Thumbs.db
 Desktop.ini

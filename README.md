@@ -17,7 +17,9 @@ app-mobile/    # Existing React Native mobile client
 ### New client workspace
 
 ```text
-package.json               # Workspace definition and shared scripts
+package.json               # Root scripts and development dependencies
+pnpm-workspace.yaml        # pnpm workspace definition
+pnpm-lock.yaml             # Shared dependency lockfile
 turbo.json                 # Turborepo task configuration
 
 clients/
@@ -32,11 +34,21 @@ packages/
   charts/                  # Shared chart definitions and data transformations
 ```
 
-The root `package.json` will register `clients/*` and `packages/*` as workspaces.
-Each client and shared package will have its own `package.json`, allowing
-Turborepo to derive their dependency and task graph. The versioned
+The root `pnpm-workspace.yaml` registers `clients/*` and `packages/*` as
+workspaces. Each client and shared package will have its own `package.json`,
+allowing Turborepo to derive their dependency and task graph. The versioned
 `packages/client-config/config.json` will contain the shared API URL, tenant ID,
 and client ID.
+
+Install dependencies and run tasks with the pnpm version pinned by the project:
+
+```sh
+corepack pnpm install --frozen-lockfile
+corepack pnpm build
+corepack pnpm lint
+corepack pnpm test
+corepack pnpm typecheck
+```
 
 The .NET API remains in `app-api/` and provides the OpenAPI contract for both
 generations of clients. Until the migration is complete, directories named
