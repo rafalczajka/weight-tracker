@@ -1,0 +1,24 @@
+{
+  "name": "@weight-tracker/api-client",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "generate": "openapi-ts",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "0.99.0",
+    "@weight-tracker/eslint-config": "workspace:*",
+    "@weight-tracker/typescript-config": "workspace:*",
+    "eslint": "8.57.1",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=22 <23"
+  }
+}
