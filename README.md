@@ -1,5 +1,52 @@
 ﻿# Weight Tracker
 
+## Migration
+
+The client applications will be migrated gradually to a shared TypeScript
+workspace. During the migration, the existing applications remain the stable
+versions and continue to work independently.
+
+### Current stable applications
+
+```text
+app-api/       # Existing .NET API and OpenAPI source
+app-cli/       # Existing Python CLI
+app-mobile/    # Existing React Native mobile client
+```
+
+### New client workspace
+
+```text
+package.json               # Workspace definition and shared scripts
+turbo.json                 # Turborepo task configuration
+
+clients/
+  cli/                     # New TypeScript CLI
+  mobile/                  # New React Native mobile client
+
+packages/
+  api-client/              # Client generated from the API OpenAPI document
+  client-config/           # Shared runtime configuration for both clients
+  eslint-config/           # Shared ESLint configuration
+  typescript-config/       # Shared TypeScript configurations
+  charts/                  # Shared chart definitions and data transformations
+```
+
+The root `package.json` will register `clients/*` and `packages/*` as workspaces.
+Each client and shared package will have its own `package.json`, allowing
+Turborepo to derive their dependency and task graph. The versioned
+`packages/client-config/config.json` will contain the shared API URL, tenant ID,
+and client ID.
+
+The .NET API remains in `app-api/` and provides the OpenAPI contract for both
+generations of clients. Until the migration is complete, directories named
+`app-*` contain the stable implementations, while `clients/*` and `packages/*`
+contain the new TypeScript implementation. Existing applications will only be
+retired after their replacements are ready for use. After the client migration,
+`app-api/` may be renamed to `api/` for consistency with the new structure. This
+would only be a directory rename; rewriting the API is not part of the current
+migration plan.
+
 ## requirements
 
 python 3.12 or higher
