@@ -1,0 +1,8 @@
+**/node_modules/
+**/.turbo/
+**/coverage/
+**/build/
+**/dist/
+
+clients/mobile/android/
+clients/mobile/ios/
