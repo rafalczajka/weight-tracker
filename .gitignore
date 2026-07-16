@@ -178,5 +178,8 @@ app-cli/config.yaml
 app-cli/config.prod.yaml
 app-mobile/config.json
 
+# Mobile build artifacts
+app-mobile/android/app/release/
+
 # Other files and directories
 TODOs.md
