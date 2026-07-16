@@ -1,0 +1,9 @@
+{
+  "api": {
+    "baseUrl": "https://app-weighttracker-prod.azurewebsites.net"
+  },
+  "auth": {
+    "clientId": "3a57322d-2337-4563-932d-53d16865b453",
+    "tenantId": "6a37348e-609d-4c3f-8ad5-845add7707f1"
+  }
+}

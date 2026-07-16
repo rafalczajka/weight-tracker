@@ -38,17 +38,7 @@ The root `pnpm-workspace.yaml` registers `clients/*` and `packages/*` as
 workspaces. Each client and shared package will have its own `package.json`,
 allowing Turborepo to derive their dependency and task graph. The versioned
 `packages/client-config/config.json` will contain the shared API URL, tenant ID,
-and client ID.
-
-Install dependencies and run tasks with the pnpm version pinned by the project:
-
-```sh
-corepack pnpm install --frozen-lockfile
-corepack pnpm build
-corepack pnpm lint
-corepack pnpm test
-corepack pnpm typecheck
-```
+and a single client ID used by both the CLI and mobile client.
 
 The .NET API remains in `app-api/` and provides the OpenAPI contract for both
 generations of clients. Until the migration is complete, directories named

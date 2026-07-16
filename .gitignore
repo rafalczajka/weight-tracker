@@ -90,6 +90,12 @@ xcuserdata/
 *.jsbundle
 .metro-health-check*
 
+# React Native / Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots/
+**/fastlane/test_output/
+
 # =============================================================================
 # Legacy applications and existing project-wide configuration
 # =============================================================================

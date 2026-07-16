@@ -1,0 +1,8 @@
+{
+  "name": "@weight-tracker/client-config",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    ".": "./config.json"
+  }
+}
