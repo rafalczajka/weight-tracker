@@ -3,3 +3,9 @@ packages:
   - packages/*
 
 nodeLinker: hoisted
+
+onlyBuiltDependencies:
+  - '@azure/msal-node-extensions'
+  - '@azure/msal-node-runtime'
+  - esbuild
+  - keytar

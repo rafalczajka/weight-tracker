@@ -22,4 +22,5 @@ cd "$root_dir/app-mobile"
 npm ci
 
 cd "$root_dir"
-sh "install.sh"
+# sh "install.sh"
+bash "scripts/install-cli.sh"

@@ -1,55 +1,35 @@
+import {
+  ApiError,
+  createWeightEntry,
+  createWeightTrackerClient,
+  withBearerToken,
+} from '@weight-tracker/api-client';
 import config from '@weight-tracker/client-config';
 
-const REQUEST_TIMEOUT_MS = 15_000;
+export { ApiError } from '@weight-tracker/api-client';
 
 export type AddWeightResult = 'created' | 'already-exists';
 
-export class ApiError extends Error {
-  constructor(public readonly status?: number) {
-    super(
-      status
-        ? `Weight API request failed with status ${status}.`
-        : 'Weight API request failed.',
-    );
-    this.name = 'ApiError';
-  }
-}
+const client = createWeightTrackerClient({
+  baseUrl: config.api.baseUrl,
+});
 
 export async function addTodayWeight(
   weight: number,
   accessToken: string,
 ): Promise<AddWeightResult> {
-  const abortController = new AbortController();
-  const timeout = setTimeout(() => abortController.abort(), REQUEST_TIMEOUT_MS);
-
   try {
-    const response = await fetch(`${config.api.baseUrl}/api/weights`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ weight }),
-      signal: abortController.signal,
+    await createWeightEntry({
+      ...withBearerToken(client, accessToken),
+      body: { weight },
     });
 
-    if (response.status === 201) {
-      return 'created';
-    }
-
-    if (response.status === 409) {
+    return 'created';
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 409) {
       return 'already-exists';
     }
 
-    throw new ApiError(response.status);
-  } catch (error) {
-    if (error instanceof ApiError) {
-      throw error;
-    }
-
-    throw new ApiError();
-  } finally {
-    clearTimeout(timeout);
+    throw error;
   }
 }

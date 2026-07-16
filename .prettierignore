@@ -1,8 +1,26 @@
+# Dependencies, caches, and build artifacts
 **/node_modules/
 **/.turbo/
 **/coverage/
 **/build/
 **/dist/
+.cache/
+.pnpm-store/
+.venv*/
+pnpm-lock.yaml
 
+# Legacy applications and infrastructure
+app-api/
+app-cli/
+app-mobile/
+infra/
+
+# Generated and native code
+packages/api-client/src/generated/
 clients/mobile/android/
 clients/mobile/ios/
+
+# Legacy workflows
+.github/workflows/cicd.yml
+.github/workflows/ci-cli.yml
+.github/workflows/ci-mobile.yml

@@ -15,7 +15,7 @@ updates:
     groups:
       github-actions:
         patterns:
-          - "*"
+          - '*'
 
   - package-ecosystem: nuget
     directory: /app-api
@@ -26,7 +26,7 @@ updates:
     groups:
       nuget:
         patterns:
-          - "*"
+          - '*'
 
   - package-ecosystem: pip
     directory: /app-cli
@@ -35,7 +35,7 @@ updates:
     groups:
       pip:
         patterns:
-          - "*"
+          - '*'
 
   - package-ecosystem: npm
     directories:
@@ -44,10 +44,10 @@ updates:
     schedule:
       interval: weekly
     ignore:
-      - dependency-name: "*"
+      - dependency-name: '*'
         update-types:
           - version-update:semver-major
     groups:
       npm:
         patterns:
-          - "*"
+          - '*'

@@ -16,6 +16,7 @@ cd ..
 
 echo -e "\n🔧 Installing/updating app on this computer..."
 
-./install.sh
+# ./install.sh
+bash scripts/install-cli.sh
 
 echo -e "\n🎉 Pre-push status: success 🎉\n"

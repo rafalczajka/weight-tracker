@@ -3,9 +3,7 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
-  "python.analysis.extraPaths": [
-    "./app-cli/generated_client"
-  ],
+  "python.analysis.extraPaths": ["./app-cli/generated_client"],
   "files.exclude": {
     "**/.venv": true,
     "**/.venv-*": true

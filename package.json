@@ -6,9 +6,11 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "format": "prettier --write clients packages",
-    "format:check": "prettier --check clients packages",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "generate": "pnpm --filter @weight-tracker/api-client generate",
     "lint": "turbo run lint",
+    "preinstall": "git config --local core.hooksPath .githooks",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck"
   },
@@ -17,7 +19,7 @@
     "turbo": "2.10.5"
   },
   "engines": {
-    "node": ">=22 <23"
+    "node": ">=22"
   },
   "packageManager": "pnpm@10.34.3"
 }
