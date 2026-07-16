@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Weight Tracker React Native",
+  "extends": "@react-native/typescript-config"
+}

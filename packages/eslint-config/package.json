@@ -1,0 +1,15 @@
+{
+  "name": "@weight-tracker/eslint-config",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    "./react-native": "./react-native.mjs"
+  },
+  "dependencies": {
+    "@react-native/eslint-config": "0.86.0"
+  },
+  "peerDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": ">=2"
+  }
+}
