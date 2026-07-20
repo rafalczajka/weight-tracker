@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+root_dir=$(git rev-parse --show-toplevel)
+
+printf 'Running pre-commit checks...\n'
+
+cd "$root_dir"
+git diff --cached --check
+corepack pnpm format:check
+corepack pnpm lint
+corepack pnpm typecheck
+
+dotnet format style "$root_dir/api/WeightTracker.slnx" \
+  --verify-no-changes \
+  --no-restore
+
+printf 'Pre-commit checks passed.\n'
