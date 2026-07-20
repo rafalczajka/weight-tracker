@@ -2,21 +2,14 @@
 
 set -e
 
-echo "🚀 Running pre-push hook 🚀"
+root_dir=$(git rev-parse --show-toplevel)
 
-echo -e "\n🔧 Running tests..."
+printf 'Running pre-push checks...\n'
 
-cd api
-dotnet test
-cd ..
+dotnet test "$root_dir/api"
 
-cd app-mobile
-npm test -- --runInBand
-cd ..
-
-echo -e "\n🔧 Installing/updating app on this computer..."
-
-# ./install.sh
+cd "$root_dir"
+corepack pnpm test
 bash scripts/install-cli.sh
 
-echo -e "\n🎉 Pre-push status: success 🎉\n"
+printf 'Pre-push checks passed.\n'

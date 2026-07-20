@@ -2,8 +2,8 @@
 # New workspace configuration
 # =============================================================================
 
-# This section is intentionally self-contained. It can remain unchanged after
-# the legacy applications and their ignore rules are removed.
+# This section is intentionally self-contained and does not depend on rules
+# retained for archived source below.
 
 # Local environment, editors, and operating systems
 .idea/
@@ -267,12 +267,5 @@ cython_debug/
 **/*.Development.json
 **/*.dev.json
 **/local.settings.json
-app-cli/config.yaml
-app-cli/config.prod.yaml
-app-mobile/config.json
-
-# Mobile build artifacts
-app-mobile/android/app/release/
-
 # Other files and directories
 TODOs.md

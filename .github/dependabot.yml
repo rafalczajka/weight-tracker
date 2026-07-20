@@ -28,19 +28,8 @@ updates:
         patterns:
           - '*'
 
-  - package-ecosystem: pip
-    directory: /app-cli
-    schedule:
-      interval: weekly
-    groups:
-      pip:
-        patterns:
-          - '*'
-
   - package-ecosystem: npm
-    directories:
-      - /
-      - /app-mobile
+    directory: /
     schedule:
       interval: weekly
     ignore:

@@ -1,0 +1,9 @@
+.ruff_cache/
+.venv/
+.venv-tools/
+build/
+dist/
+__pycache__/
+*.py[cod]
+config.yaml
+config.prod.yaml

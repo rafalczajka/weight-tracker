@@ -9,10 +9,9 @@
 .venv*/
 pnpm-lock.yaml
 
-# Legacy applications and infrastructure
+# Non-workspace source
 api/
-app-cli/
-app-mobile/
+legacy/
 infra/
 
 # Generated and native code
@@ -20,7 +19,5 @@ packages/api-client/src/generated/
 clients/mobile/android/
 clients/mobile/ios/
 
-# Legacy workflows
+# Existing workflow formatting
 .github/workflows/cicd.yml
-.github/workflows/ci-cli.yml
-.github/workflows/ci-mobile.yml

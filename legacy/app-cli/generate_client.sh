@@ -2,14 +2,16 @@
 set -e
 
 root_dir=$(git rev-parse --show-toplevel)
+legacy_dir="$root_dir/legacy"
+cli_dir="$legacy_dir/app-cli"
 
-. "$root_dir/scripts/venv.sh"
-set_venv_python "$root_dir/app-cli"
-set_tools_venv_python "$root_dir/app-cli"
+. "$legacy_dir/scripts/venv.sh"
+set_venv_python "$cli_dir"
+set_tools_venv_python "$cli_dir"
 
-openapi_path="${1:-$root_dir/app-api/src/WeightTracker.Api/openapi.json}"
-output_path="${2:-$root_dir/app-cli/generated_client}"
-config_path="$root_dir/app-cli/generator-config.yml"
+openapi_path="${1:-$root_dir/api/src/WeightTracker.Api/openapi.json}"
+output_path="${2:-$cli_dir/generated_client}"
+config_path="$cli_dir/generator-config.yml"
 
 if [ ! -f "$openapi_path" ]; then
   echo "OpenAPI file not found: $openapi_path" >&2
