@@ -4,6 +4,7 @@ import {
   withBearerToken,
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
+import { createWeightChart } from '../chart';
 import { DATE_FORMAT_LABEL } from '../constants';
 import { CliUsageError } from '../errors';
 import { printReport, printSpecificEntry } from '../presentation/report';
@@ -14,6 +15,7 @@ import { runWithAccessToken } from './helpers';
 interface ReportOptions extends OptionValues {
   dateFrom?: string;
   dateTo?: string;
+  plot: boolean;
   tail: number;
 }
 
@@ -37,6 +39,7 @@ export function createReportCommand(services: CliServices): Command {
       parseDate,
     )
     .option('--tail <count>', 'Show only last N records in table', parseTail, 7)
+    .option('--plot', 'Display chart in terminal')
     .action(async (date: string | undefined, options: ReportOptions) => {
       validateReportOptions(date, options);
 
@@ -50,6 +53,15 @@ export function createReportCommand(services: CliServices): Command {
       const now = services.now?.() ?? new Date();
 
       printReport(services.output, report, options.tail, now);
+
+      if (options.plot && report.data.length > 0) {
+        const chart = createWeightChart(report);
+
+        if (chart) {
+          services.output.print();
+          services.output.print(chart);
+        }
+      }
     });
 }
 
@@ -85,6 +97,12 @@ function validateReportOptions(
   if (date && (options.dateFrom || options.dateTo)) {
     throw new CliUsageError(
       'Use either a specific date or --date-from/--date-to.',
+    );
+  }
+
+  if (date && options.plot) {
+    throw new CliUsageError(
+      'The --plot option cannot be used with a specific date.',
     );
   }
 
