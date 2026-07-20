@@ -13,8 +13,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-navigation/bottom-tabs": "7.18.11",
-    "@react-navigation/native": "7.3.11",
+    "@react-navigation/bottom-tabs": "7.18.12",
+    "@react-navigation/native": "7.3.12",
     "@weight-tracker/api-client": "workspace:*",
     "@weight-tracker/client-config": "workspace:*",
     "lucide-react-native": "1.25.0",
