@@ -12,7 +12,7 @@
     <PackageVersion Include="FastEndpoints.Swagger" Version="8.2.0" />
     <PackageVersion Include="Microsoft.Extensions.Azure" Version="1.14.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.10" />
-    <PackageVersion Include="Microsoft.Identity.Web" Version="4.13.1" />
+    <PackageVersion Include="Microsoft.Identity.Web" Version="4.13.2" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
     <PackageVersion Include="NSwag.MSBuild" Version="14.7.1" />
     <PackageVersion Include="PxBunny.Result" Version="0.0.1" />
