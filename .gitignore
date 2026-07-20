@@ -48,7 +48,6 @@ artifacts/
 *.snupkg
 *.coverage
 *.coveragexml
-/app-api/[Pp]ackages/
 /api/[Pp]ackages/
 **/*.Development.json
 **/*.dev.json

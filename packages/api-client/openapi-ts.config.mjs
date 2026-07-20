@@ -1,7 +1,7 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-  input: '../../app-api/src/WeightTracker.Api/openapi.json',
+  input: '../../api/src/WeightTracker.Api/openapi.json',
   output: {
     // Hey API's bundled runtime does not compile with exactOptionalPropertyTypes.
     header: context => ['// @ts-nocheck', ...context.defaultValue],

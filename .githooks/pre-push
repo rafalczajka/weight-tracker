@@ -6,7 +6,7 @@ echo "🚀 Running pre-push hook 🚀"
 
 echo -e "\n🔧 Running tests..."
 
-cd app-api
+cd api
 dotnet test
 cd ..
 

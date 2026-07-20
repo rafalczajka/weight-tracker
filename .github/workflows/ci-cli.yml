@@ -6,13 +6,13 @@ on:
       - main
     paths:
       - app-cli/**
-      - app-api/**/openapi.json
+      - api/**/openapi.json
       - .github/workflows/ci-cli.yml
 
   pull_request:
     paths:
       - app-cli/**
-      - app-api/**/openapi.json
+      - api/**/openapi.json
       - .github/workflows/ci-cli.yml
 
   workflow_dispatch:

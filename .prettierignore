@@ -10,7 +10,7 @@
 pnpm-lock.yaml
 
 # Legacy applications and infrastructure
-app-api/
+api/
 app-cli/
 app-mobile/
 infra/

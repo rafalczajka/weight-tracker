@@ -6,14 +6,14 @@ on:
       - main
     paths:
       - 'infra/**'
-      - 'app-api/**'
+      - 'api/**'
 
   pull_request:
     branches:
       - main
     paths:
       - 'infra/**'
-      - 'app-api/**'
+      - 'api/**'
 
   workflow_dispatch:
 
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       API_PROJECT_PATH: src/WeightTracker.Api/WeightTracker.Api.csproj
-      WORKING_DIRECTORY: app-api
+      WORKING_DIRECTORY: api
     permissions:
       contents: read
       packages: read
