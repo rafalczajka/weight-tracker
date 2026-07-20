@@ -23,11 +23,11 @@ function createBuildPaths(projectRoot) {
   const distDirectory = join(projectRoot, 'dist');
 
   return {
-    blob: join(buildDirectory, 'wtrack-next.blob'),
+    blob: join(buildDirectory, 'wtrack.blob'),
     buildDirectory,
-    bundle: join(distDirectory, 'wtrack-next.cjs'),
+    bundle: join(distDirectory, 'wtrack.cjs'),
     dpapiAddon: join(distDirectory, DPAPI_ASSET_NAME),
-    executable: join(distDirectory, 'wtrack-next.exe'),
+    executable: join(distDirectory, 'wtrack.exe'),
     seaConfig: join(buildDirectory, 'sea-config.json'),
   };
 }
@@ -40,7 +40,7 @@ function assertBuildEnvironment() {
   const nodeMajorVersion = Number(process.versions.node.split('.')[0]);
 
   if (nodeMajorVersion < MINIMUM_NODE_MAJOR_VERSION) {
-    throw new Error('Building wtrack-next.exe requires Node.js 22 or newer.');
+    throw new Error('Building wtrack.exe requires Node.js 22 or newer.');
   }
 }
 

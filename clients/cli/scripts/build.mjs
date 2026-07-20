@@ -1,4 +1,4 @@
-import { copyFile, mkdir } from 'node:fs/promises';
+import { copyFile, mkdir, rm } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
@@ -27,6 +27,7 @@ const dpapiSourcePath = join(
 );
 const dpapiOutputPath = join(outputDirectory, 'dpapi.node');
 
+await rm(outputDirectory, { force: true, recursive: true });
 await mkdir(outputDirectory, { recursive: true });
 
 await build({
@@ -35,7 +36,7 @@ await build({
   entryPoints: [join(projectRoot, 'src/index.ts')],
   format: 'cjs',
   logLevel: 'info',
-  outfile: join(outputDirectory, 'wtrack-next.cjs'),
+  outfile: join(outputDirectory, 'wtrack.cjs'),
   platform: 'node',
   plugins: [createMsalPersistencePlugin()],
   sourcemap: true,

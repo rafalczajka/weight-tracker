@@ -7,7 +7,7 @@ import {
 } from '@azure/msal-node-extensions';
 import { AppError } from '../errors';
 
-const CACHE_DIRECTORY = 'wtrack-next';
+const CACHE_DIRECTORY = 'wtrack';
 const CACHE_FILENAME = 'token-cache.bin';
 
 export async function createTokenCache() {

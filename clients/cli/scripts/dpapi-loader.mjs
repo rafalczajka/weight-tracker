@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path';
 import { getRawAsset, isSea } from 'node:sea';
 
 const DPAPI_ASSET_NAME = 'dpapi.node';
-const TEMP_DIRECTORY_NAME = 'wtrack-next';
+const TEMP_DIRECTORY_NAME = 'wtrack';
 
 if (process.platform !== 'win32') {
   throw new Error('DPAPI is supported only on Windows.');

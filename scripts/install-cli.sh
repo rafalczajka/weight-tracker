@@ -8,7 +8,7 @@ readonly ENVIRONMENT_PATH="$ROOT_DIRECTORY/.env"
 cd "$ROOT_DIRECTORY"
 corepack pnpm --filter '@weight-tracker/cli' build:binary
 
-readonly SOURCE_PATH="$ROOT_DIRECTORY/clients/cli/dist/wtrack-next.exe"
+readonly SOURCE_PATH="$ROOT_DIRECTORY/clients/cli/dist/wtrack.exe"
 
 if [[ -f "$ENVIRONMENT_PATH" ]]; then
   # shellcheck disable=SC1090
@@ -22,7 +22,7 @@ if [[ -z "${CLI_APP_NAME:-}" || -z "${CLI_APP_INSTALLATION_DIR:-}" ]]; then
 fi
 
 readonly TARGET_DIRECTORY="$CLI_APP_INSTALLATION_DIR/$CLI_APP_NAME"
-readonly TARGET_PATH="$TARGET_DIRECTORY/wtrack-next.exe"
+readonly TARGET_PATH="$TARGET_DIRECTORY/wtrack.exe"
 
 mkdir -p "$TARGET_DIRECTORY"
 cp "$SOURCE_PATH" "$TARGET_PATH"

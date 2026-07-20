@@ -4,14 +4,14 @@
   "private": true,
   "type": "module",
   "bin": {
-    "wtrack-next": "dist/wtrack-next.cjs"
+    "wtrack": "dist/wtrack.cjs"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
     "build:binary": "pnpm run build && node scripts/build-sea.mjs",
     "dev": "tsx src/index.ts",
     "lint": "eslint .",
-    "start": "node dist/wtrack-next.cjs",
+    "start": "node dist/wtrack.cjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
