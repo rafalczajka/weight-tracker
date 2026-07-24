@@ -398,13 +398,13 @@
         "additionalProperties": false,
         "required": [
           "date",
-          "weight"
+          "weightKg"
         ],
         "properties": {
           "date": {
             "type": "string"
           },
-          "weight": {
+          "weightKg": {
             "type": "number",
             "format": "decimal"
           }
@@ -414,16 +414,14 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "weight"
+          "weightKg"
         ],
         "properties": {
-          "weight": {
+          "weightKg": {
             "type": "number",
             "format": "decimal",
             "maximum": 500.0,
             "minimum": 0.0,
-            "minLength": 1,
-            "nullable": false,
             "exclusiveMinimum": true
           }
         }
@@ -432,16 +430,14 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "weight"
+          "weightKg"
         ],
         "properties": {
-          "weight": {
+          "weightKg": {
             "type": "number",
             "format": "decimal",
             "maximum": 500.0,
             "minimum": 0.0,
-            "minLength": 1,
-            "nullable": false,
             "exclusiveMinimum": true
           },
           "date": {
@@ -473,20 +469,20 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "avg",
-          "max",
-          "min"
+          "averageWeightKg",
+          "maximumWeightKg",
+          "minimumWeightKg"
         ],
         "properties": {
-          "avg": {
+          "averageWeightKg": {
             "type": "number",
             "format": "decimal"
           },
-          "max": {
+          "maximumWeightKg": {
             "type": "number",
             "format": "decimal"
           },
-          "min": {
+          "minimumWeightKg": {
             "type": "number",
             "format": "decimal"
           }
@@ -534,7 +530,7 @@
           "hasEntry": {
             "type": "boolean"
           },
-          "weight": {
+          "weightKg": {
             "type": "number",
             "format": "decimal",
             "nullable": true

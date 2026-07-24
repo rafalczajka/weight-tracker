@@ -22,13 +22,13 @@ const client = createWeightTrackerClient({
 });
 
 export async function addTodayWeight(
-  weight: number,
+  weightKg: number,
   accessToken: string,
 ): Promise<AddWeightResult> {
   try {
     await createWeightEntry({
       ...withBearerToken(client, accessToken),
-      body: { weight },
+      body: { weightKg },
     });
 
     return 'created';

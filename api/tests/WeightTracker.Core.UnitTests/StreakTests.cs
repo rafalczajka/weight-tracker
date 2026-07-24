@@ -16,10 +16,10 @@ public sealed class StreakTests
         int expectedLongestStreak,
         params string[] excludedDates)
     {
-        const decimal weight = 50;
+        const decimal weightKg = 50;
         var userId = Guid.NewGuid().ToString();
 
-        var weightData = Helpers.GenerateWeightData(userId, weight, dateFrom, dateTo, excludedDates);
+        var weightData = Helpers.GenerateWeightData(userId, weightKg, dateFrom, dateTo, excludedDates);
         var referenceDate = DateOnly.FromDateTime(DateTime.Parse(dateTo, Helpers.DefaultCultureInfo));
         var (streak, longestStreak) = Streak.Create(weightData, referenceDate);
 

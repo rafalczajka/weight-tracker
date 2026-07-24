@@ -7,13 +7,13 @@ public sealed class SummaryTests
     [Fact]
     public void Create_ShouldCalculateSummaryForReferenceDate()
     {
-        const decimal weight = 80m;
+        const decimal weightKg = 80m;
 
         var userId = Guid.NewGuid().ToString();
 
         var data = Helpers.GenerateWeightData(
             userId,
-            weight,
+            weightKg,
             "2024-12-01",
             "2024-12-31",
             "2024-12-30",
@@ -25,7 +25,7 @@ public sealed class SummaryTests
 
         Assert.Equal(referenceDate, summary.Today.Date);
         Assert.False(summary.Today.HasEntry);
-        Assert.Null(summary.Today.Weight);
+        Assert.Null(summary.Today.WeightKg);
 
         Assert.Equal(0, summary.Streak.Current);
         Assert.Equal(29, summary.Streak.Longest);

@@ -26,14 +26,14 @@ internal sealed class WeightsPostEndpoint : Endpoint<WeightsPostRequest, IResult
         if (string.IsNullOrWhiteSpace(CurrentUser.Id))
             return Results.Unauthorized();
 
-        var (weight, date) = request;
+        var (weightKg, date) = request;
         var effectiveDate = GetDate(date);
-        var command = new AddWeightData(CurrentUser.Id, effectiveDate, weight);
+        var command = new AddWeightData(CurrentUser.Id, effectiveDate, weightKg);
         var result = await command.ExecuteAsync(ct);
 
         await Cache.EvictByUidAsync(CurrentUser.Id, ct);
 
-        var response = new WeightsEntryResponse(effectiveDate.ToDomainDateString(), weight);
+        var response = new WeightsEntryResponse(effectiveDate.ToDomainDateString(), weightKg);
         var location = $"/api/weights/{response.Date}";
 
         return result.Match(() => Results.Created(location, response), ErrorsService.HandleError);

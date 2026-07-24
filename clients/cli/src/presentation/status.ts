@@ -13,10 +13,10 @@ export function printStatus(
 ): void {
   output.print();
 
-  if (summary.today.hasEntry && summary.today.weight != null) {
+  if (summary.today.hasEntry && summary.today.weightKg != null) {
     output.print(
       `${chalk.bold.cyan(STATUS_OK)} Data added: ${chalk.bold.cyan(
-        `${summary.today.weight} ${WEIGHT_UNIT}`,
+        `${summary.today.weightKg} ${WEIGHT_UNIT}`,
       )}`,
     );
   } else {

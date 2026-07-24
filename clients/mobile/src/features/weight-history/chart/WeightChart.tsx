@@ -79,7 +79,7 @@ export function WeightChart({ colors, report }: WeightChartProps) {
                 type: ruleTypes.DASHED,
                 width: chartWidth,
               }}
-              referenceLine1Position={chart.average}
+              referenceLine1Position={chart.averageWeightKg}
               referenceLinesOverChartContent={false}
               roundToDigits={1}
               rulesColor={colors.chartGrid}
@@ -123,9 +123,9 @@ function createAccessibilityLabel(chart: WeightChartModel | null): string {
 
   return [
     `Weight chart from ${chart.dateFrom} to ${chart.dateTo}.`,
-    `Minimum ${chart.minimum.toFixed(2)} kilograms,`,
-    `maximum ${chart.maximum.toFixed(2)} kilograms,`,
-    `average ${chart.average.toFixed(2)} kilograms.`,
+    `Minimum ${chart.minimumWeightKg.toFixed(2)} kilograms,`,
+    `maximum ${chart.maximumWeightKg.toFixed(2)} kilograms,`,
+    `average ${chart.averageWeightKg.toFixed(2)} kilograms.`,
   ].join(' ');
 }
 

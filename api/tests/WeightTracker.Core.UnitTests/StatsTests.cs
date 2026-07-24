@@ -26,8 +26,8 @@ public sealed class StatsTests
 
         var result = Stats.Create(data);
 
-        Assert.Equal(100m, result.AverageWeight);
-        Assert.Equal(120m, result.MaxWeight);
-        Assert.Equal(80m, result.MinWeight);
+        Assert.Equal(100m, result.AverageWeightKg);
+        Assert.Equal(120m, result.MaximumWeightKg);
+        Assert.Equal(80m, result.MinimumWeightKg);
     }
 }

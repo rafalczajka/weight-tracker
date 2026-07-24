@@ -15,7 +15,7 @@ public sealed class TodayTests
 
         Assert.Equal(referenceDate, result.Date);
         Assert.True(result.HasEntry);
-        Assert.Equal(85m, result.Weight);
+        Assert.Equal(85m, result.WeightKg);
     }
 
     [Fact]
@@ -29,6 +29,6 @@ public sealed class TodayTests
 
         Assert.Equal(referenceDate, result.Date);
         Assert.False(result.HasEntry);
-        Assert.Null(result.Weight);
+        Assert.Null(result.WeightKg);
     }
 }

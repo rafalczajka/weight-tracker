@@ -26,17 +26,17 @@ internal sealed class WeightsPutEndpoint : Endpoint<WeightsPutRequest, IResult>
         if (string.IsNullOrWhiteSpace(CurrentUser.Id))
             return Results.Unauthorized();
 
-        var (date, weight) = request;
+        var (date, weightKg) = request;
         var parsedDate = DateOnly.Parse(date, CultureInfo.InvariantCulture);
         var command = new UpdateWeightData(
             UserId: CurrentUser.Id,
             Date: parsedDate,
-            Weight: weight);
+            WeightKg: weightKg);
         var result = await command.ExecuteAsync(ct);
 
         await Cache.EvictByUidAsync(CurrentUser.Id, ct);
 
-        var response = new WeightsEntryResponse(parsedDate.ToDomainDateString(), weight);
+        var response = new WeightsEntryResponse(parsedDate.ToDomainDateString(), weightKg);
         return result.Match(() => Results.Ok(response), ErrorsService.HandleError);
     }
 }

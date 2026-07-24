@@ -37,7 +37,9 @@ export function createWeightChartSettings(model: WeightChartModel): Settings {
     symbols: {
       thresholds: { x: '\u2504' },
     },
-    thresholds: [createAverageThreshold(model.average, terminal.colorsEnabled)],
+    thresholds: [
+      createAverageThreshold(model.averageWeightKg, terminal.colorsEnabled),
+    ],
     title: `Weight [kg] ${model.dateFrom} - ${model.dateTo}`,
     width: terminal.width,
     xLabel: 'Date',
@@ -75,10 +77,10 @@ function createDateTicks(model: WeightChartModel, width: number): number[] {
 }
 
 function createAverageThreshold(
-  average: number,
+  averageWeightKg: number,
   colorsEnabled: boolean,
 ): Threshold {
-  const threshold: Threshold = { y: average };
+  const threshold: Threshold = { y: averageWeightKg };
 
   if (colorsEnabled) {
     threshold.color = AVERAGE_COLOR;

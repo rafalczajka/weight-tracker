@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace WeightTracker.Core.Weights;
 
-public sealed record Stats(decimal AverageWeight, decimal MaxWeight, decimal MinWeight)
+public sealed record Stats(decimal AverageWeightKg, decimal MaximumWeightKg, decimal MinimumWeightKg)
 {
     public static Stats Empty { get; } = new(0, 0, 0);
 
     public static Stats Create(IList<WeightData> data) => data?.Count == 0
         ? Empty
         : new Stats(
-            AverageWeight: data?.Average(d => Convert.ToDecimal(d.Weight)) ?? 0M,
-            MaxWeight: data?.Max(x => Convert.ToDecimal(x.Weight)) ?? 0M,
-            MinWeight: data?.Min(x => Convert.ToDecimal(x.Weight)) ?? 0M);
+            AverageWeightKg: data?.Average(d => Convert.ToDecimal(d.WeightKg)) ?? 0M,
+            MaximumWeightKg: data?.Max(x => Convert.ToDecimal(x.WeightKg)) ?? 0M,
+            MinimumWeightKg: data?.Min(x => Convert.ToDecimal(x.WeightKg)) ?? 0M);
 }

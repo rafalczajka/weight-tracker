@@ -9,7 +9,7 @@ internal static class Helpers
 
     public static IList<WeightData> GenerateWeightData(
         string userId,
-        decimal weight,
+        decimal weightKg,
         string dateFrom,
         string dateTo,
         params IEnumerable<string> excludedDates)
@@ -27,6 +27,6 @@ internal static class Helpers
             dateRange.Remove(date);
         }
 
-        return [.. dateRange.Select(d => new WeightData(userId, DateOnly.FromDateTime(d), weight))];
+        return [.. dateRange.Select(d => new WeightData(userId, DateOnly.FromDateTime(d), weightKg))];
     }
 }

@@ -13,6 +13,6 @@ internal static class Mappings
     {
         PartitionKey = domain.UserId,
         RowKey = domain.Date.ToDomainDateString(),
-        Weight = decimal.ToDouble(domain.Weight)
+        Weight = decimal.ToDouble(domain.WeightKg)
     };
 }

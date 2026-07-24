@@ -20,7 +20,9 @@ export function printSpecificEntry(
 ): void {
   output.print();
   output.print(`Date: ${chalk.bold.cyan(entry.date)}`);
-  output.print(`Weight: ${chalk.bold.cyan(`${entry.weight} ${WEIGHT_UNIT}`)}`);
+  output.print(
+    `Weight: ${chalk.bold.cyan(`${entry.weightKg} ${WEIGHT_UNIT}`)}`,
+  );
   output.print();
 }
 
@@ -59,7 +61,11 @@ export function printReport(
   const todayEntry = entries.find(entry => entry.date === formatUtcDate(now));
 
   if (todayEntry) {
-    printCurrentWeight(output, todayEntry.weight, report.stats.avg);
+    printCurrentWeight(
+      output,
+      todayEntry.weightKg,
+      report.stats.averageWeightKg,
+    );
   }
 }
 
@@ -84,16 +90,16 @@ function createWeightTable(
       return;
     }
 
-    const previousWeight = chunk[index - 1]?.weight ?? entry.weight;
-    const difference = entry.weight - previousWeight;
+    const previousWeightKg = chunk[index - 1]?.weightKg ?? entry.weightKg;
+    const differenceKg = entry.weightKg - previousWeightKg;
     const values = [
       entry.date,
-      entry.weight.toFixed(2),
-      `${difference >= 0 ? '+' : ''}${difference.toFixed(2)}`,
+      entry.weightKg.toFixed(2),
+      `${differenceKg >= 0 ? '+' : ''}${differenceKg.toFixed(2)}`,
     ];
 
     table.push(
-      difference > 0 ? values.map(value => chalk.bold(value)) : values,
+      differenceKg > 0 ? values.map(value => chalk.bold(value)) : values,
     );
   });
 
@@ -101,9 +107,9 @@ function createWeightTable(
 }
 
 function printStats(output: CliOutput, stats: StatsResponse): void {
-  printStat(output, 'Max', stats.max);
-  printStat(output, 'Min', stats.min);
-  printStat(output, 'Avg', stats.avg);
+  printStat(output, 'Max', stats.maximumWeightKg);
+  printStat(output, 'Min', stats.minimumWeightKg);
+  printStat(output, 'Avg', stats.averageWeightKg);
   output.print();
 }
 
@@ -117,28 +123,28 @@ function printStat(output: CliOutput, label: string, value: number): void {
 
 function printCurrentWeight(
   output: CliOutput,
-  weight: number,
-  average: number,
+  weightKg: number,
+  averageWeightKg: number,
 ): void {
-  const comparison = getAverageComparison(weight, average);
+  const comparison = getAverageComparison(weightKg, averageWeightKg);
 
   output.print(
     `Current weight ${chalk.bold.cyan(
-      `${weight.toFixed(2)} ${WEIGHT_UNIT}`,
+      `${weightKg.toFixed(2)} ${WEIGHT_UNIT}`,
     )} is ${comparison.label} ${comparison.preposition} average.`,
   );
   output.print();
 }
 
 function getAverageComparison(
-  weight: number,
-  average: number,
+  weightKg: number,
+  averageWeightKg: number,
 ): AverageComparison {
-  if (weight < average) {
+  if (weightKg < averageWeightKg) {
     return { label: chalk.bold('LOWER'), preposition: 'than' };
   }
 
-  if (weight > average) {
+  if (weightKg > averageWeightKg) {
     return { label: chalk.bold('HIGHER'), preposition: 'than' };
   }
 

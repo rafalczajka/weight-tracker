@@ -12,11 +12,11 @@ const INVALID_DATA_MESSAGE = 'Weight chart data is invalid.';
 interface DatedWeightEntry {
   date: string;
   day: number;
-  weight: number;
+  weightKg: number;
 }
 
 export interface WeightChartModel {
-  average: number;
+  averageWeightKg: number;
   dateFrom: string;
   dateTo: string;
   firstDay: number;
@@ -32,7 +32,7 @@ export function createWeightChartModel(
     return null;
   }
 
-  if (!Number.isFinite(report.stats.avg)) {
+  if (!Number.isFinite(report.stats.averageWeightKg)) {
     throw new Error(INVALID_DATA_MESSAGE);
   }
 
@@ -45,17 +45,17 @@ export function createWeightChartModel(
   }
 
   const points = entries.map(
-    entry => [entry.day, entry.weight] satisfies Point,
+    entry => [entry.day, entry.weightKg] satisfies Point,
   );
 
   return {
-    average: report.stats.avg,
+    averageWeightKg: report.stats.averageWeightKg,
     dateFrom: firstEntry.date,
     dateTo: lastEntry.date,
     firstDay: firstEntry.day,
     lastDay: lastEntry.day,
     points,
-    yRange: calculateYRange(entries, report.stats.avg),
+    yRange: calculateYRange(entries, report.stats.averageWeightKg),
   };
 }
 
@@ -64,14 +64,14 @@ export function formatShortDate(day: number): string {
 }
 
 function parseEntry(entry: WeightsEntryResponse): DatedWeightEntry {
-  if (!Number.isFinite(entry.weight)) {
+  if (!Number.isFinite(entry.weightKg)) {
     throw new Error(INVALID_DATA_MESSAGE);
   }
 
   return {
     date: entry.date,
     day: parseUtcDay(entry.date),
-    weight: entry.weight,
+    weightKg: entry.weightKg,
   };
 }
 
@@ -97,12 +97,15 @@ function compareByDay(left: DatedWeightEntry, right: DatedWeightEntry): number {
 
 function calculateYRange(
   entries: readonly DatedWeightEntry[],
-  average: number,
+  averageWeightKg: number,
 ): [number, number] {
-  const weights = entries.map(entry => entry.weight);
-  const minimum = Math.min(...weights, average);
-  const maximum = Math.max(...weights, average);
-  const padding = Math.max((maximum - minimum) * 0.1, MINIMUM_Y_PADDING);
+  const weightsKg = entries.map(entry => entry.weightKg);
+  const minimumWeightKg = Math.min(...weightsKg, averageWeightKg);
+  const maximumWeightKg = Math.max(...weightsKg, averageWeightKg);
+  const padding = Math.max(
+    (maximumWeightKg - minimumWeightKg) * 0.1,
+    MINIMUM_Y_PADDING,
+  );
 
-  return [Math.max(0, minimum - padding), maximum + padding];
+  return [Math.max(0, minimumWeightKg - padding), maximumWeightKg + padding];
 }

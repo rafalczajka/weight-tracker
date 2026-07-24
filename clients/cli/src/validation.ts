@@ -1,4 +1,5 @@
 import { InvalidArgumentError } from 'commander';
+import { MAX_WEIGHT_KG } from './constants';
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 
@@ -28,21 +29,21 @@ export function parseDate(value: string): string {
   return value;
 }
 
-export function parseWeight(value: string): number {
-  const weight = Number(value);
+export function parseWeightKg(value: string): number {
+  const weightKg = Number(value);
 
   if (
     !value.trim() ||
-    !Number.isFinite(weight) ||
-    weight <= 0 ||
-    weight > 500
+    !Number.isFinite(weightKg) ||
+    weightKg <= 0 ||
+    weightKg > MAX_WEIGHT_KG
   ) {
     throw new InvalidArgumentError(
-      'Weight must be a number greater than 0 and at most 500.',
+      `Weight must be a number greater than 0 and at most ${MAX_WEIGHT_KG} kg.`,
     );
   }
 
-  return weight;
+  return weightKg;
 }
 
 export function parseTail(value: string): number {

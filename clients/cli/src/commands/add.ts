@@ -2,7 +2,7 @@ import { createWeightEntry, withBearerToken } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
 import { DATE_FORMAT_LABEL } from '../constants';
 import type { CliServices } from '../services';
-import { parseDate, parseWeight } from '../validation';
+import { parseDate, parseWeightKg } from '../validation';
 import { printMessage, runWithAccessToken } from './helpers';
 
 interface AddOptions extends OptionValues {
@@ -13,18 +13,18 @@ export function createAddCommand(services: CliServices): Command {
   return new Command('add')
     .aliases(['new', 'insert'])
     .description('aliases: new, insert')
-    .argument('<weight>', 'Weight value', parseWeight)
+    .argument('<weight>', 'Weight in kg', parseWeightKg)
     .option(
       '-d, --date <date>',
       `Date in ${DATE_FORMAT_LABEL} format`,
       parseDate,
     )
-    .action(async (weight: number, options: AddOptions) => {
+    .action(async (weightKg: number, options: AddOptions) => {
       await runWithAccessToken(services, 'Adding data...', accessToken =>
         createWeightEntry({
           ...withBearerToken(services.api, accessToken),
           body: {
-            weight,
+            weightKg,
             ...(options.date ? { date: options.date } : {}),
           },
         }),

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Keyboard } from 'react-native';
 import { addTodayWeight, ApiError } from '../../api';
-import { getWeightError, parseWeight } from './validation';
+import { getWeightError, parseWeightKg } from './validation';
 
 type Operation = 'submitting' | null;
 export type NoticeKind = 'error' | 'info' | 'success';
@@ -42,9 +42,9 @@ export function useWeightEntry({
       return;
     }
 
-    const parsedWeight = parseWeight(weight);
+    const parsedWeightKg = parseWeightKg(weight);
 
-    if (parsedWeight === null) {
+    if (parsedWeightKg === null) {
       setWeightError(getWeightError(weight));
       return;
     }
@@ -61,7 +61,7 @@ export function useWeightEntry({
         return;
       }
 
-      const result = await addTodayWeight(parsedWeight, accessToken);
+      const result = await addTodayWeight(parsedWeightKg, accessToken);
 
       setWeight('');
       setCompleted(true);

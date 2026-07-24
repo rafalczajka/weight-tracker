@@ -7,4 +7,7 @@ internal sealed class WeightsGetResponse
     public IEnumerable<WeightsEntryResponse> Data { get; init; } = [];
 }
 
-internal sealed record StatsResponse(decimal Avg, decimal Max, decimal Min);
+internal sealed record StatsResponse(
+    decimal AverageWeightKg,
+    decimal MaximumWeightKg,
+    decimal MinimumWeightKg);

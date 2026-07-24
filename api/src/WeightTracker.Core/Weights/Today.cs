@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace WeightTracker.Core.Weights;
 
-public sealed record Today(DateOnly Date, bool HasEntry, decimal? Weight)
+public sealed record Today(DateOnly Date, bool HasEntry, decimal? WeightKg)
 {
     public static Today Create(IEnumerable<WeightData> data, DateOnly? referenceDate = null)
     {
@@ -11,7 +11,7 @@ public sealed record Today(DateOnly Date, bool HasEntry, decimal? Weight)
         var currentData = data.SingleOrDefault(d => d.Date == today);
 
         return currentData is not null
-            ? new Today(today, true, currentData.Weight)
+            ? new Today(today, true, currentData.WeightKg)
             : new Today(today, false, null);
     }
 }

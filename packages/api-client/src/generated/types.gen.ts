@@ -7,15 +7,15 @@ export type ClientOptions = {
 
 export type WeightsEntryResponse = {
     date: string;
-    weight: number;
+    weightKg: number;
 };
 
 export type WeightsPutRequest = {
-    weight: number;
+    weightKg: number;
 };
 
 export type WeightsPostRequest = {
-    weight: number;
+    weightKg: number;
     date?: string | null;
 };
 
@@ -25,9 +25,9 @@ export type WeightsGetResponse = {
 };
 
 export type StatsResponse = {
-    avg: number;
-    max: number;
-    min: number;
+    averageWeightKg: number;
+    maximumWeightKg: number;
+    minimumWeightKg: number;
 };
 
 export type WeightsGetRequest = {
@@ -43,7 +43,7 @@ export type WeightsSummaryGetResponse = {
 export type TodayResponse = {
     date: string;
     hasEntry: boolean;
-    weight?: number | null;
+    weightKg?: number | null;
 };
 
 export type StreakResponse = {

@@ -14,7 +14,7 @@ const MINIMUM_POINT_SPACING = 8;
 interface DatedWeightEntry {
   date: string;
   day: number;
-  weight: number;
+  weightKg: number;
 }
 
 interface ChartLayout {
@@ -30,15 +30,15 @@ interface YScale {
 }
 
 export interface WeightChartModel {
-  average: number;
+  averageWeightKg: number;
   data: lineDataItem[];
   dateFrom: string;
   dateTo: string;
   endSpacing: number;
   initialSpacing: number;
-  maximum: number;
+  maximumWeightKg: number;
   maximumValue: number;
-  minimum: number;
+  minimumWeightKg: number;
   showPoints: boolean;
   stepValue: number;
   yAxisOffset: number;
@@ -52,7 +52,7 @@ export function createWeightChartModel(
     report.data.length === 0 ||
     !Number.isFinite(width) ||
     width <= 0 ||
-    !Number.isFinite(report.stats.avg)
+    !Number.isFinite(report.stats.averageWeightKg)
   ) {
     return null;
   }
@@ -70,22 +70,26 @@ export function createWeightChartModel(
     return null;
   }
 
-  const weights = entries.map(entry => entry.weight);
-  const minimum = Math.min(...weights);
-  const maximum = Math.max(...weights);
+  const weightsKg = entries.map(entry => entry.weightKg);
+  const minimumWeightKg = Math.min(...weightsKg);
+  const maximumWeightKg = Math.max(...weightsKg);
   const layout = createChartLayout(width, entries.length);
-  const scale = createYScale(minimum, maximum, report.stats.avg);
+  const scale = createYScale(
+    minimumWeightKg,
+    maximumWeightKg,
+    report.stats.averageWeightKg,
+  );
 
   return {
-    average: report.stats.avg,
+    averageWeightKg: report.stats.averageWeightKg,
     data: createLineData(entries, layout.plotWidth),
     dateFrom: firstEntry.date,
     dateTo: lastEntry.date,
     endSpacing: layout.endSpacing,
     initialSpacing: layout.initialSpacing,
-    maximum,
+    maximumWeightKg,
     maximumValue: scale.maximumValue,
-    minimum,
+    minimumWeightKg,
     showPoints: layout.showPoints,
     stepValue: scale.maximumValue / 4,
     yAxisOffset: scale.offset,
@@ -116,7 +120,7 @@ function parseEntry(entry: WeightsEntryResponse): DatedWeightEntry | null {
   if (
     !DATE_PATTERN.test(entry.date) ||
     !Number.isFinite(timestamp) ||
-    !Number.isFinite(entry.weight)
+    !Number.isFinite(entry.weightKg)
   ) {
     return null;
   }
@@ -130,7 +134,7 @@ function parseEntry(entry: WeightsEntryResponse): DatedWeightEntry | null {
   return {
     date: entry.date,
     day: timestamp / MILLISECONDS_PER_DAY,
-    weight: entry.weight,
+    weightKg: entry.weightKg,
   };
 }
 
@@ -177,7 +181,7 @@ function createLineData(
       width,
       equalSpacing,
     ),
-    value: entry.weight,
+    value: entry.weightKg,
   }));
 }
 
@@ -221,12 +225,12 @@ function createLabelDays(
 }
 
 function createYScale(
-  minimum: number,
-  maximum: number,
-  average: number,
+  minimumWeightKg: number,
+  maximumWeightKg: number,
+  averageWeightKg: number,
 ): YScale {
-  const scaleMinimum = Math.min(minimum, average);
-  const scaleMaximum = Math.max(maximum, average);
+  const scaleMinimum = Math.min(minimumWeightKg, averageWeightKg);
+  const scaleMaximum = Math.max(maximumWeightKg, averageWeightKg);
   const padding = Math.max(
     (scaleMaximum - scaleMinimum) * 0.1,
     MINIMUM_Y_PADDING,
