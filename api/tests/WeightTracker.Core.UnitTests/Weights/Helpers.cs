@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using WeightTracker.Core.Weights;
 
-namespace WeightTracker.Core.UnitTests;
+namespace WeightTracker.Core.UnitTests.Weights;
 
 internal static class Helpers
 {

@@ -1,6 +1,6 @@
 ﻿using WeightTracker.Core.Weights;
 
-namespace WeightTracker.Core.UnitTests;
+namespace WeightTracker.Core.UnitTests.Weights;
 
 public sealed class StreakTests
 {
