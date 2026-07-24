@@ -84,6 +84,10 @@ export type DeleteWeightEntryErrors = {
      */
     401: unknown;
     /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
      * Not Found
      */
     404: unknown;
@@ -122,6 +126,10 @@ export type GetWeightEntryErrors = {
      */
     401: unknown;
     /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
      * Not Found
      */
     404: unknown;
@@ -158,6 +166,10 @@ export type UpdateWeightEntryErrors = {
      * Unauthorized
      */
     401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
     /**
      * Not Found
      */
@@ -198,6 +210,10 @@ export type GetWeightsErrors = {
      */
     401: unknown;
     /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
      * Not Found
      */
     404: unknown;
@@ -232,6 +248,10 @@ export type CreateWeightEntryErrors = {
      * Unauthorized
      */
     401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
     /**
      * Not Found
      */
@@ -268,6 +288,10 @@ export type GetWeightsSummaryErrors = {
      * Unauthorized
      */
     401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
     /**
      * Not Found
      */

@@ -1,5 +1,6 @@
 using AspNetCore.Authentication.ApiKey;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
@@ -12,6 +13,7 @@ namespace WeightTracker.Api.Auth;
 internal static class ServicesRegistration
 {
     private const string SmartScheme = "Smart";
+    private const string RequiredScope = "access_as_user";
 
     public static IServiceCollection AddSmartAuthentication(
         this IServiceCollection services,
@@ -52,8 +54,14 @@ internal static class ServicesRegistration
                 options.KeyName = apiKeyHeaderName;
             });
 
+        services.AddAuthorizationBuilder()
+            .SetDefaultPolicy(new AuthorizationPolicyBuilder(SmartScheme)
+                .RequireAuthenticatedUser()
+                .AddRequirements(new ApiAccessRequirement(RequiredScope))
+                .Build());
+
         services.AddOptions<ApiKeyAuthOptions>().Bind(apiKeySection);
-        services.AddAuthorization();
+        services.AddSingleton<IAuthorizationHandler, ApiAccessHandler>();
 
         return services;
     }
