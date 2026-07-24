@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace WeightTracker.Data;
 
-public static class ServicesRegistration
+public static class DependencyInjection
 {
     public static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
     {

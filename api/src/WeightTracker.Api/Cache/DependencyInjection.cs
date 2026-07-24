@@ -2,7 +2,7 @@
 
 namespace WeightTracker.Api.Cache;
 
-internal static class ServicesRegistration
+internal static class DependencyInjection
 {
     public static IServiceCollection AddCustomOutputCache(this IServiceCollection services) =>
         services.AddOutputCache(options =>

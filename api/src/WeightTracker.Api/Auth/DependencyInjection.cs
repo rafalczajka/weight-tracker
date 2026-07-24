@@ -11,7 +11,7 @@ using ApiKeyAuthOptions = WeightTracker.Api.Auth.ApiKey.ApiKeyOptions;
 
 namespace WeightTracker.Api.Auth;
 
-internal static class ServicesRegistration
+internal static class DependencyInjection
 {
     public static IServiceCollection AddApiAuthentication(
         this IServiceCollection services,
