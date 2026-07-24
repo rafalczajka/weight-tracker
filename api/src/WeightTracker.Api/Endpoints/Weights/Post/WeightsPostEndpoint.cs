@@ -31,7 +31,8 @@ internal sealed class WeightsPostEndpoint : Endpoint<WeightsPostRequest, IResult
         var command = new AddWeightData(CurrentUser.Id, effectiveDate, weightKg);
         var result = await command.ExecuteAsync(ct);
 
-        await Cache.EvictByUidAsync(CurrentUser.Id, ct);
+        if (result.IsSuccess)
+            await Cache.EvictByUidAsync(CurrentUser.Id);
 
         var response = new WeightsEntryResponse(effectiveDate.ToDomainDateString(), weightKg);
         var location = $"/api/weights/{response.Date}";

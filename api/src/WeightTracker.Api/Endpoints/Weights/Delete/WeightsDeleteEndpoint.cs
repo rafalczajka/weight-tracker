@@ -31,7 +31,9 @@ internal sealed class WeightsDeleteEndpoint : Endpoint<WeightsDeleteRequest, IRe
             Date: DateOnly.Parse(request.Date, CultureInfo.InvariantCulture));
         var result = await command.ExecuteAsync(ct);
 
-        await Cache.EvictByUidAsync(CurrentUser.Id, ct);
+        if (result.IsSuccess)
+            await Cache.EvictByUidAsync(CurrentUser.Id);
+
         return result.Match(Results.NoContent, ErrorsService.HandleError);
     }
 }

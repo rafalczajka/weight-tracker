@@ -34,7 +34,8 @@ internal sealed class WeightsPutEndpoint : Endpoint<WeightsPutRequest, IResult>
             WeightKg: weightKg);
         var result = await command.ExecuteAsync(ct);
 
-        await Cache.EvictByUidAsync(CurrentUser.Id, ct);
+        if (result.IsSuccess)
+            await Cache.EvictByUidAsync(CurrentUser.Id);
 
         var response = new WeightsEntryResponse(parsedDate.ToDomainDateString(), weightKg);
         return result.Match(() => Results.Ok(response), ErrorsService.HandleError);
