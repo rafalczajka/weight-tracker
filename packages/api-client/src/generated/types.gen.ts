@@ -65,6 +65,23 @@ export type WeightsDeleteRequest = {
     [key: string]: never;
 };
 
+export type CaloriesPostResponse = {
+    restingCaloriesPerDay: number;
+    maintenanceCaloriesPerDay: number;
+};
+
+export type CaloriesPostRequest = {
+    weightKg: number;
+    heightCm: number;
+    ageYears: number;
+    sex: Sex;
+    activityLevel: ActivityLevel;
+};
+
+export type Sex = 'female' | 'male';
+
+export type ActivityLevel = 'sedentary' | 'lightlyActive' | 'moderatelyActive' | 'veryActive' | 'extraActive';
+
 export type BmiPostResponse = {
     bmi: number;
     category: BmiCategory;
@@ -330,6 +347,45 @@ export type GetWeightsSummaryResponses = {
 };
 
 export type GetWeightsSummaryResponse = GetWeightsSummaryResponses[keyof GetWeightsSummaryResponses];
+
+export type CalculateCaloriesData = {
+    body: CaloriesPostRequest;
+    path?: never;
+    query?: never;
+    url: '/api/calculations/calories';
+};
+
+export type CalculateCaloriesErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type CalculateCaloriesResponses = {
+    /**
+     * Success
+     */
+    200: CaloriesPostResponse;
+};
+
+export type CalculateCaloriesResponse = CalculateCaloriesResponses[keyof CalculateCaloriesResponses];
 
 export type CalculateBmiData = {
     body: BmiPostRequest;
