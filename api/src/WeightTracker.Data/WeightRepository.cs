@@ -34,7 +34,8 @@ internal sealed class WeightRepository(TableServiceClient tableServiceClient) : 
         var from = (dateFrom ?? DateOnly.MinValue).ToDomainDateString();
         var to = (dateTo ?? DateOnly.MaxValue).ToDomainDateString();
 
-        var filter = $"PartitionKey eq '{userId}' and RowKey ge '{from}' and RowKey le '{to}'";
+        var filter = TableClient.CreateQueryFilter(
+            $"PartitionKey eq {userId} and RowKey ge {from} and RowKey le {to}");
         var result = tableClient.Query<Entity>(filter, cancellationToken: ct).ToList();
 
         var data = result.Select(e => e.ToDomain()).ToList();
