@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Primitives;
+using System.Globalization;
 
 namespace WeightTracker.Api.Cache;
 
@@ -8,6 +9,7 @@ internal sealed class CustomCachePolicy : IOutputCachePolicy
     public ValueTask CacheRequestAsync(OutputCacheContext context, CancellationToken _)
     {
         const string anonymousUid = "anonymous";
+        const string utcDateKey = "utc-date";
         const string userUidKey = "uid";
 
         var attemptOutputCaching = AttemptOutputCaching(context);
@@ -18,6 +20,9 @@ internal sealed class CustomCachePolicy : IOutputCachePolicy
         context.AllowLocking = true;
 
         var uid = context.HttpContext.UserId ?? anonymousUid;
+        var utcDate = DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+        context.CacheVaryByRules.VaryByValues[utcDateKey] = utcDate;
         context.CacheVaryByRules.VaryByValues[userUidKey] = uid;
         context.CacheVaryByRules.QueryKeys = "*";
 
