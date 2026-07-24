@@ -590,12 +590,69 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "bmi"
+          "bmi",
+          "category",
+          "classification",
+          "ranges"
         ],
         "properties": {
           "bmi": {
             "type": "number",
             "format": "decimal"
+          },
+          "category": {
+            "$ref": "#/components/schemas/BmiCategory"
+          },
+          "classification": {
+            "type": "string"
+          },
+          "ranges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BmiRangeResponse"
+            }
+          }
+        }
+      },
+      "BmiCategory": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Underweight",
+          "HealthyWeight",
+          "Overweight",
+          "ObesityClass1",
+          "ObesityClass2",
+          "ObesityClass3"
+        ],
+        "enum": [
+          "underweight",
+          "healthyWeight",
+          "overweight",
+          "obesityClass1",
+          "obesityClass2",
+          "obesityClass3"
+        ]
+      },
+      "BmiRangeResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "category"
+        ],
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/BmiCategory"
+          },
+          "minimumInclusive": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "maximumExclusive": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
           }
         }
       },

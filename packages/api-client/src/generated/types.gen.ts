@@ -67,6 +67,17 @@ export type WeightsDeleteRequest = {
 
 export type BmiPostResponse = {
     bmi: number;
+    category: BmiCategory;
+    classification: string;
+    ranges: Array<BmiRangeResponse>;
+};
+
+export type BmiCategory = 'underweight' | 'healthyWeight' | 'overweight' | 'obesityClass1' | 'obesityClass2' | 'obesityClass3';
+
+export type BmiRangeResponse = {
+    category: BmiCategory;
+    minimumInclusive?: number | null;
+    maximumExclusive?: number | null;
 };
 
 export type BmiPostRequest = {

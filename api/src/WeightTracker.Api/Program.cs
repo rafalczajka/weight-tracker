@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using WeightTracker.Api;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
@@ -17,6 +19,7 @@ builder.Services.AddFastEndpoints();
 builder.Services.SwaggerDocument(options =>
 {
     options.AutoTagPathSegmentIndex = 2;
+    options.SerializerSettings = ConfigureJsonSerializer;
     options.ShortSchemaNames = true;
     options.DocumentSettings = settings =>
     {
@@ -35,7 +38,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseOutputCache();
-app.UseFastEndpoints();
+app.UseFastEndpoints(options => ConfigureJsonSerializer(options.Serializer.Options));
 
 if (app.Environment.IsDevelopment())
 {
@@ -43,3 +46,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Run();
+
+static void ConfigureJsonSerializer(JsonSerializerOptions options)
+{
+    options.Converters.Add(
+        new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false));
+}
