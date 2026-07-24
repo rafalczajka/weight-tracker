@@ -2,7 +2,7 @@ namespace WeightTracker.Api.Endpoints.Weights.GetSummary;
 
 internal sealed record GetWeightsSummary(string UserId) : ICommand<Result<Summary>>;
 
-internal sealed class GetWeightsSummaryHandler(IRepository repository)
+internal sealed class GetWeightsSummaryHandler(IWeightRepository repository)
     : ICommandHandler<GetWeightsSummary, Result<Summary>>
 {
     public async Task<Result<Summary>> ExecuteAsync(GetWeightsSummary command, CancellationToken ct)

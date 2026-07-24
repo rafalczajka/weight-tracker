@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace WeightTracker.Core.Models;
+namespace WeightTracker.Core.Weights;
 
 public sealed record Streak(int Current, int Longest)
 {

@@ -8,6 +8,6 @@ global using PxBunny.Result;
 global using WeightTracker.Api.Auth;
 global using WeightTracker.Api.Services;
 global using WeightTracker.Core;
-global using WeightTracker.Core.Models;
+global using WeightTracker.Core.Weights;
 
 global using ResponseTuple = (bool Success, System.Net.HttpStatusCode Code);

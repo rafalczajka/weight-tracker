@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace WeightTracker.Core.Models;
+namespace WeightTracker.Core.Weights;
 
 public sealed record Summary(Today Today, Streak Streak, IEnumerable<Adherence> Adherence)
 {
@@ -12,9 +12,9 @@ public sealed record Summary(Today Today, Streak Streak, IEnumerable<Adherence> 
             Today.Create(data, today),
             Streak.Create(data, referenceDate),
             [
-                Models.Adherence.Create(data, 7, referenceDate),
-                Models.Adherence.Create(data, 14, referenceDate),
-                Models.Adherence.Create(data, 30, referenceDate)
+                Weights.Adherence.Create(data, 7, referenceDate),
+                Weights.Adherence.Create(data, 14, referenceDate),
+                Weights.Adherence.Create(data, 30, referenceDate)
             ]);
     }
 }

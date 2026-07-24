@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace WeightTracker.Core.Models;
+namespace WeightTracker.Core.Weights;
 
 public sealed record Stats(decimal AverageWeight, decimal MaxWeight, decimal MinWeight)
 {

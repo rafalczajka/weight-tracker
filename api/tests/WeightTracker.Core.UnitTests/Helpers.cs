@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using WeightTracker.Core.Models;
+using WeightTracker.Core.Weights;
 
 namespace WeightTracker.Core.UnitTests;
 

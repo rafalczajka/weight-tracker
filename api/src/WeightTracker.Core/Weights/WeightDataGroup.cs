@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace WeightTracker.Core.Models;
+namespace WeightTracker.Core.Weights;
 
 public sealed class WeightDataGroup
 {

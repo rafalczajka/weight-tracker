@@ -2,7 +2,7 @@ namespace WeightTracker.Api.Endpoints.Weights.Put;
 
 internal sealed record UpdateWeightData(string UserId, DateOnly Date, decimal Weight) : ICommand<Result>;
 
-internal sealed class UpdateWeightDataHandler(IRepository repository) : ICommandHandler<UpdateWeightData, Result>
+internal sealed class UpdateWeightDataHandler(IWeightRepository repository) : ICommandHandler<UpdateWeightData, Result>
 {
     public async Task<Result> ExecuteAsync(UpdateWeightData command, CancellationToken ct)
     {

@@ -1,10 +1,9 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
-using WeightTracker.Core.Models;
 
-namespace WeightTracker.Core;
+namespace WeightTracker.Core.Weights;
 
-public interface IRepository
+public interface IWeightRepository
 {
     Task<ResponseTuple> AddAsync(WeightData weightData, CancellationToken ct);
 
