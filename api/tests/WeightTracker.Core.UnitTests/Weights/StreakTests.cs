@@ -4,6 +4,59 @@ namespace WeightTracker.Core.UnitTests.Weights;
 
 public sealed class StreakTests
 {
+    [Fact]
+    public void Create_WithNoData_ReturnsEmptyStreak()
+    {
+        var result = Streak.Create([], new DateOnly(2024, 12, 31));
+
+        Assert.Equal(new Streak(0, 0), result);
+    }
+
+    [Fact]
+    public void Create_WithSingleEntryOnReferenceDate_ReturnsOneDayStreak()
+    {
+        const string userId = "user-1";
+        var referenceDate = new DateOnly(2024, 12, 31);
+        WeightData[] data = [new(userId, referenceDate, 80m)];
+
+        var result = Streak.Create(data, referenceDate);
+
+        Assert.Equal(new Streak(1, 1), result);
+    }
+
+    [Fact]
+    public void Create_WithUnorderedData_CalculatesStreakChronologically()
+    {
+        const string userId = "user-1";
+        var referenceDate = new DateOnly(2024, 12, 31);
+        WeightData[] data =
+        [
+            new(userId, referenceDate, 80m),
+            new(userId, referenceDate.AddDays(-2), 82m),
+            new(userId, referenceDate.AddDays(-1), 81m)
+        ];
+
+        var result = Streak.Create(data, referenceDate);
+
+        Assert.Equal(new Streak(3, 3), result);
+    }
+
+    [Fact]
+    public void Create_WithOnlyFutureData_ReturnsEmptyStreak()
+    {
+        const string userId = "user-1";
+        var referenceDate = new DateOnly(2024, 12, 31);
+        WeightData[] data =
+        [
+            new(userId, referenceDate.AddDays(1), 80m),
+            new(userId, referenceDate.AddDays(2), 81m)
+        ];
+
+        var result = Streak.Create(data, referenceDate);
+
+        Assert.Equal(new Streak(0, 0), result);
+    }
+
     [Theory]
     [InlineData("2024-12-01", "2024-12-31", 5, 25, "2024-12-26")]
     [InlineData("2024-12-20", "2024-12-31", 8, 8, "2024-12-23")]

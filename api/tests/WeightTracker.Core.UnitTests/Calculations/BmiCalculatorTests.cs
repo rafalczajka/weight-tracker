@@ -19,6 +19,12 @@ public sealed class BmiCalculatorTests
         { 50m, BmiCategory.ObesityClass3 }
     };
 
+    public static TheoryData<decimal, decimal, BmiCategory> RoundedCategoryCases => new()
+    {
+        { 24.94m, 24.9m, BmiCategory.HealthyWeight },
+        { 24.95m, 25m, BmiCategory.Overweight }
+    };
+
     public static TheoryData<decimal, decimal, string> InvalidInputCases => new()
     {
         { 0m, 180m, "weightKg" },
@@ -45,6 +51,19 @@ public sealed class BmiCalculatorTests
         var result = BmiCalculator.Calculate(weightKg: bmi, heightCm: 100m);
 
         Assert.Equal(bmi, result.Value);
+        Assert.Equal(expectedCategory, result.Category);
+    }
+
+    [Theory]
+    [MemberData(nameof(RoundedCategoryCases))]
+    public void Calculate_NearCategoryBoundary_ClassifiesRoundedBmi(
+        decimal bmi,
+        decimal expectedValue,
+        BmiCategory expectedCategory)
+    {
+        var result = BmiCalculator.Calculate(weightKg: bmi, heightCm: 100m);
+
+        Assert.Equal(expectedValue, result.Value);
         Assert.Equal(expectedCategory, result.Category);
     }
 

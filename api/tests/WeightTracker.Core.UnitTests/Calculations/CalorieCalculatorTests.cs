@@ -36,6 +36,39 @@ public sealed class CalorieCalculatorTests
     }
 
     [Theory]
+    [InlineData(18, 1840, 2208)]
+    [InlineData(120, 1330, 1596)]
+    public void Calculate_AtAdultAgeBoundary_ReturnsCalorieRequirement(
+        int ageYears,
+        int expectedRestingCalories,
+        int expectedMaintenanceCalories)
+    {
+        var result = CalorieCalculator.Calculate(
+            weightKg: 80m,
+            heightCm: 180m,
+            ageYears,
+            Sex.Male,
+            ActivityLevel.Sedentary);
+
+        Assert.Equal(expectedRestingCalories, result.RestingCaloriesPerDay);
+        Assert.Equal(expectedMaintenanceCalories, result.MaintenanceCaloriesPerDay);
+    }
+
+    [Fact]
+    public void Calculate_WhenCaloriesAreHalfway_RoundsAwayFromZero()
+    {
+        var result = CalorieCalculator.Calculate(
+            weightKg: 50.05m,
+            heightCm: 100m,
+            ageYears: 26,
+            Sex.Male,
+            ActivityLevel.Sedentary);
+
+        Assert.Equal(1001, result.RestingCaloriesPerDay);
+        Assert.Equal(1201, result.MaintenanceCaloriesPerDay);
+    }
+
+    [Theory]
     [MemberData(nameof(ActivityLevelCases))]
     public void Calculate_ForActivityLevel_AppliesExpectedMultiplier(
         ActivityLevel activityLevel,

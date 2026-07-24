@@ -6,7 +6,6 @@ public sealed class ProteinCalculatorTests
 {
     [Theory]
     [InlineData(80, 66.4, 96)]
-    [InlineData(75, 62.3, 90)]
     public void Calculate_ForGeneralHealth_ReturnsRecommendedRange(
         decimal weightKg,
         decimal expectedMinimumProteinGramsPerDay,
@@ -16,6 +15,15 @@ public sealed class ProteinCalculatorTests
 
         Assert.Equal(expectedMinimumProteinGramsPerDay, result.MinimumProteinGramsPerDay);
         Assert.Equal(expectedMaximumProteinGramsPerDay, result.MaximumProteinGramsPerDay);
+    }
+
+    [Fact]
+    public void Calculate_WhenProteinIsHalfway_RoundsAwayFromZero()
+    {
+        var result = ProteinCalculator.Calculate(75m, ProteinGoal.GeneralHealth);
+
+        Assert.Equal(62.3m, result.MinimumProteinGramsPerDay);
+        Assert.Equal(90m, result.MaximumProteinGramsPerDay);
     }
 
     [Theory]
