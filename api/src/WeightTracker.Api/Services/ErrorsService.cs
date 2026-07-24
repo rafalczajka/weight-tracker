@@ -1,4 +1,4 @@
-﻿using WeightTracker.Api.ErrorDefinitions;
+using WeightTracker.Api.Errors;
 
 namespace WeightTracker.Api.Services;
 

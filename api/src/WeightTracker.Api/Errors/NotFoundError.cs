@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Api.ErrorDefinitions;
+namespace WeightTracker.Api.Errors;
 
 internal sealed class NotFoundError(string message) : ErrorBase(message)
 {
