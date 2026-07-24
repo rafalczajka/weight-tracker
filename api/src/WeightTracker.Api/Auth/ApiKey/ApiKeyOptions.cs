@@ -7,7 +7,7 @@ internal sealed class ApiKeyOptions
 
     public string HeaderName { get; init; } = DefaultHeaderName;
 
-    public IEnumerable<ApiKeyEntry> Keys { get; init; } = [];
+    public ApiKeyEntry[] Keys { get; init; } = [];
 
     public string? KeysJson { get; init; }
 }

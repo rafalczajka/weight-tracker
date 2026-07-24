@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Text.Json;
 
 namespace WeightTracker.Api.Auth.ApiKey;
@@ -12,19 +11,13 @@ internal static class ApiKeyEntriesParser
 
     public static IReadOnlyList<ApiKeyEntry> Parse(ApiKeyOptions options)
     {
-        var configuredEntries = options.Keys.ToArray();
-
-        if (configuredEntries.Length > 0)
+        if (options.Keys.Length > 0)
         {
-            if (!string.IsNullOrWhiteSpace(options.KeysJson))
-            {
-                throw new InvalidOperationException(
+            return string.IsNullOrWhiteSpace(options.KeysJson)
+                ? GetNonNullEntries(options.Keys, nameof(ApiKeyOptions.Keys))
+                : throw new InvalidOperationException(
                     $"Configure either {ApiKeyOptions.SectionName}:{nameof(ApiKeyOptions.Keys)} " +
                     $"or {ApiKeyOptions.SectionName}:{nameof(ApiKeyOptions.KeysJson)}, not both.");
-            }
-
-            EnsureNoNullEntries(configuredEntries, nameof(ApiKeyOptions.Keys));
-            return configuredEntries;
         }
 
         if (string.IsNullOrWhiteSpace(options.KeysJson))
@@ -34,19 +27,19 @@ internal static class ApiKeyEntriesParser
             ?? throw new JsonException(
                 $"{ApiKeyOptions.SectionName}:{nameof(ApiKeyOptions.KeysJson)} must contain a JSON array.");
 
-        EnsureNoNullEntries(entries, nameof(ApiKeyOptions.KeysJson));
-        return entries!;
+        return GetNonNullEntries(entries, nameof(ApiKeyOptions.KeysJson));
     }
 
-    private static void EnsureNoNullEntries(ApiKeyEntry?[] entries, string sourceName)
+    private static ApiKeyEntry[] GetNonNullEntries(ApiKeyEntry?[] entries, string sourceName)
     {
+        var result = new ApiKeyEntry[entries.Length];
+
         for (var index = 0; index < entries.Length; index++)
         {
-            if (entries[index] is null)
-            {
-                throw new InvalidOperationException(
-                    $"{ApiKeyOptions.SectionName}:{sourceName}[{index}] must contain an API key object.");
-            }
+            result[index] = entries[index] ?? throw new InvalidOperationException(
+                $"{ApiKeyOptions.SectionName}:{sourceName}[{index}] must contain an API key object.");
         }
+
+        return result;
     }
 }

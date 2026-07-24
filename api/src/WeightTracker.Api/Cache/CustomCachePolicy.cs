@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Primitives;
-using WeightTracker.Api.Extensions;
 
 namespace WeightTracker.Api.Cache;
 

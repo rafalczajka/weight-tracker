@@ -14,11 +14,9 @@ internal static class SwaggerExtensions
         this AspNetCoreOpenApiDocumentGeneratorSettings settings,
         IConfiguration configuration)
     {
-        var apiKeyHeaderName = configuration[$"{ApiKeyOptions.SectionName}__{nameof(ApiKeyOptions.HeaderName)}"];
-
-        apiKeyHeaderName = string.IsNullOrWhiteSpace(apiKeyHeaderName)
-            ? ApiKeyOptions.DefaultHeaderName
-            : apiKeyHeaderName;
+        var apiKeyHeaderName = configuration
+            .GetSection(ApiKeyOptions.SectionName)
+            .GetApiKeyHeaderName();
 
         settings.AddAuth(ApiKeyDefaults.AuthenticationScheme, new OpenApiSecurityScheme
         {

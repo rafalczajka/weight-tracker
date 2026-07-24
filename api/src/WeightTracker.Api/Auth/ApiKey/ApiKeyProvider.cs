@@ -3,10 +3,11 @@ using System.Security.Cryptography;
 using System.Text;
 using AspNetCore.Authentication.ApiKey;
 using Microsoft.Extensions.Options;
+using Microsoft.Identity.Web;
 
 namespace WeightTracker.Api.Auth.ApiKey;
 
-internal sealed class ConfigApiKeyProvider(IOptionsMonitor<ApiKeyOptions> optionsMonitor) : IApiKeyProvider
+internal sealed class ApiKeyProvider(IOptionsMonitor<ApiKeyOptions> optionsMonitor) : IApiKeyProvider
 {
     public Task<IApiKey?> ProvideAsync(string key)
     {
@@ -23,10 +24,11 @@ internal sealed class ConfigApiKeyProvider(IOptionsMonitor<ApiKeyOptions> option
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, entry.UserId),
-                new Claim(ClaimTypes.Name, entry.UserId)
+                new Claim(ClaimTypes.Name, entry.UserId),
+                new Claim(ClaimConstants.Scp, AuthDefaults.RequiredScope)
             };
 
-            return Task.FromResult<IApiKey?>(new ConfiguredApiKey(key, entry.UserId, claims));
+            return Task.FromResult<IApiKey?>(new ConfiguredApiKey(entry.Key, entry.UserId, claims));
         }
 
         return Task.FromResult<IApiKey?>(null);
@@ -40,6 +42,9 @@ internal sealed class ConfigApiKeyProvider(IOptionsMonitor<ApiKeyOptions> option
         return leftBytes.Length == rightBytes.Length
             && CryptographicOperations.FixedTimeEquals(leftBytes, rightBytes);
     }
-}
 
-internal sealed record ConfiguredApiKey(string Key, string OwnerName, IReadOnlyCollection<Claim> Claims) : IApiKey;
+    private sealed record ConfiguredApiKey(
+        string Key,
+        string OwnerName,
+        IReadOnlyCollection<Claim> Claims) : IApiKey;
+}

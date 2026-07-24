@@ -1,6 +1,6 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 
-namespace WeightTracker.Api.Extensions;
+namespace WeightTracker.Api.Auth;
 
 internal static class HttpContextExtensions
 {

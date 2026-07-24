@@ -1,6 +1,4 @@
-﻿using WeightTracker.Api.Extensions;
-
-namespace WeightTracker.Api.Services;
+namespace WeightTracker.Api.Auth;
 
 internal sealed class CurrentUser(IHttpContextAccessor httpContextAccessor)
 {

@@ -5,6 +5,7 @@ global using System.Threading.Tasks;
 global using FastEndpoints;
 global using Microsoft.AspNetCore.Http;
 global using PxBunny.Result;
+global using WeightTracker.Api.Auth;
 global using WeightTracker.Api.Services;
 global using WeightTracker.Core;
 global using WeightTracker.Core.Models;

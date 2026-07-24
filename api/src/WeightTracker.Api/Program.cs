@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WeightTracker.Api;
-using WeightTracker.Api.Auth;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSmartAuthentication(builder.Configuration);
+builder.Services.AddApiAuthentication(builder.Configuration);
 
 builder.Services.AddCustomOutputCache();
 builder.Services.AddFastEndpoints();

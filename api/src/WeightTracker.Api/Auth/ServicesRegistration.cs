@@ -13,58 +13,49 @@ namespace WeightTracker.Api.Auth;
 
 internal static class ServicesRegistration
 {
-    private const string SmartScheme = "Smart";
-    private const string RequiredScope = "access_as_user";
-
-    public static IServiceCollection AddSmartAuthentication(
+    public static IServiceCollection AddApiAuthentication(
         this IServiceCollection services,
         IConfiguration configuration)
     {
         var apiKeySection = configuration.GetSection(ApiKeyAuthOptions.SectionName);
-        var apiKeyHeaderName = apiKeySection.GetValue<string>(nameof(ApiKeyAuthOptions.HeaderName));
+        var apiKeyHeaderName = apiKeySection.GetApiKeyHeaderName();
 
-        apiKeyHeaderName = string.IsNullOrWhiteSpace(apiKeyHeaderName)
-            ? ApiKeyAuthOptions.DefaultHeaderName
-            : apiKeyHeaderName;
+        var authentication = services.AddAuthentication(AuthDefaults.AuthenticationScheme);
 
-        services.AddMicrosoftIdentityWebApiAuthentication(configuration);
+        authentication.AddPolicyScheme(
+            AuthDefaults.AuthenticationScheme,
+            "Bearer or API key",
+            options => options.ForwardDefaultSelector =
+                context => SelectAuthenticationScheme(context, apiKeyHeaderName));
 
-        services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = SmartScheme;
-                options.DefaultChallengeScheme = SmartScheme;
-            })
-            .AddPolicyScheme(SmartScheme, "Smart authentication", options =>
-            {
-                options.ForwardDefaultSelector = context =>
-                {
-                    var authorization = context.Request.Headers.Authorization.ToString();
-                    var hasBearer = !string.IsNullOrWhiteSpace(authorization)
-                        && authorization.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase);
+        authentication.AddMicrosoftIdentityWebApi(configuration);
 
-                    return hasBearer
-                        ? JwtBearerDefaults.AuthenticationScheme
-                        : context.Request.Headers.ContainsKey(apiKeyHeaderName)
-                            ? ApiKeyDefaults.AuthenticationScheme
-                            : JwtBearerDefaults.AuthenticationScheme;
-                };
-            })
-            .AddApiKeyInHeader<ConfigApiKeyProvider>(ApiKeyDefaults.AuthenticationScheme, options =>
-            {
-                options.Realm = "Weight Tracker";
-                options.KeyName = apiKeyHeaderName;
-            });
+        authentication.AddApiKeyInHeader<ApiKeyProvider>(ApiKeyDefaults.AuthenticationScheme, options =>
+        {
+            options.Realm = "Weight Tracker";
+            options.KeyName = apiKeyHeaderName;
+        });
 
         services.AddAuthorizationBuilder()
-            .SetDefaultPolicy(new AuthorizationPolicyBuilder(SmartScheme)
+            .SetDefaultPolicy(new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
-                .AddRequirements(new ApiAccessRequirement(RequiredScope))
+                .RequireScope(AuthDefaults.RequiredScope)
                 .Build());
 
         services.AddSingleton<IValidateOptions<ApiKeyAuthOptions>, ApiKeyOptionsValidator>();
         services.AddOptions<ApiKeyAuthOptions>().Bind(apiKeySection).ValidateOnStart();
-        services.AddSingleton<IAuthorizationHandler, ApiAccessHandler>();
 
         return services;
+    }
+
+    private static string SelectAuthenticationScheme(HttpContext context, string apiKeyHeaderName)
+    {
+        var authorization = context.Request.Headers.Authorization.ToString();
+        var useApiKey = !authorization.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+            && context.Request.Headers.ContainsKey(apiKeyHeaderName);
+
+        return useApiKey
+            ? ApiKeyDefaults.AuthenticationScheme
+            : JwtBearerDefaults.AuthenticationScheme;
     }
 }
