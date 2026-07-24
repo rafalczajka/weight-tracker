@@ -1,8 +1,6 @@
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
 using AspNetCore.Authentication.ApiKey;
 using Microsoft.Extensions.Options;
 
@@ -10,33 +8,17 @@ namespace WeightTracker.Api.Auth.ApiKey;
 
 internal sealed class ConfigApiKeyProvider(IOptionsMonitor<ApiKeyOptions> optionsMonitor) : IApiKeyProvider
 {
-    private static readonly JsonSerializerOptions KeysJsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true
-    };
-
     public Task<IApiKey?> ProvideAsync(string key)
     {
         if (string.IsNullOrEmpty(key))
             return Task.FromResult<IApiKey?>(null);
 
-        var options = optionsMonitor.CurrentValue;
-        var entries = options.Keys.ToList();
-
-        if (entries.Count == 0 && !string.IsNullOrWhiteSpace(options.KeysJson))
-            entries = DeserializeKeys(options.KeysJson) ?? [];
-
-        if (entries.Count == 0)
-            return Task.FromResult<IApiKey?>(null);
+        var entries = ApiKeyEntriesParser.Parse(optionsMonitor.CurrentValue);
 
         foreach (var entry in entries)
         {
-            if (string.IsNullOrEmpty(entry.Key) ||
-                string.IsNullOrEmpty(entry.UserId) ||
-                !FixedTimeEquals(key, entry.Key))
-            {
+            if (!FixedTimeEquals(key, entry.Key))
                 continue;
-            }
 
             var claims = new[]
             {
@@ -57,18 +39,6 @@ internal sealed class ConfigApiKeyProvider(IOptionsMonitor<ApiKeyOptions> option
 
         return leftBytes.Length == rightBytes.Length
             && CryptographicOperations.FixedTimeEquals(leftBytes, rightBytes);
-    }
-
-    private static List<ApiKeyEntry>? DeserializeKeys(string keysJson)
-    {
-        try
-        {
-            return JsonSerializer.Deserialize<List<ApiKeyEntry>>(keysJson, KeysJsonOptions);
-        }
-        catch (JsonException)
-        {
-            return null;
-        }
     }
 }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using WeightTracker.Api.Auth.ApiKey;
 
@@ -60,7 +61,8 @@ internal static class ServicesRegistration
                 .AddRequirements(new ApiAccessRequirement(RequiredScope))
                 .Build());
 
-        services.AddOptions<ApiKeyAuthOptions>().Bind(apiKeySection);
+        services.AddSingleton<IValidateOptions<ApiKeyAuthOptions>, ApiKeyOptionsValidator>();
+        services.AddOptions<ApiKeyAuthOptions>().Bind(apiKeySection).ValidateOnStart();
         services.AddSingleton<IAuthorizationHandler, ApiAccessHandler>();
 
         return services;
