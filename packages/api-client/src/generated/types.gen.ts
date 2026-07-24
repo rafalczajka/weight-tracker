@@ -65,6 +65,15 @@ export type WeightsDeleteRequest = {
     [key: string]: never;
 };
 
+export type BmiPostResponse = {
+    bmi: number;
+};
+
+export type BmiPostRequest = {
+    weightKg: number;
+    heightCm: number;
+};
+
 export type DeleteWeightEntryData = {
     body?: never;
     path: {
@@ -310,3 +319,42 @@ export type GetWeightsSummaryResponses = {
 };
 
 export type GetWeightsSummaryResponse = GetWeightsSummaryResponses[keyof GetWeightsSummaryResponses];
+
+export type CalculateBmiData = {
+    body: BmiPostRequest;
+    path?: never;
+    query?: never;
+    url: '/api/calculations/bmi';
+};
+
+export type CalculateBmiErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type CalculateBmiResponses = {
+    /**
+     * Success
+     */
+    200: BmiPostResponse;
+};
+
+export type CalculateBmiResponse = CalculateBmiResponses[keyof CalculateBmiResponses];

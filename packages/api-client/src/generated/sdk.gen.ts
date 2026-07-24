@@ -3,7 +3,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { CreateWeightEntryData, CreateWeightEntryErrors, CreateWeightEntryResponses, DeleteWeightEntryData, DeleteWeightEntryErrors, DeleteWeightEntryResponses, GetWeightEntryData, GetWeightEntryErrors, GetWeightEntryResponses, GetWeightsData, GetWeightsErrors, GetWeightsResponses, GetWeightsSummaryData, GetWeightsSummaryErrors, GetWeightsSummaryResponses, UpdateWeightEntryData, UpdateWeightEntryErrors, UpdateWeightEntryResponses } from './types.gen';
+import type { CalculateBmiData, CalculateBmiErrors, CalculateBmiResponses, CreateWeightEntryData, CreateWeightEntryErrors, CreateWeightEntryResponses, DeleteWeightEntryData, DeleteWeightEntryErrors, DeleteWeightEntryResponses, GetWeightEntryData, GetWeightEntryErrors, GetWeightEntryResponses, GetWeightsData, GetWeightsErrors, GetWeightsResponses, GetWeightsSummaryData, GetWeightsSummaryErrors, GetWeightsSummaryResponses, UpdateWeightEntryData, UpdateWeightEntryErrors, UpdateWeightEntryResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -61,4 +61,14 @@ export const getWeightsSummary = <ThrowOnError extends boolean = false>(options?
     security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
     url: '/api/weights/summary',
     ...options
+});
+
+export const calculateBmi = <ThrowOnError extends boolean = false>(options: Options<CalculateBmiData, ThrowOnError>): RequestResult<CalculateBmiResponses, CalculateBmiErrors, ThrowOnError> => (options.client ?? client).post<CalculateBmiResponses, CalculateBmiErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
+    url: '/api/calculations/bmi',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
