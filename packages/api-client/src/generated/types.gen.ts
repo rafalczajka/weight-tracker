@@ -65,6 +65,18 @@ export type WeightsDeleteRequest = {
     [key: string]: never;
 };
 
+export type ProteinPostResponse = {
+    minimumProteinGramsPerDay: number;
+    maximumProteinGramsPerDay: number;
+};
+
+export type ProteinPostRequest = {
+    weightKg: number;
+    goal: ProteinGoal;
+};
+
+export type ProteinGoal = 'generalHealth' | 'muscleGain';
+
 export type CaloriesPostResponse = {
     restingCaloriesPerDay: number;
     maintenanceCaloriesPerDay: number;
@@ -347,6 +359,45 @@ export type GetWeightsSummaryResponses = {
 };
 
 export type GetWeightsSummaryResponse = GetWeightsSummaryResponses[keyof GetWeightsSummaryResponses];
+
+export type CalculateProteinData = {
+    body: ProteinPostRequest;
+    path?: never;
+    query?: never;
+    url: '/api/calculations/protein';
+};
+
+export type CalculateProteinErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type CalculateProteinResponses = {
+    /**
+     * Success
+     */
+    200: ProteinPostResponse;
+};
+
+export type CalculateProteinResponse = CalculateProteinResponses[keyof CalculateProteinResponses];
 
 export type CalculateCaloriesData = {
     body: CaloriesPostRequest;

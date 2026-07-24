@@ -334,6 +334,62 @@
         ]
       }
     },
+    "/api/calculations/protein": {
+      "post": {
+        "tags": [
+          "Calculations"
+        ],
+        "operationId": "CalculateProtein",
+        "requestBody": {
+          "x-name": "ProteinPostRequest",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProteinPostRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProteinPostResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": []
+          },
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
     "/api/calculations/calories": {
       "post": {
         "tags": [
@@ -641,6 +697,56 @@
       "WeightsDeleteRequest": {
         "type": "object",
         "additionalProperties": false
+      },
+      "ProteinPostResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "minimumProteinGramsPerDay",
+          "maximumProteinGramsPerDay"
+        ],
+        "properties": {
+          "minimumProteinGramsPerDay": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "maximumProteinGramsPerDay": {
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "ProteinPostRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "weightKg",
+          "goal"
+        ],
+        "properties": {
+          "weightKg": {
+            "type": "number",
+            "format": "decimal",
+            "maximum": 500.0,
+            "minimum": 0.0,
+            "exclusiveMinimum": true
+          },
+          "goal": {
+            "$ref": "#/components/schemas/ProteinGoal"
+          }
+        }
+      },
+      "ProteinGoal": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "GeneralHealth",
+          "MuscleGain"
+        ],
+        "enum": [
+          "generalHealth",
+          "muscleGain"
+        ]
       },
       "CaloriesPostResponse": {
         "type": "object",
