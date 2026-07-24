@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Api.Handlers;
+namespace WeightTracker.Api.Endpoints.Weights.Put;
 
 internal sealed record UpdateWeightData(string UserId, DateOnly Date, decimal Weight) : ICommand<Result>;
 

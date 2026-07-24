@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Api.Handlers;
+namespace WeightTracker.Api.Endpoints.Weights.Post;
 
 internal sealed record AddWeightData(string UserId, DateOnly Date, decimal Weight) : ICommand<Result>;
 

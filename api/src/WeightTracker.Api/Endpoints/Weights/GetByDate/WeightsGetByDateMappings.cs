@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Linq;
-using WeightTracker.Api.Handlers;
 
 namespace WeightTracker.Api.Endpoints.Weights.GetByDate;
 

@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Api.Handlers;
+namespace WeightTracker.Api.Endpoints.Weights.Delete;
 
 internal sealed record RemoveWeightData(string UserId, DateOnly Date) : ICommand<Result>;
 

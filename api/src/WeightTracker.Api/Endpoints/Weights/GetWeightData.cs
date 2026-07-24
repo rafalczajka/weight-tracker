@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Api.Handlers;
+namespace WeightTracker.Api.Endpoints.Weights;
 
 internal sealed record GetWeightData(string UserId, DateOnly DateFrom, DateOnly DateTo)
     : ICommand<Result<WeightDataGroup>>;

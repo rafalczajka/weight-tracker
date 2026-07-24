@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.OutputCaching;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
-using WeightTracker.Api.Handlers;
 
 namespace WeightTracker.Api.Endpoints.Weights.Delete;
 

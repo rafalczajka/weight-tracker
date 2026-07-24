@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Api.Handlers;
+namespace WeightTracker.Api.Endpoints.Weights.GetSummary;
 
 internal sealed record GetWeightsSummary(string UserId) : ICommand<Result<Summary>>;
 
