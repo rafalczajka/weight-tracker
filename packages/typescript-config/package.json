@@ -9,6 +9,6 @@
     "./react-native.json": "./react-native.json"
   },
   "dependencies": {
-    "@react-native/typescript-config": "0.86.0"
+    "@react-native/typescript-config": "0.86.1"
   }
 }
