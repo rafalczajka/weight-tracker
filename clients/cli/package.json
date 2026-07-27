@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@azure/msal-node": "5.4.1",
+    "@azure/msal-node": "5.4.2",
     "@azure/msal-node-extensions": "5.3.3",
     "@weight-tracker/api-client": "workspace:*",
     "@weight-tracker/client-config": "workspace:*",
