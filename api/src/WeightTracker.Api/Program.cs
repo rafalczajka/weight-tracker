@@ -8,6 +8,7 @@ using WeightTracker.Api;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Data;
+using WeightTracker.FoodData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services.SwaggerDocument(options =>
 
 builder.Services.AddScoped<CurrentUser>();
 builder.Services.AddData(builder.Configuration);
+builder.Services.AddFoodData();
 
 var app = builder.Build();
 

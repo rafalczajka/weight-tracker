@@ -1,5 +1,3 @@
-using WeightTracker.Core;
-
 namespace WeightTracker.Core.UnitTests;
 
 public sealed class ExtensionsTests

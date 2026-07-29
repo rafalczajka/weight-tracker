@@ -65,6 +65,40 @@ export type WeightsDeleteRequest = {
     [key: string]: never;
 };
 
+export type FoodGetResponse = {
+    code: string;
+    name?: string | null;
+    quantity?: string | null;
+    servingSize?: string | null;
+    imageUrl?: string | null;
+    ingredients?: string | null;
+    nutrition?: FoodNutritionResponse | null;
+};
+
+export type FoodNutritionResponse = {
+    per100?: FoodNutritionFactsResponse | null;
+    perServing?: FoodNutritionFactsResponse | null;
+};
+
+export type FoodNutritionFactsResponse = {
+    referenceAmount?: number | null;
+    referenceUnit?: string | null;
+    energyKcal?: number | null;
+    energyKj?: number | null;
+    fatG?: number | null;
+    saturatedFatG?: number | null;
+    carbohydratesG?: number | null;
+    sugarsG?: number | null;
+    addedSugarsG?: number | null;
+    fiberG?: number | null;
+    proteinG?: number | null;
+    saltG?: number | null;
+};
+
+export type FoodGetRequest = {
+    [key: string]: never;
+};
+
 export type ProteinPostResponse = {
     minimumProteinGramsPerDay: number;
     maximumProteinGramsPerDay: number;
@@ -359,6 +393,47 @@ export type GetWeightsSummaryResponses = {
 };
 
 export type GetWeightsSummaryResponse = GetWeightsSummaryResponses[keyof GetWeightsSummaryResponses];
+
+export type GetFoodData = {
+    body?: never;
+    path: {
+        code: string;
+    };
+    query?: never;
+    url: '/api/food/{code}';
+};
+
+export type GetFoodErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type GetFoodResponses = {
+    /**
+     * Success
+     */
+    200: FoodGetResponse;
+};
+
+export type GetFoodResponse = GetFoodResponses[keyof GetFoodResponses];
 
 export type CalculateProteinData = {
     body: ProteinPostRequest;

@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WeightTracker.Core\WeightTracker.Core.csproj" />
     <ProjectReference Include="..\WeightTracker.Data\WeightTracker.Data.csproj" />
+    <ProjectReference Include="..\WeightTracker.FoodData\WeightTracker.FoodData.csproj" />
   </ItemGroup>
 
 </Project>

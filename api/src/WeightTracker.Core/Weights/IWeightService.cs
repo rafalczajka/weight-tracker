@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace WeightTracker.Core.Weights;
 
-public interface IWeightRepository
+public interface IWeightService
 {
     Task<ResponseTuple> AddAsync(WeightData weightData, CancellationToken ct);
 

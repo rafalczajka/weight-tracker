@@ -334,6 +334,59 @@
         ]
       }
     },
+    "/api/food/{code}": {
+      "get": {
+        "tags": [
+          "Food"
+        ],
+        "operationId": "GetFood",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        },
+        "security": [
+          {
+            "JWTBearerAuth": []
+          },
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
     "/api/calculations/protein": {
       "post": {
         "tags": [
@@ -695,6 +748,138 @@
         "additionalProperties": false
       },
       "WeightsDeleteRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FoodGetResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "string",
+            "nullable": true
+          },
+          "servingSize": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "ingredients": {
+            "type": "string",
+            "nullable": true
+          },
+          "nutrition": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FoodNutritionResponse"
+              }
+            ]
+          }
+        }
+      },
+      "FoodNutritionResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "per100": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FoodNutritionFactsResponse"
+              }
+            ]
+          },
+          "perServing": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FoodNutritionFactsResponse"
+              }
+            ]
+          }
+        }
+      },
+      "FoodNutritionFactsResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "referenceAmount": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "referenceUnit": {
+            "type": "string",
+            "nullable": true
+          },
+          "energyKcal": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "energyKj": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "fatG": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "saturatedFatG": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "carbohydratesG": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "sugarsG": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "addedSugarsG": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "fiberG": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "proteinG": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "saltG": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          }
+        }
+      },
+      "FoodGetRequest": {
         "type": "object",
         "additionalProperties": false
       },

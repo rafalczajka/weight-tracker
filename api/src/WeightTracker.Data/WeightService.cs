@@ -6,7 +6,7 @@ using Azure;
 
 namespace WeightTracker.Data;
 
-internal sealed class WeightRepository(TableServiceClient tableServiceClient) : IWeightRepository
+internal sealed class WeightService(TableServiceClient tableServiceClient) : IWeightService
 {
     private const string TableName = "WeightData";
 
