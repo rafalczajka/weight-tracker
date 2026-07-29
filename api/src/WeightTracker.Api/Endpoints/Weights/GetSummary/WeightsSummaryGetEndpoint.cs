@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
-using WeightSummary = WeightTracker.Core.Weights.Summary;
 
 namespace WeightTracker.Api.Endpoints.Weights.GetSummary;
 
@@ -17,7 +16,7 @@ internal sealed class WeightsSummaryGetEndpoint : EndpointWithoutRequest<IResult
         Options(builder => builder.CacheWeights());
         Description(builder => builder
             .WithName("GetWeightsSummary")
-            .Produces<WeightsSummaryGetResponse>()
+            .Produces<WeightSummary>()
             .ProducesCommonProblems());
     }
 
@@ -32,7 +31,7 @@ internal sealed class WeightsSummaryGetEndpoint : EndpointWithoutRequest<IResult
         return result.Handle(data =>
         {
             var summary = WeightSummary.Create([.. data.Data]);
-            return Results.Ok(summary.ToResponse());
+            return Results.Ok(summary);
         });
     }
 }

@@ -1,4 +1,3 @@
-using System.Linq;
 using WeightTracker.Core.Calculations.Bmi;
 
 namespace WeightTracker.Api.Endpoints.Calculations.Bmi;
@@ -11,11 +10,5 @@ internal static class BmiPostMappings
         Bmi: result.Value,
         Category: result.Category,
         Classification: AdultClassification,
-        Ranges:
-        [
-            .. BmiCalculator.AdultRanges.Select(range => new BmiRangeResponse(
-                range.Category,
-                range.MinimumInclusive,
-                range.MaximumExclusive))
-        ]);
+        Ranges: BmiCalculator.AdultRanges);
 }

@@ -1,8 +1,8 @@
-﻿using WeightTracker.Core.Weights;
+using WeightTracker.Core.Weights;
 
 namespace WeightTracker.Core.UnitTests.Weights;
 
-public sealed class TodayTests
+public sealed class TodayWeightTests
 {
     [Fact]
     public void Create_WhenEntryExists_ReturnsExpectedToday()
@@ -11,7 +11,7 @@ public sealed class TodayTests
         var referenceDate = new DateOnly(2024, 12, 31);
         var data = new List<WeightData> { new(userId, referenceDate, 85m) };
 
-        var result = Today.Create(data, referenceDate);
+        var result = TodayWeight.Create(data, referenceDate);
 
         Assert.Equal(referenceDate, result.Date);
         Assert.True(result.HasEntry);
@@ -25,7 +25,7 @@ public sealed class TodayTests
         var referenceDate = new DateOnly(2024, 12, 31);
         var data = new List<WeightData> { new(userId, referenceDate.AddDays(-1), 85m) };
 
-        var result = Today.Create(data, referenceDate);
+        var result = TodayWeight.Create(data, referenceDate);
 
         Assert.Equal(referenceDate, result.Date);
         Assert.False(result.HasEntry);

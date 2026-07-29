@@ -3,9 +3,11 @@ using System.Linq;
 
 namespace WeightTracker.Core.Weights;
 
-public sealed record Streak(int Current, int Longest)
+public sealed record WeightStreak(int Current, int Longest)
 {
-    public static Streak Create(IEnumerable<WeightData> data, DateOnly? referenceDate = null)
+    public static WeightStreak Create(
+        IEnumerable<WeightData> data,
+        DateOnly? referenceDate = null)
     {
         var today = referenceDate ?? DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -15,7 +17,7 @@ public sealed record Streak(int Current, int Longest)
             .Select(d => d.Date)
             .ToList();
 
-        if (datesOnly.Count == 0) return new Streak(0, 0);
+        if (datesOnly.Count == 0) return new WeightStreak(0, 0);
 
         var streak = 0;
         var longestStreak = 0;
@@ -29,6 +31,6 @@ public sealed record Streak(int Current, int Longest)
         if (datesOnly.Contains(today)) streak++;
         if (streak > longestStreak) longestStreak = streak;
 
-        return new Streak(streak, longestStreak);
+        return new WeightStreak(streak, longestStreak);
     }
 }

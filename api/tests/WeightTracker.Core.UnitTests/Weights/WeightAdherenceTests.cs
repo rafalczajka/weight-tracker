@@ -1,8 +1,8 @@
-﻿using WeightTracker.Core.Weights;
+using WeightTracker.Core.Weights;
 
 namespace WeightTracker.Core.UnitTests.Weights;
 
-public sealed class AdherenceTests
+public sealed class WeightAdherenceTests
 {
     [Theory]
     [InlineData("2024-12-01", "2024-12-31", 1, "2024-12-26")]
@@ -19,7 +19,7 @@ public sealed class AdherenceTests
 
         var weightData = Helpers.GenerateWeightData(userId, weightKg, dateFrom, dateTo, excludedDates);
         var referenceDate = DateOnly.FromDateTime(DateTime.Parse(dateTo, Helpers.DefaultCultureInfo));
-        var result = Adherence.Create(weightData, 30, referenceDate);
+        var result = WeightAdherence.Create(weightData, 30, referenceDate);
 
         Assert.Equal(30, result.Window);
         Assert.Equal(30 - expectedDaysMissed, result.DaysWithEntry);
@@ -31,9 +31,9 @@ public sealed class AdherenceTests
     [InlineData(-1)]
     public void Create_WithNonPositiveWindow_ReturnsEmptyAdherence(int totalDays)
     {
-        var result = Adherence.Create([], totalDays, new DateOnly(2024, 12, 31));
+        var result = WeightAdherence.Create([], totalDays, new DateOnly(2024, 12, 31));
 
-        Assert.Equal(new Adherence(0, 0), result);
+        Assert.Equal(new WeightAdherence(0, 0), result);
     }
 
     [Fact]
@@ -48,9 +48,9 @@ public sealed class AdherenceTests
             new(userId, referenceDate.AddDays(-1), 82m)
         ];
 
-        var result = Adherence.Create(data, 3, referenceDate);
+        var result = WeightAdherence.Create(data, 3, referenceDate);
 
-        Assert.Equal(new Adherence(3, 2), result);
+        Assert.Equal(new WeightAdherence(3, 2), result);
         Assert.Equal(1, result.DaysMissed);
     }
 
@@ -67,9 +67,9 @@ public sealed class AdherenceTests
             new(userId, referenceDate.AddDays(1), 83m)
         ];
 
-        var result = Adherence.Create(data, 3, referenceDate);
+        var result = WeightAdherence.Create(data, 3, referenceDate);
 
-        Assert.Equal(new Adherence(3, 2), result);
+        Assert.Equal(new WeightAdherence(3, 2), result);
         Assert.Equal(1, result.DaysMissed);
     }
 }

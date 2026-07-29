@@ -1,15 +1,15 @@
-﻿using WeightTracker.Core.Weights;
+using WeightTracker.Core.Weights;
 
 namespace WeightTracker.Core.UnitTests.Weights;
 
-public sealed class StreakTests
+public sealed class WeightStreakTests
 {
     [Fact]
     public void Create_WithNoData_ReturnsEmptyStreak()
     {
-        var result = Streak.Create([], new DateOnly(2024, 12, 31));
+        var result = WeightStreak.Create([], new DateOnly(2024, 12, 31));
 
-        Assert.Equal(new Streak(0, 0), result);
+        Assert.Equal(new WeightStreak(0, 0), result);
     }
 
     [Fact]
@@ -19,9 +19,9 @@ public sealed class StreakTests
         var referenceDate = new DateOnly(2024, 12, 31);
         WeightData[] data = [new(userId, referenceDate, 80m)];
 
-        var result = Streak.Create(data, referenceDate);
+        var result = WeightStreak.Create(data, referenceDate);
 
-        Assert.Equal(new Streak(1, 1), result);
+        Assert.Equal(new WeightStreak(1, 1), result);
     }
 
     [Fact]
@@ -36,9 +36,9 @@ public sealed class StreakTests
             new(userId, referenceDate.AddDays(-1), 81m)
         ];
 
-        var result = Streak.Create(data, referenceDate);
+        var result = WeightStreak.Create(data, referenceDate);
 
-        Assert.Equal(new Streak(3, 3), result);
+        Assert.Equal(new WeightStreak(3, 3), result);
     }
 
     [Fact]
@@ -52,9 +52,9 @@ public sealed class StreakTests
             new(userId, referenceDate.AddDays(2), 81m)
         ];
 
-        var result = Streak.Create(data, referenceDate);
+        var result = WeightStreak.Create(data, referenceDate);
 
-        Assert.Equal(new Streak(0, 0), result);
+        Assert.Equal(new WeightStreak(0, 0), result);
     }
 
     [Theory]
@@ -74,7 +74,7 @@ public sealed class StreakTests
 
         var weightData = Helpers.GenerateWeightData(userId, weightKg, dateFrom, dateTo, excludedDates);
         var referenceDate = DateOnly.FromDateTime(DateTime.Parse(dateTo, Helpers.DefaultCultureInfo));
-        var (streak, longestStreak) = Streak.Create(weightData, referenceDate);
+        var (streak, longestStreak) = WeightStreak.Create(weightData, referenceDate);
 
         Assert.Equal(expectedStreak, streak);
         Assert.Equal(expectedLongestStreak, longestStreak);

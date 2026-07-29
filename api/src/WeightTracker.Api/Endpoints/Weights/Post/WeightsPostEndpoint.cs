@@ -36,10 +36,8 @@ internal sealed class WeightsPostEndpoint : Endpoint<WeightsPostRequest, IResult
         return await result.HandleAsync(async () =>
         {
             await Cache.EvictWeightsAsync(CurrentUser.Id);
-            var response = new WeightsEntryResponse(
-                effectiveDate.ToDomainDateString(),
-                weightKg);
-            var location = $"/api/weights/{response.Date}";
+            var response = new WeightsEntryResponse(effectiveDate, weightKg);
+            var location = $"/api/weights/{effectiveDate.ToDomainDateString()}";
 
             return Results.Created(location, response);
         });

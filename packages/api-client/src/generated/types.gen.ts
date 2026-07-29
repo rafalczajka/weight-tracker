@@ -20,11 +20,11 @@ export type WeightsPostRequest = {
 };
 
 export type WeightsGetResponse = {
-    stats: StatsResponse;
+    stats: WeightStats;
     data: Array<WeightsEntryResponse>;
 };
 
-export type StatsResponse = {
+export type WeightStats = {
     averageWeightKg: number;
     maximumWeightKg: number;
     minimumWeightKg: number;
@@ -34,24 +34,24 @@ export type WeightsGetRequest = {
     [key: string]: never;
 };
 
-export type WeightsSummaryGetResponse = {
-    today: TodayResponse;
-    streak: StreakResponse;
-    adherence: Array<AdherenceResponseItem>;
+export type WeightSummary = {
+    today: TodayWeight;
+    streak: WeightStreak;
+    adherence: Array<WeightAdherence>;
 };
 
-export type TodayResponse = {
+export type TodayWeight = {
     date: string;
     hasEntry: boolean;
     weightKg?: number | null;
 };
 
-export type StreakResponse = {
+export type WeightStreak = {
     current: number;
     longest: number;
 };
 
-export type AdherenceResponseItem = {
+export type WeightAdherence = {
     window: number;
     daysWithEntry: number;
     daysMissed: number;
@@ -65,22 +65,22 @@ export type WeightsDeleteRequest = {
     [key: string]: never;
 };
 
-export type FoodGetResponse = {
+export type Product = {
     code: string;
     name?: string | null;
     quantity?: string | null;
     servingSize?: string | null;
     imageUrl?: string | null;
     ingredients?: string | null;
-    nutrition?: FoodNutritionResponse | null;
+    nutrition?: Nutrition | null;
 };
 
-export type FoodNutritionResponse = {
-    per100?: FoodNutritionFactsResponse | null;
-    perServing?: FoodNutritionFactsResponse | null;
+export type Nutrition = {
+    per100?: NutritionFacts | null;
+    perServing?: NutritionFacts | null;
 };
 
-export type FoodNutritionFactsResponse = {
+export type NutritionFacts = {
     referenceAmount?: number | null;
     referenceUnit?: string | null;
     energyKcal?: number | null;
@@ -99,7 +99,7 @@ export type FoodGetRequest = {
     [key: string]: never;
 };
 
-export type ProteinPostResponse = {
+export type ProteinResult = {
     minimumProteinGramsPerDay: number;
     maximumProteinGramsPerDay: number;
 };
@@ -111,7 +111,7 @@ export type ProteinPostRequest = {
 
 export type ProteinGoal = 'generalHealth' | 'muscleGain';
 
-export type CaloriesPostResponse = {
+export type CalorieResult = {
     restingCaloriesPerDay: number;
     maintenanceCaloriesPerDay: number;
 };
@@ -132,12 +132,12 @@ export type BmiPostResponse = {
     bmi: number;
     category: BmiCategory;
     classification: string;
-    ranges: Array<BmiRangeResponse>;
+    ranges: Array<BmiRange>;
 };
 
 export type BmiCategory = 'underweight' | 'healthyWeight' | 'overweight' | 'obesityClass1' | 'obesityClass2' | 'obesityClass3';
 
-export type BmiRangeResponse = {
+export type BmiRange = {
     category: BmiCategory;
     minimumInclusive?: number | null;
     maximumExclusive?: number | null;
@@ -389,7 +389,7 @@ export type GetWeightsSummaryResponses = {
     /**
      * Success
      */
-    200: WeightsSummaryGetResponse;
+    200: WeightSummary;
 };
 
 export type GetWeightsSummaryResponse = GetWeightsSummaryResponses[keyof GetWeightsSummaryResponses];
@@ -431,7 +431,7 @@ export type GetFoodResponses = {
     /**
      * Success
      */
-    200: FoodGetResponse;
+    200: Product;
 };
 
 export type GetFoodResponse = GetFoodResponses[keyof GetFoodResponses];
@@ -470,7 +470,7 @@ export type CalculateProteinResponses = {
     /**
      * Success
      */
-    200: ProteinPostResponse;
+    200: ProteinResult;
 };
 
 export type CalculateProteinResponse = CalculateProteinResponses[keyof CalculateProteinResponses];
@@ -509,7 +509,7 @@ export type CalculateCaloriesResponses = {
     /**
      * Success
      */
-    200: CaloriesPostResponse;
+    200: CalorieResult;
 };
 
 export type CalculateCaloriesResponse = CalculateCaloriesResponses[keyof CalculateCaloriesResponses];

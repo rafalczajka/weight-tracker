@@ -22,12 +22,7 @@ internal static class WeightsGetMappings
 
     public static WeightsGetResponse ToResponse(this WeightDataGroup data) => new()
     {
-        Stats = data.Data.Any()
-            ? new StatsResponse(
-                AverageWeightKg: data.Stats.AverageWeightKg,
-                MaximumWeightKg: data.Stats.MaximumWeightKg,
-                MinimumWeightKg: data.Stats.MinimumWeightKg)
-            : new StatsResponse(0, 0, 0),
-        Data = data.Data.Select(d => new WeightsEntryResponse(d.Date.ToDomainDateString(), d.WeightKg))
+        Stats = data.Stats,
+        Data = data.Data.Select(d => new WeightsEntryResponse(d.Date, d.WeightKg))
     };
 }

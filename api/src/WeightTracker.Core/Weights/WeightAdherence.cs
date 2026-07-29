@@ -3,13 +3,16 @@ using System.Linq;
 
 namespace WeightTracker.Core.Weights;
 
-public sealed record Adherence(int Window, int DaysWithEntry)
+public sealed record WeightAdherence(int Window, int DaysWithEntry)
 {
     public int DaysMissed => Window - DaysWithEntry;
 
-    public static Adherence Create(IEnumerable<WeightData> data, int totalDays, DateOnly? referenceDate = null)
+    public static WeightAdherence Create(
+        IEnumerable<WeightData> data,
+        int totalDays,
+        DateOnly? referenceDate = null)
     {
-        if (totalDays <= 0) return new Adherence(0, 0);
+        if (totalDays <= 0) return new WeightAdherence(0, 0);
 
         var lastDate = referenceDate ?? DateOnly.FromDateTime(DateTime.UtcNow);
         var firstDate = lastDate.AddDays(-totalDays + 1);
@@ -19,6 +22,6 @@ public sealed record Adherence(int Window, int DaysWithEntry)
             .Distinct()
             .Count(d => d >= firstDate && d <= lastDate);
 
-        return new Adherence(totalDays, datesInRange);
+        return new WeightAdherence(totalDays, datesInRange);
     }
 }

@@ -1,5 +1,5 @@
 import type {
-  StatsResponse,
+  WeightStats,
   WeightsEntryResponse,
   WeightsGetResponse,
 } from '@weight-tracker/api-client';
@@ -106,7 +106,7 @@ function createWeightTable(
   return table;
 }
 
-function printStats(output: CliOutput, stats: StatsResponse): void {
+function printStats(output: CliOutput, stats: WeightStats): void {
   printStat(output, 'Max', stats.maximumWeightKg);
   printStat(output, 'Min', stats.minimumWeightKg);
   printStat(output, 'Avg', stats.averageWeightKg);

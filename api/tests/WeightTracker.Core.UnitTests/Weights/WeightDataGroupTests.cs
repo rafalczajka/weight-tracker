@@ -19,7 +19,7 @@ public sealed class WeightDataGroupTests
         Assert.Equal(userId, result.UserId);
         Assert.False(result.Today.HasEntry);
         Assert.Null(result.Today.WeightKg);
-        Assert.Equal(new Stats(81m, 82m, 80m), result.Stats);
+        Assert.Equal(new WeightStats(81m, 82m, 80m), result.Stats);
         Assert.Same(data, result.Data);
     }
 }

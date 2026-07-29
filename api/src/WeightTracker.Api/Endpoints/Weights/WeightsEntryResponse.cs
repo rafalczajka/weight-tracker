@@ -1,3 +1,3 @@
 namespace WeightTracker.Api.Endpoints.Weights;
 
-internal sealed record WeightsEntryResponse(string Date, decimal WeightKg);
+internal sealed record WeightsEntryResponse(DateOnly Date, decimal WeightKg);

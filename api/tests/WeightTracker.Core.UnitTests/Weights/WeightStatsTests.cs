@@ -1,15 +1,15 @@
-﻿using WeightTracker.Core.Weights;
+using WeightTracker.Core.Weights;
 
 namespace WeightTracker.Core.UnitTests.Weights;
 
-public sealed class StatsTests
+public sealed class WeightStatsTests
 {
     [Fact]
     public void Create_WithNoData_ReturnsEmpty()
     {
-        var result = Stats.Create([]);
+        var result = WeightStats.Create([]);
 
-        Assert.Equal(Stats.Empty, result);
+        Assert.Equal(WeightStats.Empty, result);
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public sealed class StatsTests
             new(userId, new DateOnly(2025, 12, 3), 120m)
         };
 
-        var result = Stats.Create(data);
+        var result = WeightStats.Create(data);
 
         Assert.Equal(100m, result.AverageWeightKg);
         Assert.Equal(120m, result.MaximumWeightKg);

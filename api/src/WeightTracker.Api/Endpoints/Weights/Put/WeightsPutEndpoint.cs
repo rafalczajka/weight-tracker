@@ -36,9 +36,7 @@ internal sealed class WeightsPutEndpoint : Endpoint<WeightsPutRequest, IResult>
         return await result.HandleAsync(async () =>
         {
             await Cache.EvictWeightsAsync(CurrentUser.Id);
-            var response = new WeightsEntryResponse(
-                parsedDate.ToDomainDateString(),
-                weightKg);
+            var response = new WeightsEntryResponse(parsedDate, weightKg);
             return Results.Ok(response);
         });
     }

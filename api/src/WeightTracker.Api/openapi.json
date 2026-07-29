@@ -303,7 +303,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WeightsSummaryGetResponse"
+                  "$ref": "#/components/schemas/WeightSummary"
                 }
               }
             }
@@ -356,7 +356,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FoodGetResponse"
+                  "$ref": "#/components/schemas/Product"
                 }
               }
             }
@@ -415,7 +415,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProteinPostResponse"
+                  "$ref": "#/components/schemas/ProteinResult"
                 }
               }
             }
@@ -471,7 +471,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CaloriesPostResponse"
+                  "$ref": "#/components/schemas/CalorieResult"
                 }
               }
             }
@@ -570,7 +570,8 @@
         ],
         "properties": {
           "date": {
-            "type": "string"
+            "type": "string",
+            "format": "date"
           },
           "weightKg": {
             "type": "number",
@@ -623,7 +624,7 @@
         ],
         "properties": {
           "stats": {
-            "$ref": "#/components/schemas/StatsResponse"
+            "$ref": "#/components/schemas/WeightStats"
           },
           "data": {
             "type": "array",
@@ -633,7 +634,7 @@
           }
         }
       },
-      "StatsResponse": {
+      "WeightStats": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -660,7 +661,7 @@
         "type": "object",
         "additionalProperties": false
       },
-      "WeightsSummaryGetResponse": {
+      "WeightSummary": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -670,20 +671,20 @@
         ],
         "properties": {
           "today": {
-            "$ref": "#/components/schemas/TodayResponse"
+            "$ref": "#/components/schemas/TodayWeight"
           },
           "streak": {
-            "$ref": "#/components/schemas/StreakResponse"
+            "$ref": "#/components/schemas/WeightStreak"
           },
           "adherence": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AdherenceResponseItem"
+              "$ref": "#/components/schemas/WeightAdherence"
             }
           }
         }
       },
-      "TodayResponse": {
+      "TodayWeight": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -705,7 +706,7 @@
           }
         }
       },
-      "StreakResponse": {
+      "WeightStreak": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -723,7 +724,7 @@
           }
         }
       },
-      "AdherenceResponseItem": {
+      "WeightAdherence": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -754,7 +755,7 @@
         "type": "object",
         "additionalProperties": false
       },
-      "FoodGetResponse": {
+      "Product": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -789,13 +790,13 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/FoodNutritionResponse"
+                "$ref": "#/components/schemas/Nutrition"
               }
             ]
           }
         }
       },
-      "FoodNutritionResponse": {
+      "Nutrition": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -803,7 +804,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/FoodNutritionFactsResponse"
+                "$ref": "#/components/schemas/NutritionFacts"
               }
             ]
           },
@@ -811,13 +812,13 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/FoodNutritionFactsResponse"
+                "$ref": "#/components/schemas/NutritionFacts"
               }
             ]
           }
         }
       },
-      "FoodNutritionFactsResponse": {
+      "NutritionFacts": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -886,7 +887,7 @@
         "type": "object",
         "additionalProperties": false
       },
-      "ProteinPostResponse": {
+      "ProteinResult": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -936,7 +937,7 @@
           "muscleGain"
         ]
       },
-      "CaloriesPostResponse": {
+      "CalorieResult": {
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -1046,7 +1047,7 @@
           "ranges": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/BmiRangeResponse"
+              "$ref": "#/components/schemas/BmiRange"
             }
           }
         }
@@ -1071,7 +1072,7 @@
           "obesityClass3"
         ]
       },
-      "BmiRangeResponse": {
+      "BmiRange": {
         "type": "object",
         "additionalProperties": false,
         "required": [

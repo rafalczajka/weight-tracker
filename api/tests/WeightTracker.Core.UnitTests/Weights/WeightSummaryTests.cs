@@ -1,8 +1,8 @@
-﻿using WeightTracker.Core.Weights;
+using WeightTracker.Core.Weights;
 
 namespace WeightTracker.Core.UnitTests.Weights;
 
-public sealed class SummaryTests
+public sealed class WeightSummaryTests
 {
     [Fact]
     public void Create_ShouldCalculateSummaryForReferenceDate()
@@ -21,7 +21,7 @@ public sealed class SummaryTests
 
         var referenceDate = DateOnly.FromDateTime(DateTime.Parse("2024-12-31", Helpers.DefaultCultureInfo));
 
-        var summary = Summary.Create(data, referenceDate);
+        var summary = WeightSummary.Create(data, referenceDate);
 
         Assert.Equal(referenceDate, summary.Today.Date);
         Assert.False(summary.Today.HasEntry);

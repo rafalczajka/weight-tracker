@@ -12,5 +12,5 @@ internal static class WeightsGetByDateMappings
     }
 
     public static WeightsEntryResponse ToResponse(this WeightDataGroup data)
-        => new(data.Data.First().Date.ToDomainDateString(), data.Data.First().WeightKg);
+        => new(data.Data.First().Date, data.Data.First().WeightKg);
 }

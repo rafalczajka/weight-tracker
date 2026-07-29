@@ -4,18 +4,20 @@ using WeightTracker.Core.Calculations.Calories;
 
 namespace WeightTracker.Api.Endpoints.Calculations.Calories;
 
-internal sealed class CaloriesPostEndpoint : Endpoint<CaloriesPostRequest, CaloriesPostResponse>
+internal sealed class CaloriesPostEndpoint : Endpoint<CaloriesPostRequest, CalorieResult>
 {
     public override void Configure()
     {
         Post("api/calculations/calories");
         Description(builder => builder
             .WithName("CalculateCalories")
-            .Produces<CaloriesPostResponse>()
+            .Produces<CalorieResult>()
             .ProducesCommonProblems());
     }
 
-    public override Task<CaloriesPostResponse> ExecuteAsync(CaloriesPostRequest request, CancellationToken ct)
+    public override Task<CalorieResult> ExecuteAsync(
+        CaloriesPostRequest request,
+        CancellationToken ct)
     {
         var result = CalorieCalculator.Calculate(
             request.WeightKg,
@@ -24,6 +26,6 @@ internal sealed class CaloriesPostEndpoint : Endpoint<CaloriesPostRequest, Calor
             request.Sex,
             request.ActivityLevel);
 
-        return Task.FromResult(result.ToResponse());
+        return Task.FromResult(result);
     }
 }

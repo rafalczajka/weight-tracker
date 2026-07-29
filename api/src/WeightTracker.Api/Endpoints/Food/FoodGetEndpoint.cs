@@ -17,7 +17,7 @@ internal sealed class FoodGetEndpoint : Endpoint<FoodGetRequest, IResult>
         Options(builder => builder.CacheFood());
         Description(builder => builder
             .WithName("GetFood")
-            .Produces<FoodGetResponse>()
+            .Produces<Product>()
             .ProducesCommonProblems()
             .Produces(StatusCodes.Status502BadGateway));
     }
@@ -28,6 +28,6 @@ internal sealed class FoodGetEndpoint : Endpoint<FoodGetRequest, IResult>
             return Results.Unauthorized();
 
         var result = await FoodService.GetProductAsync(request.Code, cancellationToken);
-        return result.Handle(product => Results.Ok(product.ToResponse()));
+        return result.Handle(Results.Ok);
     }
 }
