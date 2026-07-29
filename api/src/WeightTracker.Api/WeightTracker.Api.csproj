@@ -8,7 +8,6 @@
     <PackageReference Include="Microsoft.Identity.Web" />
     <PackageReference Include="NSwag.MSBuild" />
     <PackageReference Include="PxBunny.Result" />
-    <PackageReference Include="PxBunny.Result.Generator" />
   </ItemGroup>
 
   <PropertyGroup>

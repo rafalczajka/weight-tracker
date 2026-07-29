@@ -9,6 +9,8 @@ internal sealed class WeightsGetByDateEndpoint : Endpoint<WeightsGetByDateReques
 {
     public required CurrentUser CurrentUser { get; init; }
 
+    public required IWeightService WeightService { get; init; }
+
     public override void Configure()
     {
         Get("api/weights/{Date}");
@@ -24,11 +26,12 @@ internal sealed class WeightsGetByDateEndpoint : Endpoint<WeightsGetByDateReques
         if (string.IsNullOrWhiteSpace(CurrentUser.Id))
             return Results.Unauthorized();
 
-        var command = request.ToCommand(CurrentUser.Id);
-        var result = await command.ExecuteAsync(ct);
+        var filter = request.ToFilter(CurrentUser.Id);
+        var result = await WeightService.GetAsync(filter, ct);
 
-        return result.Match(
-            d => d.Data.Any() ? Results.Ok(d.ToResponse()) : Results.NotFound(),
-            ErrorsService.HandleError);
+        return result.Handle(
+            data => data.Data.Any()
+                ? Results.Ok(data.ToResponse())
+                : Results.NotFound());
     }
 }

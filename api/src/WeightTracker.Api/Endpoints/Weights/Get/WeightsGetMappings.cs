@@ -1,11 +1,11 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Linq;
 
 namespace WeightTracker.Api.Endpoints.Weights.Get;
 
 internal static class WeightsGetMappings
 {
-    public static GetWeightData ToCommand(this WeightsGetRequest request, string userId)
+    public static WeightDataFilter ToFilter(this WeightsGetRequest request, string userId)
     {
         var (from, to) = request;
 
@@ -17,7 +17,7 @@ internal static class WeightsGetMappings
             ? DateOnly.MaxValue
             : DateOnly.Parse(to, CultureInfo.InvariantCulture);
 
-        return new GetWeightData(userId, dateFrom, dateTo);
+        return new WeightDataFilter(userId, dateFrom, dateTo);
     }
 
     public static WeightsGetResponse ToResponse(this WeightDataGroup data) => new()

@@ -18,7 +18,8 @@ internal sealed class FoodGetEndpoint : Endpoint<FoodGetRequest, IResult>
         Description(builder => builder
             .WithName("GetFood")
             .Produces<FoodGetResponse>()
-            .ProducesCommonProblems());
+            .ProducesCommonProblems()
+            .Produces(StatusCodes.Status502BadGateway));
     }
 
     public override async Task<IResult> ExecuteAsync(FoodGetRequest request, CancellationToken cancellationToken)
@@ -26,10 +27,7 @@ internal sealed class FoodGetEndpoint : Endpoint<FoodGetRequest, IResult>
         if (string.IsNullOrWhiteSpace(CurrentUser.Id))
             return Results.Unauthorized();
 
-        var product = await FoodService.GetProductAsync(request.Code, cancellationToken);
-
-        return product is null
-            ? Results.NotFound()
-            : Results.Ok(product.ToResponse());
+        var result = await FoodService.GetProductAsync(request.Code, cancellationToken);
+        return result.Handle(product => Results.Ok(product.ToResponse()));
     }
 }

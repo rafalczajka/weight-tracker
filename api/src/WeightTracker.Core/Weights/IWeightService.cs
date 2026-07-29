@@ -1,15 +1,16 @@
 using System.Threading;
 using System.Threading.Tasks;
+using PxBunny.Result;
 
 namespace WeightTracker.Core.Weights;
 
 public interface IWeightService
 {
-    Task<ResponseTuple> AddAsync(WeightData weightData, CancellationToken ct);
+    Task<Result> AddAsync(WeightData weightData, CancellationToken ct);
 
-    Task<WeightDataGroup> GetAsync(WeightDataFilter filter, CancellationToken ct);
+    Task<Result<WeightDataGroup>> GetAsync(WeightDataFilter filter, CancellationToken ct);
 
-    Task<ResponseTuple> UpdateAsync(WeightData weightData, CancellationToken ct);
+    Task<Result> UpdateAsync(WeightData weightData, CancellationToken ct);
 
-    Task<ResponseTuple> DeleteAsync(string userId, DateOnly date, CancellationToken ct);
+    Task<Result> DeleteAsync(string userId, DateOnly date, CancellationToken ct);
 }

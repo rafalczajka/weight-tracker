@@ -12,6 +12,8 @@ internal sealed class WeightsPostEndpoint : Endpoint<WeightsPostRequest, IResult
 
     public required IOutputCacheStore Cache { get; init; }
 
+    public required IWeightService WeightService { get; init; }
+
     public override void Configure()
     {
         Post("api/weights");
@@ -28,16 +30,19 @@ internal sealed class WeightsPostEndpoint : Endpoint<WeightsPostRequest, IResult
 
         var (weightKg, date) = request;
         var effectiveDate = GetDate(date);
-        var command = new AddWeightData(CurrentUser.Id, effectiveDate, weightKg);
-        var result = await command.ExecuteAsync(ct);
+        var data = new WeightData(CurrentUser.Id, effectiveDate, weightKg);
+        var result = await WeightService.AddAsync(data, ct);
 
-        if (result.IsSuccess)
+        return await result.HandleAsync(async () =>
+        {
             await Cache.EvictWeightsAsync(CurrentUser.Id);
+            var response = new WeightsEntryResponse(
+                effectiveDate.ToDomainDateString(),
+                weightKg);
+            var location = $"/api/weights/{response.Date}";
 
-        var response = new WeightsEntryResponse(effectiveDate.ToDomainDateString(), weightKg);
-        var location = $"/api/weights/{response.Date}";
-
-        return result.Match(() => Results.Created(location, response), ErrorsService.HandleError);
+            return Results.Created(location, response);
+        });
     }
 
     private static DateOnly GetDate(string? date)

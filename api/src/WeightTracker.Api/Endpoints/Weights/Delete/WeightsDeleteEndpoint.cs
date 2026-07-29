@@ -12,6 +12,8 @@ internal sealed class WeightsDeleteEndpoint : Endpoint<WeightsDeleteRequest, IRe
 
     public required IOutputCacheStore Cache { get; init; }
 
+    public required IWeightService WeightService { get; init; }
+
     public override void Configure()
     {
         Delete("api/weights/{Date}");
@@ -26,14 +28,13 @@ internal sealed class WeightsDeleteEndpoint : Endpoint<WeightsDeleteRequest, IRe
         if (string.IsNullOrWhiteSpace(CurrentUser.Id))
             return Results.Unauthorized();
 
-        var command = new RemoveWeightData(
-            UserId: CurrentUser.Id,
-            Date: DateOnly.Parse(request.Date, CultureInfo.InvariantCulture));
-        var result = await command.ExecuteAsync(ct);
+        var date = DateOnly.Parse(request.Date, CultureInfo.InvariantCulture);
+        var result = await WeightService.DeleteAsync(CurrentUser.Id, date, ct);
 
-        if (result.IsSuccess)
+        return await result.HandleAsync(async () =>
+        {
             await Cache.EvictWeightsAsync(CurrentUser.Id);
-
-        return result.Match(Results.NoContent, ErrorsService.HandleError);
+            return Results.NoContent();
+        });
     }
 }

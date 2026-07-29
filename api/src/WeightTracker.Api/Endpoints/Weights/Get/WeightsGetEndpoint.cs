@@ -8,6 +8,8 @@ internal sealed class WeightsGetEndpoint : Endpoint<WeightsGetRequest, IResult>
 {
     public required CurrentUser CurrentUser { get; init; }
 
+    public required IWeightService WeightService { get; init; }
+
     public override void Configure()
     {
         Get("api/weights");
@@ -23,9 +25,9 @@ internal sealed class WeightsGetEndpoint : Endpoint<WeightsGetRequest, IResult>
         if (string.IsNullOrWhiteSpace(CurrentUser.Id))
             return Results.Unauthorized();
 
-        var command = request.ToCommand(CurrentUser.Id);
-        var result = await command.ExecuteAsync(ct);
+        var filter = request.ToFilter(CurrentUser.Id);
+        var result = await WeightService.GetAsync(filter, ct);
 
-        return result.Match(d => Results.Ok(d.ToResponse()), ErrorsService.HandleError);
+        return result.Handle(data => Results.Ok(data.ToResponse()));
     }
 }

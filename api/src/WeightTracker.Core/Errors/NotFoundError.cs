@@ -1,6 +1,8 @@
-namespace WeightTracker.Api.Errors;
+using PxBunny.Result;
 
-internal sealed class NotFoundError(string message) : ErrorBase(message)
+namespace WeightTracker.Core.Errors;
+
+public sealed class NotFoundError(string message) : ErrorBase(message)
 {
     private const string DefaultMessage = "The requested resource was not found.";
 

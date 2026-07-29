@@ -1,6 +1,4 @@
-using System;
 using Microsoft.Extensions.DependencyInjection;
-using WeightTracker.Core.Food;
 using WeightTracker.FoodData.ApiClient;
 
 namespace WeightTracker.FoodData;

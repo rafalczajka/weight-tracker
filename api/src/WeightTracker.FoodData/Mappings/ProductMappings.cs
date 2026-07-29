@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using WeightTracker.Core.Food;
 using WeightTracker.FoodData.ApiClient;
 
 namespace WeightTracker.FoodData.Mappings;

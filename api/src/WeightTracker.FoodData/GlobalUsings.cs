@@ -1,9 +1,8 @@
 global using System;
 global using System.Linq;
+global using System.Collections.Generic;
 global using System.Threading;
 global using System.Threading.Tasks;
-global using Azure.Data.Tables;
-global using WeightTracker.Core;
-global using WeightTracker.Core.Weights;
+global using WeightTracker.Core.Food;
 
 global using ResultErrors = PxBunny.Result.Errors;

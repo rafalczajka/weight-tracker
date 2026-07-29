@@ -13,6 +13,7 @@ using WeightTracker.FoodData;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApiAuthentication(builder.Configuration);
+builder.Services.AddProblemDetails();
 
 builder.Services.AddApiOutputCache();
 builder.Services.AddFastEndpoints();
@@ -36,6 +37,7 @@ builder.Services.AddFoodData();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
 

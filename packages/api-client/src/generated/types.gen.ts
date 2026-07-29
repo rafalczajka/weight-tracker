@@ -424,6 +424,7 @@ export type GetFoodErrors = {
      * Server Error
      */
     500: unknown;
+    502: unknown;
 };
 
 export type GetFoodResponses = {

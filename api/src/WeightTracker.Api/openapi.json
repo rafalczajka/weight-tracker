@@ -375,6 +375,9 @@
           },
           "500": {
             "description": "Server Error"
+          },
+          "502": {
+            "description": ""
           }
         },
         "security": [

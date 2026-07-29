@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using Azure;
+using Azure.Data.Tables.Models;
+using PxBunny.Result;
 
 namespace WeightTracker.Data;
 
@@ -10,23 +8,25 @@ internal sealed class WeightService(TableServiceClient tableServiceClient) : IWe
 {
     private const string TableName = "WeightData";
 
-    public async Task<ResponseTuple> AddAsync(WeightData weightData, CancellationToken ct)
+    public async Task<Result> AddAsync(WeightData weightData, CancellationToken ct)
     {
         var tableClient = await GetTableClientAsync(ct);
         var entity = weightData.ToEntity();
 
         try
         {
-            var response = await tableClient.AddEntityAsync(entity, ct);
-            return GetResponse(response);
+            await tableClient.AddEntityAsync(entity, ct);
+            return Result.Success();
         }
-        catch (RequestFailedException ex)
+        catch (RequestFailedException exception) when (HasErrorCode(exception, TableErrorCode.EntityAlreadyExists))
         {
-            return GetResponse(ex);
+            return ResultErrors.ConflictError($"Weight entry for {weightData.Date:yyyy-MM-dd} already exists.");
         }
     }
 
-    public async Task<WeightDataGroup> GetAsync(WeightDataFilter weightDataFilter, CancellationToken ct)
+    public async Task<Result<WeightDataGroup>> GetAsync(
+        WeightDataFilter weightDataFilter,
+        CancellationToken ct)
     {
         var tableClient = await GetTableClientAsync(ct);
         var (userId, dateFrom, dateTo) = weightDataFilter;
@@ -34,15 +34,14 @@ internal sealed class WeightService(TableServiceClient tableServiceClient) : IWe
         var from = (dateFrom ?? DateOnly.MinValue).ToDomainDateString();
         var to = (dateTo ?? DateOnly.MaxValue).ToDomainDateString();
 
-        var filter = TableClient.CreateQueryFilter(
-            $"PartitionKey eq {userId} and RowKey ge {from} and RowKey le {to}");
+        var filter = TableClient.CreateQueryFilter($"PartitionKey eq {userId} and RowKey ge {from} and RowKey le {to}");
         var result = tableClient.Query<Entity>(filter, cancellationToken: ct).ToList();
 
         var data = result.Select(e => e.ToDomain()).ToList();
         return WeightDataGroup.Create(userId, data);
     }
 
-    public async Task<ResponseTuple> UpdateAsync(WeightData weightData, CancellationToken ct)
+    public async Task<Result> UpdateAsync(WeightData weightData, CancellationToken ct)
     {
         var tableClient = await GetTableClientAsync(ct);
         var entity = weightData.ToEntity();
@@ -50,37 +49,44 @@ internal sealed class WeightService(TableServiceClient tableServiceClient) : IWe
 
         try
         {
-            var response = await tableClient.UpdateEntityAsync(entity, entity.ETag, TableUpdateMode.Replace, ct);
-            return GetResponse(response);
+            await tableClient.UpdateEntityAsync(
+                entity,
+                entity.ETag,
+                TableUpdateMode.Replace,
+                ct);
+            return Result.Success();
         }
-        catch (RequestFailedException ex)
+        catch (RequestFailedException exception) when (HasErrorCode(exception, TableErrorCode.EntityNotFound))
         {
-            return GetResponse(ex);
+            return ResultErrors.NotFoundError($"Weight entry for {weightData.Date:yyyy-MM-dd} was not found.");
         }
     }
 
-    public async Task<ResponseTuple> DeleteAsync(string userId, DateOnly date, CancellationToken ct)
+    public async Task<Result> DeleteAsync(string userId, DateOnly date, CancellationToken ct)
     {
         var tableClient = await GetTableClientAsync(ct);
 
         try
         {
-            var response = await tableClient.DeleteEntityAsync(userId, date.ToDomainDateString(), cancellationToken: ct);
-            return GetResponse(response);
+            await tableClient.DeleteEntityAsync(
+                userId,
+                date.ToDomainDateString(),
+                cancellationToken: ct);
+            return Result.Success();
         }
-        catch (RequestFailedException ex)
+        catch (RequestFailedException exception) when (HasErrorCode(exception, TableErrorCode.EntityNotFound))
         {
-            return GetResponse(ex);
+            return ResultErrors.NotFoundError($"Weight entry for {date:yyyy-MM-dd} was not found.");
         }
     }
 
     private async Task<TableClient> GetTableClientAsync(CancellationToken ct)
     {
-        var tableClient = tableServiceClient.GetTableClient(tableName: TableName);
+        var tableClient = tableServiceClient.GetTableClient(TableName);
         await tableClient.CreateIfNotExistsAsync(ct);
         return tableClient;
     }
 
-    private static ResponseTuple GetResponse(Response response) => (!response.IsError, (HttpStatusCode)response.Status);
-    private static ResponseTuple GetResponse(RequestFailedException ex) => (false, (HttpStatusCode)ex.Status);
+    private static bool HasErrorCode(RequestFailedException exception, TableErrorCode errorCode) =>
+        string.Equals(exception.ErrorCode, errorCode.ToString(), StringComparison.Ordinal);
 }

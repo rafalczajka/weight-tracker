@@ -4,6 +4,7 @@
       <PackageReference Include="Azure.Data.Tables" />
       <PackageReference Include="Microsoft.Extensions.Azure" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+      <PackageReference Include="PxBunny.Result" />
     </ItemGroup>
 
     <ItemGroup>

@@ -12,6 +12,8 @@ internal sealed class WeightsPutEndpoint : Endpoint<WeightsPutRequest, IResult>
 
     public required IOutputCacheStore Cache { get; init; }
 
+    public required IWeightService WeightService { get; init; }
+
     public override void Configure()
     {
         Put("api/weights/{Date}");
@@ -28,16 +30,16 @@ internal sealed class WeightsPutEndpoint : Endpoint<WeightsPutRequest, IResult>
 
         var (date, weightKg) = request;
         var parsedDate = DateOnly.Parse(date, CultureInfo.InvariantCulture);
-        var command = new UpdateWeightData(
-            UserId: CurrentUser.Id,
-            Date: parsedDate,
-            WeightKg: weightKg);
-        var result = await command.ExecuteAsync(ct);
+        var data = new WeightData(CurrentUser.Id, parsedDate, weightKg);
+        var result = await WeightService.UpdateAsync(data, ct);
 
-        if (result.IsSuccess)
+        return await result.HandleAsync(async () =>
+        {
             await Cache.EvictWeightsAsync(CurrentUser.Id);
-
-        var response = new WeightsEntryResponse(parsedDate.ToDomainDateString(), weightKg);
-        return result.Match(() => Results.Ok(response), ErrorsService.HandleError);
+            var response = new WeightsEntryResponse(
+                parsedDate.ToDomainDateString(),
+                weightKg);
+            return Results.Ok(response);
+        });
     }
 }
