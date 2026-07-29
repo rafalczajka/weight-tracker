@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Core.Food;
 
@@ -13,7 +14,7 @@ internal sealed class FoodGetEndpoint : Endpoint<FoodGetRequest, IResult>
     public override void Configure()
     {
         Get("api/food/{Code}");
-        // Options(builder => builder.SetCustomCache());
+        Options(builder => builder.CacheFood());
         Description(builder => builder
             .WithName("GetFood")
             .Produces<FoodGetResponse>()

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
 
@@ -11,7 +11,7 @@ internal sealed class WeightsGetEndpoint : Endpoint<WeightsGetRequest, IResult>
     public override void Configure()
     {
         Get("api/weights");
-        Options(builder => builder.SetCustomCache());
+        Options(builder => builder.CacheWeights());
         Description(builder => builder
             .WithName("GetWeights")
             .Produces<WeightsGetResponse>()

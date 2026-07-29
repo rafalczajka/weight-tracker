@@ -4,11 +4,15 @@ namespace WeightTracker.Api.Cache;
 
 internal static class DependencyInjection
 {
-    public static IServiceCollection AddCustomOutputCache(this IServiceCollection services) =>
+    public static IServiceCollection AddApiOutputCache(this IServiceCollection services) =>
         services.AddOutputCache(options =>
         {
-            options.AddPolicy(CustomCacheDefaults.PolicyName, policyBuilder => policyBuilder
+            options.AddPolicy(CachePolicies.Weights, builder => builder
+                .AddPolicy<WeightsCachePolicy>()
+                .Expire(CachePolicies.WeightsDuration), true);
+
+            options.AddPolicy(CachePolicies.Food, builder => builder
                 .AddPolicy<CustomCachePolicy>()
-                .Expire(TimeSpan.FromMinutes(CustomCacheDefaults.DurationInMinutes)), true);
+                .Expire(CachePolicies.FoodDuration), true);
         });
 }

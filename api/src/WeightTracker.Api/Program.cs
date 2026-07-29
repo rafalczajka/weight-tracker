@@ -1,4 +1,4 @@
-﻿using FastEndpoints.Swagger;
+using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApiAuthentication(builder.Configuration);
 
-builder.Services.AddCustomOutputCache();
+builder.Services.AddApiOutputCache();
 builder.Services.AddFastEndpoints();
 
 builder.Services.SwaggerDocument(options =>

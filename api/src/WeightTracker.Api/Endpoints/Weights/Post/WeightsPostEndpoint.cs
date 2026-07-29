@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.OutputCaching;
 using WeightTracker.Api.Cache;
@@ -32,7 +32,7 @@ internal sealed class WeightsPostEndpoint : Endpoint<WeightsPostRequest, IResult
         var result = await command.ExecuteAsync(ct);
 
         if (result.IsSuccess)
-            await Cache.EvictByUidAsync(CurrentUser.Id);
+            await Cache.EvictWeightsAsync(CurrentUser.Id);
 
         var response = new WeightsEntryResponse(effectiveDate.ToDomainDateString(), weightKg);
         var location = $"/api/weights/{response.Date}";

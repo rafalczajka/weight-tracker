@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,9 +6,13 @@ namespace WeightTracker.Api.Cache;
 
 internal static class Extensions
 {
-    public static RouteHandlerBuilder SetCustomCache(this RouteHandlerBuilder builder) =>
-        builder.CacheOutput(CustomCacheDefaults.PolicyName);
+    extension(RouteHandlerBuilder builder)
+    {
+        public RouteHandlerBuilder CacheWeights() => builder.CacheOutput(CachePolicies.Weights);
 
-    public static ValueTask EvictByUidAsync(this IOutputCacheStore cache, string uid) =>
-        cache.EvictByTagAsync($"user:{uid}", CancellationToken.None);
+        public RouteHandlerBuilder CacheFood() => builder.CacheOutput(CachePolicies.Food);
+    }
+
+    public static ValueTask EvictWeightsAsync(this IOutputCacheStore cache, string userId) =>
+        cache.EvictByTagAsync(CacheTags.Weights(userId), CancellationToken.None);
 }

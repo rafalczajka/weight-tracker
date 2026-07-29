@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.OutputCaching;
 using WeightTracker.Api.Cache;
@@ -32,7 +32,7 @@ internal sealed class WeightsDeleteEndpoint : Endpoint<WeightsDeleteRequest, IRe
         var result = await command.ExecuteAsync(ct);
 
         if (result.IsSuccess)
-            await Cache.EvictByUidAsync(CurrentUser.Id);
+            await Cache.EvictWeightsAsync(CurrentUser.Id);
 
         return result.Match(Results.NoContent, ErrorsService.HandleError);
     }

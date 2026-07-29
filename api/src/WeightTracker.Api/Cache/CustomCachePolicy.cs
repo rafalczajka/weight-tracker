@@ -1,30 +1,24 @@
-﻿using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Primitives;
-using System.Globalization;
 
 namespace WeightTracker.Api.Cache;
 
-internal sealed class CustomCachePolicy : IOutputCachePolicy
+internal class CustomCachePolicy : IOutputCachePolicy
 {
     public ValueTask CacheRequestAsync(OutputCacheContext context, CancellationToken _)
     {
-        const string anonymousUid = "anonymous";
-        const string utcDateKey = "utc-date";
-        const string userUidKey = "uid";
-
-        var attemptOutputCaching = AttemptOutputCaching(context);
+        var allowCaching = IsCacheableRequest(context);
 
         context.EnableOutputCaching = true;
-        context.AllowCacheLookup = attemptOutputCaching;
-        context.AllowCacheStorage = attemptOutputCaching;
+        context.AllowCacheLookup = allowCaching;
+        context.AllowCacheStorage = allowCaching;
         context.AllowLocking = true;
 
-        var uid = context.HttpContext.UserId ?? anonymousUid;
-        var utcDate = DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-        context.CacheVaryByRules.VaryByValues[utcDateKey] = utcDate;
-        context.CacheVaryByRules.VaryByValues[userUidKey] = uid;
-        context.CacheVaryByRules.QueryKeys = "*";
+        if (allowCaching)
+        {
+            context.CacheVaryByRules.QueryKeys = "*";
+            ConfigureCacheKey(context);
+        }
 
         return ValueTask.CompletedTask;
     }
@@ -34,21 +28,33 @@ internal sealed class CustomCachePolicy : IOutputCachePolicy
     public ValueTask ServeResponseAsync(OutputCacheContext context, CancellationToken _)
     {
         var response = context.HttpContext.Response;
-        var uid = context.HttpContext.UserId;
-
         var setsCookie = !StringValues.IsNullOrEmpty(response.Headers.SetCookie);
         var isOkStatus = response.StatusCode == StatusCodes.Status200OK;
 
-        if (setsCookie || !isOkStatus) context.AllowCacheStorage = false;
+        if (setsCookie || !isOkStatus)
+        {
+            context.AllowCacheStorage = false;
+            return ValueTask.CompletedTask;
+        }
 
-        if (!string.IsNullOrWhiteSpace(uid)) context.Tags.Add($"user:{uid}");
-
+        AddCacheTags(context);
         return ValueTask.CompletedTask;
     }
 
-    private static bool AttemptOutputCaching(OutputCacheContext context)
+    protected virtual void ConfigureCacheKey(OutputCacheContext context)
     {
-        var request = context.HttpContext.Request;
-        return HttpMethods.IsGet(request.Method);
+    }
+
+    protected virtual void AddCacheTags(OutputCacheContext context)
+    {
+    }
+
+    private static bool IsCacheableRequest(OutputCacheContext context)
+    {
+        var httpContext = context.HttpContext;
+
+        return HttpMethods.IsGet(httpContext.Request.Method)
+            && httpContext.User.Identity?.IsAuthenticated == true
+            && !string.IsNullOrWhiteSpace(httpContext.UserId);
     }
 }

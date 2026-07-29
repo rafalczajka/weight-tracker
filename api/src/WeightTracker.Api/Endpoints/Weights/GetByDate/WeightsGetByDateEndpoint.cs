@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
@@ -12,7 +12,7 @@ internal sealed class WeightsGetByDateEndpoint : Endpoint<WeightsGetByDateReques
     public override void Configure()
     {
         Get("api/weights/{Date}");
-        Options(builder => builder.SetCustomCache());
+        Options(builder => builder.CacheWeights());
         Description(builder => builder
             .WithName("GetWeightEntry")
             .Produces<WeightsEntryResponse>()
