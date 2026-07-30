@@ -279,6 +279,7 @@ export type GetWeightsData = {
     query?: {
         from?: string | null;
         to?: string | null;
+        limit?: number | null;
     };
     url: '/api/weights';
 };

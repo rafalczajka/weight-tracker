@@ -1,4 +1,3 @@
-version: '3.9'
 name: wtrack
 
 services:
@@ -7,3 +6,24 @@ services:
     container_name: wtrack-azurite
     ports:
       - '10002:10002'
+
+  storage-init:
+    image: mcr.microsoft.com/azure-cli:2.88.0
+    depends_on:
+      azurite:
+        condition: service_started
+    environment:
+      AZURE_STORAGE_CONNECTION_STRING: 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://azurite:10002/devstoreaccount1;'
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        attempts=0
+        until az storage table create --name WeightData --output none; do
+          attempts=$$((attempts + 1))
+          if [ "$$attempts" -ge 30 ]; then
+            echo "Failed to create WeightData table." >&2
+            exit 1
+          fi
+          sleep 1
+        done

@@ -1,9 +1,9 @@
-﻿using System.Globalization;
+using System.Globalization;
 using FluentValidation;
 
 namespace WeightTracker.Api.Endpoints.Weights.Get;
 
-internal sealed record WeightsGetRequest(string? From, string? To);
+internal sealed record WeightsGetRequest(string? From, string? To, int? Limit);
 
 internal sealed class WeightsGetRequestValidator : Validator<WeightsGetRequest>
 {
@@ -16,6 +16,10 @@ internal sealed class WeightsGetRequestValidator : Validator<WeightsGetRequest>
         RuleFor(r => r.To)
             .Must(date => string.IsNullOrWhiteSpace(date) || date.IsValidDomainDateFormat())
             .WithMessage("Invalid date format");
+
+        RuleFor(r => r.Limit)
+            .GreaterThan(0)
+            .WithMessage("Limit must be greater than 0.");
 
         RuleFor(r => r)
             .Must(request =>

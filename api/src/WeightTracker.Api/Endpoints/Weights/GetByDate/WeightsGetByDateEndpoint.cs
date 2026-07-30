@@ -1,4 +1,3 @@
-using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
@@ -26,12 +25,11 @@ internal sealed class WeightsGetByDateEndpoint : Endpoint<WeightsGetByDateReques
         if (string.IsNullOrWhiteSpace(CurrentUser.Id))
             return Results.Unauthorized();
 
-        var filter = request.ToFilter(CurrentUser.Id);
-        var result = await WeightService.GetAsync(filter, ct);
+        var result = await WeightService.GetByDateAsync(
+            CurrentUser.Id,
+            request.ToDate(),
+            ct);
 
-        return result.Handle(
-            data => data.Data.Any()
-                ? Results.Ok(data.ToResponse())
-                : Results.NotFound());
+        return result.Handle(data => Results.Ok(data.ToResponse()));
     }
 }

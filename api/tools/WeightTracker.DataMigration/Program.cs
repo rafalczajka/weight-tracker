@@ -1,13 +1,13 @@
 using Azure;
 using Azure.Data.Tables;
+using WeightTracker.Data.Weights;
 
 namespace WeightTracker.DataMigration;
 
 internal static class Program
 {
-    private const string TableName = "WeightData";
-    private const string DatePropertyName = "Date";
-    private const string WeightPropertyName = "Weight";
+    private const string DatePropertyName = nameof(WeightEntity.Date);
+    private const string WeightPropertyName = nameof(WeightEntity.Weight);
 
     private const string ConnectionStringVariable = "AzureWebJobsStorage";
     private const string ExecuteArgument = "--execute";
@@ -41,9 +41,9 @@ internal static class Program
         try
         {
             var serviceClient = new TableServiceClient(connectionString);
-            var tableClient = serviceClient.GetTableClient(TableName);
+            var tableClient = serviceClient.GetTableClient(WeightEntity.TableName);
             var migrator = new WeightDataMigrator(tableClient);
-            var snapshot = await migrator.LoadSnapshotAsync(TableName, cancellation.Token);
+            var snapshot = await migrator.LoadSnapshotAsync(WeightEntity.TableName, cancellation.Token);
             var plan = MigrationPlan.Create(snapshot, DatePropertyName, WeightPropertyName);
 
             PrintSummary(plan);
@@ -61,7 +61,10 @@ internal static class Program
                 return 0;
             }
 
-            await migrator.ExecuteAsync(plan, DatePropertyName, cancellation.Token);
+            await migrator.ExecuteAsync(
+                plan,
+                DatePropertyName,
+                cancellation.Token);
 
             Console.WriteLine();
             Console.WriteLine("Migration completed successfully.");
@@ -103,7 +106,7 @@ internal static class Program
 
     private static void PrintSummary(MigrationPlan plan)
     {
-        Console.WriteLine($"Table: {TableName}");
+        Console.WriteLine($"Table: {WeightEntity.TableName}");
         Console.WriteLine($"Total entries: {plan.TotalCount}");
         Console.WriteLine($"RowKeys to migrate: {plan.MoveCount}");
         Console.WriteLine($"Date fields to add: {plan.AddDateCount}");

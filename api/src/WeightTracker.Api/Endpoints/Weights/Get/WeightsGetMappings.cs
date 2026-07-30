@@ -7,7 +7,7 @@ internal static class WeightsGetMappings
 {
     public static WeightDataFilter ToFilter(this WeightsGetRequest request, string userId)
     {
-        var (from, to) = request;
+        var (from, to, limit) = request;
 
         var dateFrom = string.IsNullOrWhiteSpace(from)
             ? DateOnly.MinValue
@@ -17,7 +17,7 @@ internal static class WeightsGetMappings
             ? DateOnly.MaxValue
             : DateOnly.Parse(to, CultureInfo.InvariantCulture);
 
-        return new WeightDataFilter(userId, dateFrom, dateTo);
+        return new WeightDataFilter(userId, dateFrom, dateTo, limit);
     }
 
     public static WeightsGetResponse ToResponse(this WeightDataGroup data) => new()

@@ -14,3 +14,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
     minimumTlsVersion: 'TLS1_2'
   }
 }
+
+resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2023-01-01' existing = {
+  parent: storageAccount
+  name: 'default'
+}
+
+resource weightDataTable 'Microsoft.Storage/storageAccounts/tableServices/tables@2023-01-01' = {
+  parent: tableService
+  name: 'WeightData'
+}

@@ -50,8 +50,9 @@ public sealed class DateUtilsTests
         var date = new DateOnly(2026, 7, 30);
 
         var value = DateUtils.FormatDate(date);
-        var result = DateOnly.Parse(value, CultureInfo.InvariantCulture);
+        var parsed = DateUtils.TryParseDate(value, out var result);
 
+        Assert.True(parsed);
         Assert.Equal("2026-07-30", value);
         Assert.Equal(date, result);
     }

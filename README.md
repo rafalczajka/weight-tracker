@@ -10,6 +10,7 @@ Requirements:
 - Node.js 22 or newer
 - pnpm 10
 - .NET SDK 10
+- Docker
 - Android SDK for mobile development
 
 ```bash
@@ -35,8 +36,13 @@ dotnet test api
 Run the API:
 
 ```bash
+docker compose -f infra/local/docker-compose.yml up -d azurite
+docker compose -f infra/local/docker-compose.yml run --rm storage-init
 dotnet run --project api/src/WeightTracker.Api
 ```
+
+The `storage-init` service creates the local `WeightData` table. It must finish
+successfully before the API starts.
 
 Run or build the CLI:
 

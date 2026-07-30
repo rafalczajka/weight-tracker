@@ -1,16 +1,12 @@
 using System.Globalization;
-using System.Linq;
 
 namespace WeightTracker.Api.Endpoints.Weights.GetByDate;
 
 internal static class WeightsGetByDateMappings
 {
-    public static WeightDataFilter ToFilter(this WeightsGetByDateRequest request, string userId)
-    {
-        var date = DateOnly.Parse(request.Date, CultureInfo.InvariantCulture);
-        return new WeightDataFilter(userId, date, date);
-    }
+    public static DateOnly ToDate(this WeightsGetByDateRequest request) =>
+        DateOnly.Parse(request.Date, CultureInfo.InvariantCulture);
 
-    public static WeightsEntryResponse ToResponse(this WeightDataGroup data)
-        => new(data.Data.First().Date, data.Data.First().WeightKg);
+    public static WeightsEntryResponse ToResponse(this WeightData data) =>
+        new(data.Date, data.WeightKg);
 }

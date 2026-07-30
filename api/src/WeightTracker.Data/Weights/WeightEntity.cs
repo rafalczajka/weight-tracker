@@ -1,9 +1,11 @@
 using Azure;
 
-namespace WeightTracker.Data;
+namespace WeightTracker.Data.Weights;
 
-internal sealed class Entity : ITableEntity
+internal sealed class WeightEntity : ITableEntity
 {
+    public const string TableName = "WeightData";
+
     public string Date { get; set; } = string.Empty;
 
     public double Weight { get; set; }
