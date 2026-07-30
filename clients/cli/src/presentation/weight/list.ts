@@ -5,28 +5,16 @@ import type {
 } from '@weight-tracker/api-client';
 import chalk from 'chalk';
 import Table from 'cli-table3';
-import { WEIGHT_UNIT } from '../constants';
-import type { CliOutput } from '../output';
-import { formatUtcDate } from '../validation';
+import { WEIGHT_UNIT } from '../../constants';
+import type { CliOutput } from '../../output';
+import { formatUtcDate } from '../../validation';
 
 interface AverageComparison {
   label: string;
   preposition: 'than' | 'to';
 }
 
-export function printSpecificEntry(
-  output: CliOutput,
-  entry: WeightsEntryResponse,
-): void {
-  output.print();
-  output.print(`Date: ${chalk.bold.cyan(entry.date)}`);
-  output.print(
-    `Weight: ${chalk.bold.cyan(`${entry.weightKg} ${WEIGHT_UNIT}`)}`,
-  );
-  output.print();
-}
-
-export function printReport(
+export function printWeightList(
   output: CliOutput,
   report: WeightsGetResponse,
   tail: number,

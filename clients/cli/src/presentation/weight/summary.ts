@@ -1,13 +1,16 @@
 import type { WeightSummary } from '@weight-tracker/api-client';
 import chalk from 'chalk';
-import { WEIGHT_UNIT } from '../constants';
-import type { CliOutput } from '../output';
+import { WEIGHT_UNIT } from '../../constants';
+import type { CliOutput } from '../../output';
 
 const ADHERENCE_WINDOW = 30;
 const STATUS_OK = '\u2713';
 const STATUS_NO = '\u2717';
 
-export function printStatus(output: CliOutput, summary: WeightSummary): void {
+export function printWeightSummary(
+  output: CliOutput,
+  summary: WeightSummary,
+): void {
   output.print();
 
   if (summary.today.hasEntry && summary.today.weightKg != null) {

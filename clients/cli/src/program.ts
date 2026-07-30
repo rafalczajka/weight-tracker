@@ -1,13 +1,11 @@
 import { ApiError } from '@weight-tracker/api-client';
 import { Command, CommanderError } from 'commander';
 import {
-  createAddCommand,
+  createCalculateCommand,
+  createFoodCommand,
   createLoginCommand,
   createLogoutCommand,
-  createRemoveCommand,
-  createReportCommand,
-  createStatusCommand,
-  createUpdateCommand,
+  createWeightCommand,
 } from './commands';
 import { CLI_NAME } from './constants';
 import { AppError, CliUsageError } from './errors';
@@ -25,19 +23,25 @@ export function createProgram(services: CliServices): Command {
   const commands = [
     createLoginCommand(services),
     createLogoutCommand(services),
-    createStatusCommand(services),
-    createAddCommand(services),
-    createReportCommand(services),
-    createUpdateCommand(services),
-    createRemoveCommand(services),
+    createWeightCommand(services),
+    createFoodCommand(services),
+    createCalculateCommand(services),
   ];
 
   for (const command of commands) {
-    command.exitOverride();
+    configureExitHandling(command);
     program.addCommand(command);
   }
 
   return program;
+}
+
+function configureExitHandling(command: Command): void {
+  command.exitOverride();
+
+  for (const subcommand of command.commands) {
+    configureExitHandling(subcommand);
+  }
 }
 
 export async function runCli(
