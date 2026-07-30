@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 
 export async function openBrowser(url: string): Promise<void> {
   if (process.platform !== 'win32') {
-    throw new Error('Interactive sign-in is supported only on Windows.');
+    throw new Error('Opening a browser is supported only on Windows.');
   }
 
   await new Promise<void>((resolve, reject) => {

@@ -1,1 +1,1 @@
-export { createWeightChart } from './renderer';
+export { showWeightChart } from './renderer';

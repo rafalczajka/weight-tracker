@@ -41,9 +41,9 @@ importers:
       ora:
         specifier: 9.4.1
         version: 9.4.1
-      simple-ascii-chart:
-        specifier: 5.4.0
-        version: 5.4.0
+      plotly.js-basic-dist-min:
+        specifier: 3.7.0
+        version: 3.7.0
     devDependencies:
       '@types/node':
         specifier: 22.20.1
@@ -3691,6 +3691,9 @@ packages:
   pkg-types@2.3.1:
     resolution: {integrity: sha512-y+ichcgc2LrADuhLNAx8DFjVfgz91pRxfZdI3UDhxHvcVEZsenLO+7XaU5vOp0u/7V/wZ+plyuQxtrDlZJ+yeg==}
 
+  plotly.js-basic-dist-min@3.7.0:
+    resolution: {integrity: sha512-84KPQhLTrO5IHu6DCte2KwA4bzSoVIdIs3uDPWid3sgeTX8L5RjpDARjCG3spgOwQ8MYE8PL+MeQ0DQRWA1Emw==}
+
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
     engines: {node: '>= 0.4'}
@@ -4071,9 +4074,6 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
-
-  simple-ascii-chart@5.4.0:
-    resolution: {integrity: sha512-nxHDxkHxQGuhQMhPkpSQ6Ell9uIOwxMV3cypMJBFbsArNX06w3HjH2ZFTG6S7kJjEe/YUzE9E5pK/GDRKKabVQ==}
 
   simple-concat@1.0.1:
     resolution: {integrity: sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==}
@@ -9036,6 +9036,8 @@ snapshots:
       exsolve: 1.1.0
       pathe: 2.0.3
 
+  plotly.js-basic-dist-min@3.7.0: {}
+
   possible-typed-array-names@1.1.0: {}
 
   postject@1.0.0-alpha.6:
@@ -9488,8 +9490,6 @@ snapshots:
   signal-exit@3.0.7: {}
 
   signal-exit@4.1.0: {}
-
-  simple-ascii-chart@5.4.0: {}
 
   simple-concat@1.0.1: {}
 

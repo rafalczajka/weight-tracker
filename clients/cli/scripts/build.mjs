@@ -5,6 +5,7 @@ import { build } from 'esbuild';
 
 const MSAL_EXTENSIONS_IMPORT = /^@azure\/msal-node-extensions$/;
 const MSAL_PERSISTENCE_NAMESPACE = 'msal-persistence';
+const PLOTLY_ASSET_NAME = 'plotly-basic.min.js';
 const MSAL_PERSISTENCE_SOURCE = `
   export { DataProtectionScope } from './dist/persistence/DataProtectionScope.mjs';
   export { FilePersistenceWithDataProtection } from './dist/persistence/FilePersistenceWithDataProtection.mjs';
@@ -26,6 +27,10 @@ const dpapiSourcePath = join(
   'dpapi.node',
 );
 const dpapiOutputPath = join(outputDirectory, 'dpapi.node');
+const plotlySourcePath = fileURLToPath(
+  import.meta.resolve('plotly.js-basic-dist-min'),
+);
+const plotlyOutputPath = join(outputDirectory, PLOTLY_ASSET_NAME);
 
 await rm(outputDirectory, { force: true, recursive: true });
 await mkdir(outputDirectory, { recursive: true });
@@ -43,7 +48,10 @@ await build({
   target: 'node22',
 });
 
-await copyFile(dpapiSourcePath, dpapiOutputPath);
+await Promise.all([
+  copyFile(dpapiSourcePath, dpapiOutputPath),
+  copyFile(plotlySourcePath, plotlyOutputPath),
+]);
 
 function createMsalPersistencePlugin() {
   return {

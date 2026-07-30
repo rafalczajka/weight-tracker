@@ -23,7 +23,7 @@
     "cli-table3": "0.6.5",
     "commander": "15.0.0",
     "ora": "9.4.1",
-    "simple-ascii-chart": "5.4.0"
+    "plotly.js-basic-dist-min": "3.7.0"
   },
   "devDependencies": {
     "@types/node": "22.20.1",

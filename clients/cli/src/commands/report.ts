@@ -4,7 +4,7 @@ import {
   withBearerToken,
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
-import { createWeightChart } from '../chart';
+import { showWeightChart } from '../chart';
 import { DATE_FORMAT_LABEL } from '../constants';
 import { CliUsageError } from '../errors';
 import { printReport, printSpecificEntry } from '../presentation/report';
@@ -39,7 +39,7 @@ export function createReportCommand(services: CliServices): Command {
       parseDate,
     )
     .option('--tail <count>', 'Show only last N records in table', parseTail, 7)
-    .option('--plot', 'Display chart in terminal')
+    .option('--plot', 'Display chart in browser')
     .action(async (date: string | undefined, options: ReportOptions) => {
       validateReportOptions(date, options);
 
@@ -55,12 +55,9 @@ export function createReportCommand(services: CliServices): Command {
       printReport(services.output, report, options.tail, now);
 
       if (options.plot && report.data.length > 0) {
-        const chart = createWeightChart(report);
-
-        if (chart) {
-          services.output.print();
-          services.output.print(chart);
-        }
+        await services.output.withStatus('Plotting data...', () =>
+          showWeightChart(report),
+        );
       }
     });
 }

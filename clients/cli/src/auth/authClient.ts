@@ -2,8 +2,8 @@ import {
   InteractionRequiredAuthError,
   PublicClientApplication,
 } from '@azure/msal-node';
+import { openBrowser } from '../browser';
 import { AppError } from '../errors';
-import { openBrowser } from './browser';
 import { createTokenCache } from './tokenCache';
 import type { AuthClient, AuthClientConfig } from './types';
 
