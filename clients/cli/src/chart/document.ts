@@ -1,25 +1,38 @@
 import type { WeightChartModel } from './model';
 
-const BACKGROUND_COLOR = '#111111';
-const FOREGROUND_COLOR = '#f4f4f5';
-const GRID_COLOR = '#333333';
-const WEIGHT_COLOR = 'cyan';
-const AVERAGE_COLOR = 'deeppink';
+const BACKGROUND_COLOR = '#0d0f12';
+const PLOT_BACKGROUND_COLOR = '#14171b';
+const FOREGROUND_COLOR = '#e5e7eb';
+const MUTED_COLOR = '#9ca3af';
+const GRID_COLOR = '#2b3036';
+const WEIGHT_COLOR = '#22d3ee';
+const AVERAGE_COLOR = '#f59e0b';
+const MAXIMUM_MARKER_COUNT = 40;
 
 export function createWeightChartDocument(model: WeightChartModel): string {
+  const weightMode =
+    model.dates.length === 1
+      ? 'markers'
+      : model.dates.length <= MAXIMUM_MARKER_COUNT
+      ? 'lines+markers'
+      : 'lines';
+
   const figure = {
     data: [
       {
-        line: { color: WEIGHT_COLOR },
+        hovertemplate: '%{x|%Y-%m-%d}<br><b>%{y:.2f} kg</b><extra></extra>',
+        line: { color: WEIGHT_COLOR, width: 3 },
         marker: { color: WEIGHT_COLOR, size: 6 },
-        mode: model.dates.length === 1 ? 'markers' : 'lines+markers',
+        mode: weightMode,
         name: 'Weight',
         type: 'scatter',
         x: model.dates,
         y: model.weightsKg,
       },
       {
-        line: { color: AVERAGE_COLOR },
+        hovertemplate: '%{x|%Y-%m-%d}<br><b>%{y:.2f} kg</b><extra></extra>',
+        line: { color: AVERAGE_COLOR, dash: 'dash', width: 2 },
+        marker: { color: AVERAGE_COLOR, size: 5 },
         mode: model.dates.length === 1 ? 'markers' : 'lines',
         name: 'Average',
         type: 'scatter',
@@ -32,6 +45,7 @@ export function createWeightChartDocument(model: WeightChartModel): string {
       font: { color: FOREGROUND_COLOR },
       hovermode: 'x unified',
       legend: {
+        font: { color: FOREGROUND_COLOR },
         orientation: 'h',
         x: 1,
         xanchor: 'right',
@@ -40,25 +54,30 @@ export function createWeightChartDocument(model: WeightChartModel): string {
       },
       margin: { b: 64, l: 72, r: 32, t: 96 },
       paper_bgcolor: BACKGROUND_COLOR,
-      plot_bgcolor: BACKGROUND_COLOR,
+      plot_bgcolor: PLOT_BACKGROUND_COLOR,
       title: {
-        font: { size: 24 },
-        text: '<b>Weight Tracker - data visualization</b>',
+        font: { size: 22 },
+        text: '<b>Weight Tracker</b>',
         x: 0.5,
         xanchor: 'center',
       },
       xaxis: {
         gridcolor: GRID_COLOR,
+        hoverformat: '%Y-%m-%d',
+        tickfont: { color: MUTED_COLOR },
         title: { text: 'Date' },
         type: 'date',
       },
       yaxis: {
         gridcolor: GRID_COLOR,
+        tickfont: { color: MUTED_COLOR },
+        tickformat: '.1f',
         title: { text: 'Weight [kg]' },
       },
     },
     config: {
       displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d'],
       responsive: true,
     },
   };
