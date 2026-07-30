@@ -5,16 +5,17 @@ import {
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
 import { showWeightChart } from '../chart';
-import { DATE_FORMAT_LABEL } from '../constants';
+import { DATE_FORMAT_LABEL, DEFAULT_MOVING_AVERAGE_DAYS } from '../constants';
 import { CliUsageError } from '../errors';
 import { printReport, printSpecificEntry } from '../presentation/report';
 import type { CliServices } from '../services';
-import { parseDate, parseTail } from '../validation';
+import { parseDate, parseMovingAverageDays, parseTail } from '../validation';
 import { runWithAccessToken } from './helpers';
 
 interface ReportOptions extends OptionValues {
   dateFrom?: string;
   dateTo?: string;
+  movingAverage?: number;
   plot: boolean;
   tail: number;
 }
@@ -40,6 +41,11 @@ export function createReportCommand(services: CliServices): Command {
     )
     .option('--tail <count>', 'Show only last N records in table', parseTail, 7)
     .option('--plot', 'Display chart in browser')
+    .option(
+      '--moving-average <days>',
+      `Moving-average window for --plot (default: ${DEFAULT_MOVING_AVERAGE_DAYS})`,
+      parseMovingAverageDays,
+    )
     .action(async (date: string | undefined, options: ReportOptions) => {
       validateReportOptions(date, options);
 
@@ -80,6 +86,12 @@ async function getReport(services: CliServices, options: ReportOptions) {
       query: {
         ...(options.dateFrom ? { from: options.dateFrom } : {}),
         ...(options.dateTo ? { to: options.dateTo } : {}),
+        ...(options.plot
+          ? {
+              movingAverageDays:
+                options.movingAverage ?? DEFAULT_MOVING_AVERAGE_DAYS,
+            }
+          : {}),
       },
     });
 
@@ -100,6 +112,12 @@ function validateReportOptions(
   if (date && options.plot) {
     throw new CliUsageError(
       'The --plot option cannot be used with a specific date.',
+    );
+  }
+
+  if (options.movingAverage !== undefined && !options.plot) {
+    throw new CliUsageError(
+      'The --moving-average option can only be used with --plot.',
     );
   }
 

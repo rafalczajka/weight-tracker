@@ -1,4 +1,5 @@
 import type {
+  WeightMovingAverageValue,
   WeightsEntryResponse,
   WeightsGetResponse,
 } from '@weight-tracker/api-client';
@@ -6,15 +7,21 @@ import type {
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const INVALID_DATA_MESSAGE = 'Weight chart data is invalid.';
 
-interface DatedWeightEntry {
+interface ChartPoint {
   date: string;
   weightKg: number;
 }
 
-export interface WeightChartModel {
-  averageWeightKg: number;
+interface ChartSeries {
   dates: string[];
   weightsKg: number[];
+}
+
+export interface WeightChartModel {
+  movingAverage: ChartSeries & {
+    windowDays: number;
+  };
+  weight: ChartSeries;
 }
 
 export function createWeightChartModel(
@@ -24,27 +31,59 @@ export function createWeightChartModel(
     return null;
   }
 
-  if (!Number.isFinite(report.stats.averageWeightKg)) {
+  const movingAverage = report.movingAverage;
+
+  if (
+    !movingAverage ||
+    !Number.isSafeInteger(movingAverage.windowDays) ||
+    movingAverage.windowDays <= 0
+  ) {
     throw new Error(INVALID_DATA_MESSAGE);
   }
 
-  const entries = report.data.map(parseEntry).sort(compareByDate);
+  const weightPoints = report.data.map(parseWeightPoint).sort(compareByDate);
+  const averagePoints = movingAverage.values
+    .map(parseAveragePoint)
+    .sort(compareByDate);
+
+  if (
+    weightPoints.length !== averagePoints.length ||
+    weightPoints.some(
+      (point, index) => point.date !== averagePoints[index]?.date,
+    )
+  ) {
+    throw new Error(INVALID_DATA_MESSAGE);
+  }
 
   return {
-    averageWeightKg: report.stats.averageWeightKg,
-    dates: entries.map(entry => entry.date),
-    weightsKg: entries.map(entry => entry.weightKg),
+    movingAverage: {
+      ...createSeries(averagePoints),
+      windowDays: movingAverage.windowDays,
+    },
+    weight: createSeries(weightPoints),
   };
 }
 
-function parseEntry(entry: WeightsEntryResponse): DatedWeightEntry {
-  if (!isValidDate(entry.date) || !Number.isFinite(entry.weightKg)) {
+function parseWeightPoint(entry: WeightsEntryResponse): ChartPoint {
+  return parsePoint(entry.date, entry.weightKg);
+}
+
+function parseAveragePoint(entry: WeightMovingAverageValue): ChartPoint {
+  return parsePoint(entry.date, entry.averageWeightKg);
+}
+
+function parsePoint(date: string, weightKg: number): ChartPoint {
+  if (!isValidDate(date) || !Number.isFinite(weightKg)) {
     throw new Error(INVALID_DATA_MESSAGE);
   }
 
+  return { date, weightKg };
+}
+
+function createSeries(points: ChartPoint[]): ChartSeries {
   return {
-    date: entry.date,
-    weightKg: entry.weightKg,
+    dates: points.map(point => point.date),
+    weightsKg: points.map(point => point.weightKg),
   };
 }
 
@@ -58,9 +97,6 @@ function isValidDate(date: string): boolean {
   return new Date(timestamp).toISOString().slice(0, 10) === date;
 }
 
-function compareByDate(
-  left: DatedWeightEntry,
-  right: DatedWeightEntry,
-): number {
+function compareByDate(left: ChartPoint, right: ChartPoint): number {
   return left.date.localeCompare(right.date);
 }

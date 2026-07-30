@@ -1,6 +1,7 @@
 using Azure;
 using Azure.Data.Tables.Models;
 using System.Collections.Generic;
+using System.Linq;
 using PxBunny.Result;
 
 namespace WeightTracker.Data.Weights;
@@ -61,19 +62,13 @@ internal sealed class WeightService(TableServiceClient tableServiceClient) : IWe
         WeightDataFilter weightDataFilter,
         CancellationToken ct)
     {
-        var (userId, dateFrom, dateTo, limit) = weightDataFilter;
-        var filter = CreateRangeFilter(userId, dateFrom, dateTo);
-        var entities = _tableClient.QueryAsync<WeightEntity>(filter, maxPerPage: limit, cancellationToken: ct);
-        var data = new List<WeightData>();
+        var (userId, dateFrom, dateTo, limit, movingAverageDays) = weightDataFilter;
+        var data = await GetRangeAsync(userId, dateFrom, dateTo, limit, ct);
+        var movingAverage = movingAverageDays.HasValue
+            ? await CreateMovingAverageAsync(userId, data, movingAverageDays.Value, ct)
+            : null;
 
-        await foreach (var entity in entities)
-        {
-            data.Add(entity.ToDomain());
-
-            if (limit.HasValue && data.Count >= limit.Value) break;
-        }
-
-        return WeightDataGroup.Create(userId, data);
+        return WeightDataGroup.Create(userId, data, movingAverage);
     }
 
     public async Task<Result> UpdateAsync(WeightData weightData, CancellationToken ct)
@@ -113,6 +108,61 @@ internal sealed class WeightService(TableServiceClient tableServiceClient) : IWe
 
     private static bool HasErrorCode(RequestFailedException exception, TableErrorCode errorCode) =>
         string.Equals(exception.ErrorCode, errorCode.ToString(), StringComparison.Ordinal);
+
+    private async Task<List<WeightData>> GetRangeAsync(
+        string userId,
+        DateOnly? dateFrom,
+        DateOnly? dateTo,
+        int? limit,
+        CancellationToken ct)
+    {
+        var filter = CreateRangeFilter(userId, dateFrom, dateTo);
+        var entities = _tableClient.QueryAsync<WeightEntity>(
+            filter,
+            maxPerPage: limit,
+            cancellationToken: ct);
+        var data = new List<WeightData>();
+
+        await foreach (var entity in entities)
+        {
+            data.Add(entity.ToDomain());
+
+            if (limit.HasValue && data.Count >= limit.Value) break;
+        }
+
+        return data;
+    }
+
+    private async Task<WeightMovingAverage> CreateMovingAverageAsync(
+        string userId,
+        List<WeightData> data,
+        int windowDays,
+        CancellationToken ct)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(windowDays, 1);
+
+        if (data.Count == 0 || windowDays == 1)
+        {
+            return WeightMovingAverage.Create(windowDays, data, []);
+        }
+
+        var oldestDate = data.Min(entry => entry.Date);
+
+        if (oldestDate == DateOnly.MinValue)
+        {
+            return WeightMovingAverage.Create(windowDays, data, []);
+        }
+
+        var lookbackDays = Math.Min(windowDays - 1, oldestDate.DayNumber);
+        var precedingData = await GetRangeAsync(
+            userId,
+            oldestDate.AddDays(-lookbackDays),
+            oldestDate.AddDays(-1),
+            limit: null,
+            ct);
+
+        return WeightMovingAverage.Create(windowDays, data, precedingData);
+    }
 
     private static string CreateRangeFilter(
         string userId,

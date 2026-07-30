@@ -3,7 +3,11 @@ using FluentValidation;
 
 namespace WeightTracker.Api.Endpoints.Weights.Get;
 
-internal sealed record WeightsGetRequest(string? From, string? To, int? Limit);
+internal sealed record WeightsGetRequest(
+    string? From,
+    string? To,
+    int? Limit,
+    int? MovingAverageDays);
 
 internal sealed class WeightsGetRequestValidator : Validator<WeightsGetRequest>
 {
@@ -20,6 +24,10 @@ internal sealed class WeightsGetRequestValidator : Validator<WeightsGetRequest>
         RuleFor(r => r.Limit)
             .GreaterThan(0)
             .WithMessage("Limit must be greater than 0.");
+
+        RuleFor(r => r.MovingAverageDays)
+            .GreaterThan(0)
+            .WithMessage("Moving average days must be greater than 0.");
 
         RuleFor(r => r)
             .Must(request =>

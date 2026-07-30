@@ -56,6 +56,22 @@ export function parseTail(value: string): number {
   return Math.max(0, tail);
 }
 
+export function parseMovingAverageDays(value: string): number {
+  const windowDays = Number(value);
+
+  if (
+    !/^\d+$/.test(value) ||
+    !Number.isSafeInteger(windowDays) ||
+    windowDays <= 0
+  ) {
+    throw new InvalidArgumentError(
+      'Moving average days must be a positive integer.',
+    );
+  }
+
+  return windowDays;
+}
+
 export function formatUtcDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }

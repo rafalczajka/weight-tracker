@@ -11,9 +11,9 @@ const MAXIMUM_MARKER_COUNT = 40;
 
 export function createWeightChartDocument(model: WeightChartModel): string {
   const weightMode =
-    model.dates.length === 1
+    model.weight.dates.length === 1
       ? 'markers'
-      : model.dates.length <= MAXIMUM_MARKER_COUNT
+      : model.weight.dates.length <= MAXIMUM_MARKER_COUNT
       ? 'lines+markers'
       : 'lines';
 
@@ -26,18 +26,18 @@ export function createWeightChartDocument(model: WeightChartModel): string {
         mode: weightMode,
         name: 'Weight',
         type: 'scatter',
-        x: model.dates,
-        y: model.weightsKg,
+        x: model.weight.dates,
+        y: model.weight.weightsKg,
       },
       {
         hovertemplate: '%{x|%Y-%m-%d}<br><b>%{y:.2f} kg</b><extra></extra>',
         line: { color: AVERAGE_COLOR, dash: 'dash', width: 2 },
         marker: { color: AVERAGE_COLOR, size: 5 },
-        mode: model.dates.length === 1 ? 'markers' : 'lines',
-        name: 'Average',
+        mode: model.movingAverage.dates.length === 1 ? 'markers' : 'lines',
+        name: `${model.movingAverage.windowDays}-day average`,
         type: 'scatter',
-        x: model.dates,
-        y: model.dates.map(() => model.averageWeightKg),
+        x: model.movingAverage.dates,
+        y: model.movingAverage.weightsKg,
       },
     ],
     layout: {

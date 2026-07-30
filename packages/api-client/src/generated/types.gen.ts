@@ -22,12 +22,23 @@ export type WeightsPostRequest = {
 export type WeightsGetResponse = {
     stats: WeightStats;
     data: Array<WeightsEntryResponse>;
+    movingAverage?: WeightMovingAverage | null;
 };
 
 export type WeightStats = {
     averageWeightKg: number;
     maximumWeightKg: number;
     minimumWeightKg: number;
+};
+
+export type WeightMovingAverage = {
+    windowDays: number;
+    values: Array<WeightMovingAverageValue>;
+};
+
+export type WeightMovingAverageValue = {
+    date: string;
+    averageWeightKg: number;
 };
 
 export type WeightsGetRequest = {
@@ -280,6 +291,7 @@ export type GetWeightsData = {
         from?: string | null;
         to?: string | null;
         limit?: number | null;
+        movingAverageDays?: number | null;
     };
     url: '/api/weights';
 };

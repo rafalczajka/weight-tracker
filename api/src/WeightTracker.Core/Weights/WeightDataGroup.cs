@@ -12,13 +12,19 @@ public sealed class WeightDataGroup
 
     public required WeightStats Stats { get; init; }
 
+    public WeightMovingAverage? MovingAverage { get; init; }
+
     public IEnumerable<WeightData> Data { get; set; } = [];
 
-    public static WeightDataGroup Create(string userId, IList<WeightData> data) => new()
-    {
-        UserId = userId,
-        Today = TodayWeight.Create(data),
-        Stats = WeightStats.Create(data),
-        Data = data,
-    };
+    public static WeightDataGroup Create(
+        string userId,
+        IList<WeightData> data,
+        WeightMovingAverage? movingAverage = null) => new()
+        {
+            UserId = userId,
+            Today = TodayWeight.Create(data),
+            Stats = WeightStats.Create(data),
+            MovingAverage = movingAverage,
+            Data = data,
+        };
 }

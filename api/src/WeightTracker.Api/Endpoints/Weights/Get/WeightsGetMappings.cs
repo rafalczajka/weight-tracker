@@ -7,7 +7,7 @@ internal static class WeightsGetMappings
 {
     public static WeightDataFilter ToFilter(this WeightsGetRequest request, string userId)
     {
-        var (from, to, limit) = request;
+        var (from, to, limit, movingAverageDays) = request;
 
         var dateFrom = string.IsNullOrWhiteSpace(from)
             ? DateOnly.MinValue
@@ -17,12 +17,13 @@ internal static class WeightsGetMappings
             ? DateOnly.MaxValue
             : DateOnly.Parse(to, CultureInfo.InvariantCulture);
 
-        return new WeightDataFilter(userId, dateFrom, dateTo, limit);
+        return new WeightDataFilter(userId, dateFrom, dateTo, limit, movingAverageDays);
     }
 
     public static WeightsGetResponse ToResponse(this WeightDataGroup data) => new()
     {
         Stats = data.Stats,
-        Data = data.Data.Select(d => new WeightsEntryResponse(d.Date, d.WeightKg))
+        Data = data.Data.Select(d => new WeightsEntryResponse(d.Date, d.WeightKg)),
+        MovingAverage = data.MovingAverage
     };
 }

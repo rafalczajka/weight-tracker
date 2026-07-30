@@ -261,6 +261,15 @@
               "format": "int32",
               "nullable": true
             }
+          },
+          {
+            "name": "movingAverageDays",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -683,6 +692,14 @@
             "items": {
               "$ref": "#/components/schemas/WeightsEntryResponse"
             }
+          },
+          "movingAverage": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/WeightMovingAverage"
+              }
+            ]
           }
         }
       },
@@ -704,6 +721,44 @@
             "format": "decimal"
           },
           "minimumWeightKg": {
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "WeightMovingAverage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "windowDays",
+          "values"
+        ],
+        "properties": {
+          "windowDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeightMovingAverageValue"
+            }
+          }
+        }
+      },
+      "WeightMovingAverageValue": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "date",
+          "averageWeightKg"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "averageWeightKg": {
             "type": "number",
             "format": "decimal"
           }
