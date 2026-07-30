@@ -7,5 +7,9 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/WeightTracker.Core.UnitTests/WeightTracker.Core.UnitTests.csproj" />
+    <Project Path="tests/WeightTracker.Data.UnitTests/WeightTracker.Data.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/WeightTracker.DataMigration/WeightTracker.DataMigration.csproj" />
   </Folder>
 </Solution>

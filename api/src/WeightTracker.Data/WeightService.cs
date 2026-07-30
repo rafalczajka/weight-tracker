@@ -1,5 +1,6 @@
 using Azure;
 using Azure.Data.Tables.Models;
+using System.Collections.Generic;
 using PxBunny.Result;
 
 namespace WeightTracker.Data;
@@ -31,13 +32,19 @@ internal sealed class WeightService(TableServiceClient tableServiceClient) : IWe
         var tableClient = await GetTableClientAsync(ct);
         var (userId, dateFrom, dateTo) = weightDataFilter;
 
-        var from = (dateFrom ?? DateOnly.MinValue).ToDomainDateString();
-        var to = (dateTo ?? DateOnly.MaxValue).ToDomainDateString();
+        var lowerRowKey = DateUtils.CreateRowKey(dateTo ?? DateOnly.MaxValue);
+        var upperRowKey = DateUtils.CreateRowKey(dateFrom ?? DateOnly.MinValue);
 
-        var filter = TableClient.CreateQueryFilter($"PartitionKey eq {userId} and RowKey ge {from} and RowKey le {to}");
-        var result = tableClient.Query<Entity>(filter, cancellationToken: ct).ToList();
+        var filter = TableClient.CreateQueryFilter($"PartitionKey eq {userId} and RowKey ge {lowerRowKey} and RowKey le {upperRowKey}");
+        var result = tableClient.QueryAsync<Entity>(filter, cancellationToken: ct);
+        var data = new List<WeightData>();
 
-        var data = result.Select(e => e.ToDomain()).ToList();
+        await foreach (var entity in result)
+        {
+            data.Add(entity.ToDomain());
+        }
+
+        data.Sort((left, right) => left.Date.CompareTo(right.Date));
         return WeightDataGroup.Create(userId, data);
     }
 
@@ -70,7 +77,7 @@ internal sealed class WeightService(TableServiceClient tableServiceClient) : IWe
         {
             await tableClient.DeleteEntityAsync(
                 userId,
-                date.ToDomainDateString(),
+                DateUtils.CreateRowKey(date),
                 cancellationToken: ct);
             return Result.Success();
         }

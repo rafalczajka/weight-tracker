@@ -1,9 +1,11 @@
-﻿using Azure;
+using Azure;
 
 namespace WeightTracker.Data;
 
 internal sealed class Entity : ITableEntity
 {
+    public string Date { get; set; } = string.Empty;
+
     public double Weight { get; set; }
 
     public string PartitionKey { get; set; } = string.Empty;

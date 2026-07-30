@@ -4,11 +4,9 @@ namespace WeightTracker.Core;
 
 public static class Extensions
 {
-    private const string DateFormat = "yyyy-MM-dd";
-
     public static string ToDomainDateString(this DateOnly date) =>
-        date.ToString(DateFormat, CultureInfo.InvariantCulture);
+        date.ToString(Constants.DateFormat, CultureInfo.InvariantCulture);
 
     public static bool IsValidDomainDateFormat(this string date) =>
-        !string.IsNullOrEmpty(date) && DateOnly.TryParseExact(date, DateFormat, out _);
+        !string.IsNullOrEmpty(date) && DateOnly.TryParseExact(date, Constants.DateFormat, out _);
 }
