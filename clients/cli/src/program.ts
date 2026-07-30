@@ -2,6 +2,7 @@ import { ApiError } from '@weight-tracker/api-client';
 import { Command, CommanderError } from 'commander';
 import {
   createCalculateCommand,
+  createCaloriesCommand,
   createFoodCommand,
   createLoginCommand,
   createLogoutCommand,
@@ -24,6 +25,7 @@ export function createProgram(services: CliServices): Command {
     createLoginCommand(services),
     createLogoutCommand(services),
     createWeightCommand(services),
+    createCaloriesCommand(services),
     createFoodCommand(services),
     createCalculateCommand(services),
   ];

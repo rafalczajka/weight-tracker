@@ -51,6 +51,7 @@ pnpm --filter @weight-tracker/cli dev --help
 pnpm --filter @weight-tracker/cli build:binary
 clients/cli/dist/wtrack.exe --help
 clients/cli/dist/wtrack.exe weight list --plot --moving-average 30
+clients/cli/dist/wtrack.exe calories list --limit-days 7
 clients/cli/dist/wtrack.exe food get <barcode>
 clients/cli/dist/wtrack.exe calculate bmi --weight 80 --height 180
 ```
