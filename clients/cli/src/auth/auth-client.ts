@@ -4,7 +4,7 @@ import {
 } from '@azure/msal-node';
 import { openBrowser } from '../browser';
 import { AppError } from '../errors';
-import { createTokenCache } from './tokenCache';
+import { createTokenCache } from './token-cache';
 import type { AuthClient, AuthClientConfig } from './types';
 
 export function createAuthClient({
