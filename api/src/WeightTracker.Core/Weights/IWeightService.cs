@@ -10,6 +10,8 @@ public interface IWeightService
 
     Task<Result<WeightData>> GetByDateAsync(string userId, DateOnly date, CancellationToken ct);
 
+    Task<Result<WeightData>> GetLatestAsync(string userId, CancellationToken ct);
+
     Task<Result<WeightDataGroup>> GetAsync(WeightDataFilter filter, CancellationToken ct);
 
     Task<Result> UpdateAsync(WeightData weightData, CancellationToken ct);

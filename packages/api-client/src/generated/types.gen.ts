@@ -395,6 +395,45 @@ export type GetWeightsSummaryResponses = {
 
 export type GetWeightsSummaryResponse = GetWeightsSummaryResponses[keyof GetWeightsSummaryResponses];
 
+export type GetLatestWeightEntryData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/weights/latest';
+};
+
+export type GetLatestWeightEntryErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type GetLatestWeightEntryResponses = {
+    /**
+     * Success
+     */
+    200: WeightsEntryResponse;
+};
+
+export type GetLatestWeightEntryResponse = GetLatestWeightEntryResponses[keyof GetLatestWeightEntryResponses];
+
 export type GetFoodData = {
     body?: never;
     path: {

@@ -3,7 +3,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { CalculateBmiData, CalculateBmiErrors, CalculateBmiResponses, CalculateCaloriesData, CalculateCaloriesErrors, CalculateCaloriesResponses, CalculateProteinData, CalculateProteinErrors, CalculateProteinResponses, CreateWeightEntryData, CreateWeightEntryErrors, CreateWeightEntryResponses, DeleteWeightEntryData, DeleteWeightEntryErrors, DeleteWeightEntryResponses, GetFoodData, GetFoodErrors, GetFoodResponses, GetWeightEntryData, GetWeightEntryErrors, GetWeightEntryResponses, GetWeightsData, GetWeightsErrors, GetWeightsResponses, GetWeightsSummaryData, GetWeightsSummaryErrors, GetWeightsSummaryResponses, UpdateWeightEntryData, UpdateWeightEntryErrors, UpdateWeightEntryResponses } from './types.gen';
+import type { CalculateBmiData, CalculateBmiErrors, CalculateBmiResponses, CalculateCaloriesData, CalculateCaloriesErrors, CalculateCaloriesResponses, CalculateProteinData, CalculateProteinErrors, CalculateProteinResponses, CreateWeightEntryData, CreateWeightEntryErrors, CreateWeightEntryResponses, DeleteWeightEntryData, DeleteWeightEntryErrors, DeleteWeightEntryResponses, GetFoodData, GetFoodErrors, GetFoodResponses, GetLatestWeightEntryData, GetLatestWeightEntryErrors, GetLatestWeightEntryResponses, GetWeightEntryData, GetWeightEntryErrors, GetWeightEntryResponses, GetWeightsData, GetWeightsErrors, GetWeightsResponses, GetWeightsSummaryData, GetWeightsSummaryErrors, GetWeightsSummaryResponses, UpdateWeightEntryData, UpdateWeightEntryErrors, UpdateWeightEntryResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -60,6 +60,12 @@ export const createWeightEntry = <ThrowOnError extends boolean = false>(options:
 export const getWeightsSummary = <ThrowOnError extends boolean = false>(options?: Options<GetWeightsSummaryData, ThrowOnError>): RequestResult<GetWeightsSummaryResponses, GetWeightsSummaryErrors, ThrowOnError> => (options?.client ?? client).get<GetWeightsSummaryResponses, GetWeightsSummaryErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
     url: '/api/weights/summary',
+    ...options
+});
+
+export const getLatestWeightEntry = <ThrowOnError extends boolean = false>(options?: Options<GetLatestWeightEntryData, ThrowOnError>): RequestResult<GetLatestWeightEntryResponses, GetLatestWeightEntryErrors, ThrowOnError> => (options?.client ?? client).get<GetLatestWeightEntryResponses, GetLatestWeightEntryErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
+    url: '/api/weights/latest',
     ...options
 });
 

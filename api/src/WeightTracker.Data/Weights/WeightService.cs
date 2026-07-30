@@ -39,6 +39,24 @@ internal sealed class WeightService(TableServiceClient tableServiceClient) : IWe
             : ResultErrors.NotFoundError($"Weight entry for {date:yyyy-MM-dd} was not found.");
     }
 
+    public async Task<Result<WeightData>> GetLatestAsync(
+        string userId,
+        CancellationToken ct)
+    {
+        var filter = TableClient.CreateQueryFilter($"PartitionKey eq {userId}");
+        var entities = _tableClient.QueryAsync<WeightEntity>(
+            filter,
+            maxPerPage: 1,
+            cancellationToken: ct);
+
+        await foreach (var entity in entities)
+        {
+            return entity.ToDomain();
+        }
+
+        return ResultErrors.NotFoundError("No weight entries were found.");
+    }
+
     public async Task<Result<WeightDataGroup>> GetAsync(
         WeightDataFilter weightDataFilter,
         CancellationToken ct)
