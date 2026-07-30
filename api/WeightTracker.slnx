@@ -1,8 +1,10 @@
 <Solution>
-  <Project Path="src/WeightTracker.Api/WeightTracker.Api.csproj" />
-  <Project Path="src/WeightTracker.Core/WeightTracker.Core.csproj" />
-  <Project Path="src/WeightTracker.Data/WeightTracker.Data.csproj" />
-  <Project Path="src/WeightTracker.FoodData/WeightTracker.FoodData.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/WeightTracker.Api/WeightTracker.Api.csproj" />
+    <Project Path="src/WeightTracker.Core/WeightTracker.Core.csproj" />
+    <Project Path="src/WeightTracker.Data/WeightTracker.Data.csproj" />
+    <Project Path="src/WeightTracker.FoodData/WeightTracker.FoodData.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/WeightTracker.Core.UnitTests/WeightTracker.Core.UnitTests.csproj" />
   </Folder>
