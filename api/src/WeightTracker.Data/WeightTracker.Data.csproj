@@ -12,4 +12,9 @@
       <ProjectReference Include="..\WeightTracker.Core\WeightTracker.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <InternalsVisibleTo Include="WeightTracker.Data.UnitTests" />
+      <InternalsVisibleTo Include="WeightTracker.DataMigration" />
+    </ItemGroup>
+
 </Project>
