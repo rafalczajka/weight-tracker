@@ -20,6 +20,11 @@ resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2023-01-0
   name: 'default'
 }
 
+resource calorieDataTable 'Microsoft.Storage/storageAccounts/tableServices/tables@2023-01-01' = {
+  parent: tableService
+  name: 'CalorieData'
+}
+
 resource weightDataTable 'Microsoft.Storage/storageAccounts/tableServices/tables@2023-01-01' = {
   parent: tableService
   name: 'WeightData'

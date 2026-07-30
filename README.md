@@ -36,13 +36,13 @@ dotnet test api
 Run the API:
 
 ```bash
-docker compose -f infra/local/docker-compose.yml up -d azurite
-docker compose -f infra/local/docker-compose.yml run --rm storage-init
+docker compose -f infra/local/compose.yml up -d azurite
+docker compose -f infra/local/compose.yml run --rm storage-init
 dotnet run --project api/src/WeightTracker.Api
 ```
 
-The `storage-init` service creates the local `WeightData` table. It must finish
-successfully before the API starts.
+The `storage-init` service creates the local `CalorieData` and `WeightData`
+tables. It must finish successfully before the API starts.
 
 Run or build the CLI:
 

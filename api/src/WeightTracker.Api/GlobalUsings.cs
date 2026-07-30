@@ -6,4 +6,5 @@ global using FastEndpoints;
 global using Microsoft.AspNetCore.Http;
 global using WeightTracker.Api.Auth;
 global using WeightTracker.Core;
+global using WeightTracker.Core.Calories;
 global using WeightTracker.Core.Weights;

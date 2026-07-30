@@ -18,12 +18,14 @@ services:
     command:
       - -c
       - |
-        attempts=0
-        until az storage table create --name WeightData --output none; do
-          attempts=$$((attempts + 1))
-          if [ "$$attempts" -ge 30 ]; then
-            echo "Failed to create WeightData table." >&2
-            exit 1
-          fi
-          sleep 1
+        for table in CalorieData WeightData; do
+          attempts=0
+          until az storage table create --name "$$table" --output none; do
+            attempts=$$((attempts + 1))
+            if [ "$$attempts" -ge 30 ]; then
+              echo "Failed to create $$table table." >&2
+              exit 1
+            fi
+            sleep 1
+          done
         done

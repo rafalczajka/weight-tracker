@@ -3,7 +3,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { CalculateBmiData, CalculateBmiErrors, CalculateBmiResponses, CalculateCaloriesData, CalculateCaloriesErrors, CalculateCaloriesResponses, CalculateProteinData, CalculateProteinErrors, CalculateProteinResponses, CreateWeightEntryData, CreateWeightEntryErrors, CreateWeightEntryResponses, DeleteWeightEntryData, DeleteWeightEntryErrors, DeleteWeightEntryResponses, GetFoodData, GetFoodErrors, GetFoodResponses, GetLatestWeightEntryData, GetLatestWeightEntryErrors, GetLatestWeightEntryResponses, GetWeightEntryData, GetWeightEntryErrors, GetWeightEntryResponses, GetWeightsData, GetWeightsErrors, GetWeightsResponses, GetWeightsSummaryData, GetWeightsSummaryErrors, GetWeightsSummaryResponses, UpdateWeightEntryData, UpdateWeightEntryErrors, UpdateWeightEntryResponses } from './types.gen';
+import type { CalculateBmiData, CalculateBmiErrors, CalculateBmiResponses, CalculateCaloriesData, CalculateCaloriesErrors, CalculateCaloriesResponses, CalculateProteinData, CalculateProteinErrors, CalculateProteinResponses, CreateCalorieEntryData, CreateCalorieEntryErrors, CreateCalorieEntryResponses, CreateWeightEntryData, CreateWeightEntryErrors, CreateWeightEntryResponses, DeleteCalorieEntryData, DeleteCalorieEntryErrors, DeleteCalorieEntryResponses, DeleteWeightEntryData, DeleteWeightEntryErrors, DeleteWeightEntryResponses, GetCaloriesData, GetCaloriesErrors, GetCaloriesResponses, GetDailyCaloriesData, GetDailyCaloriesErrors, GetDailyCaloriesResponses, GetFoodData, GetFoodErrors, GetFoodResponses, GetLatestWeightEntryData, GetLatestWeightEntryErrors, GetLatestWeightEntryResponses, GetWeightEntryData, GetWeightEntryErrors, GetWeightEntryResponses, GetWeightsData, GetWeightsErrors, GetWeightsResponses, GetWeightsSummaryData, GetWeightsSummaryErrors, GetWeightsSummaryResponses, UpdateCalorieEntryData, UpdateCalorieEntryErrors, UpdateCalorieEntryResponses, UpdateWeightEntryData, UpdateWeightEntryErrors, UpdateWeightEntryResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -72,6 +72,44 @@ export const getLatestWeightEntry = <ThrowOnError extends boolean = false>(optio
 export const getFood = <ThrowOnError extends boolean = false>(options: Options<GetFoodData, ThrowOnError>): RequestResult<GetFoodResponses, GetFoodErrors, ThrowOnError> => (options.client ?? client).get<GetFoodResponses, GetFoodErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
     url: '/api/food/{code}',
+    ...options
+});
+
+export const deleteCalorieEntry = <ThrowOnError extends boolean = false>(options: Options<DeleteCalorieEntryData, ThrowOnError>): RequestResult<DeleteCalorieEntryResponses, DeleteCalorieEntryErrors, ThrowOnError> => (options.client ?? client).delete<DeleteCalorieEntryResponses, DeleteCalorieEntryErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
+    url: '/api/calories/{id}',
+    ...options
+});
+
+export const updateCalorieEntry = <ThrowOnError extends boolean = false>(options: Options<UpdateCalorieEntryData, ThrowOnError>): RequestResult<UpdateCalorieEntryResponses, UpdateCalorieEntryErrors, ThrowOnError> => (options.client ?? client).put<UpdateCalorieEntryResponses, UpdateCalorieEntryErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
+    url: '/api/calories/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getCalories = <ThrowOnError extends boolean = false>(options?: Options<GetCaloriesData, ThrowOnError>): RequestResult<GetCaloriesResponses, GetCaloriesErrors, ThrowOnError> => (options?.client ?? client).get<GetCaloriesResponses, GetCaloriesErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
+    url: '/api/calories',
+    ...options
+});
+
+export const createCalorieEntry = <ThrowOnError extends boolean = false>(options: Options<CreateCalorieEntryData, ThrowOnError>): RequestResult<CreateCalorieEntryResponses, CreateCalorieEntryErrors, ThrowOnError> => (options.client ?? client).post<CreateCalorieEntryResponses, CreateCalorieEntryErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
+    url: '/api/calories',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getDailyCalories = <ThrowOnError extends boolean = false>(options: Options<GetDailyCaloriesData, ThrowOnError>): RequestResult<GetDailyCaloriesResponses, GetDailyCaloriesErrors, ThrowOnError> => (options.client ?? client).get<GetDailyCaloriesResponses, GetDailyCaloriesErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
+    url: '/api/calories/days/{date}',
     ...options
 });
 

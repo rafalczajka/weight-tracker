@@ -110,6 +110,52 @@ export type FoodGetRequest = {
     [key: string]: never;
 };
 
+export type CalorieEntryDetailsResponse = {
+    id: string;
+    date: string;
+    caloriesKcal: number;
+    description?: string | null;
+};
+
+export type CaloriesPutRequest = {
+    caloriesKcal: number;
+    description?: string | null;
+};
+
+export type CalorieEntryPostRequest = {
+    caloriesKcal: number;
+    description?: string | null;
+    date?: string | null;
+};
+
+export type CaloriesGetResponse = {
+    data: Array<DailyCaloriesResponse>;
+};
+
+export type DailyCaloriesResponse = {
+    date: string;
+    totalCaloriesKcal: number;
+    entries: Array<CalorieEntryResponse>;
+};
+
+export type CalorieEntryResponse = {
+    id: string;
+    caloriesKcal: number;
+    description?: string | null;
+};
+
+export type CaloriesGetRequest = {
+    [key: string]: never;
+};
+
+export type CaloriesGetByDateRequest = {
+    [key: string]: never;
+};
+
+export type CaloriesDeleteRequest = {
+    [key: string]: never;
+};
+
 export type ProteinResult = {
     minimumProteinGramsPerDay: number;
     maximumProteinGramsPerDay: number;
@@ -487,6 +533,214 @@ export type GetFoodResponses = {
 };
 
 export type GetFoodResponse = GetFoodResponses[keyof GetFoodResponses];
+
+export type DeleteCalorieEntryData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/calories/{id}';
+};
+
+export type DeleteCalorieEntryErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    409: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type DeleteCalorieEntryResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type DeleteCalorieEntryResponse = DeleteCalorieEntryResponses[keyof DeleteCalorieEntryResponses];
+
+export type UpdateCalorieEntryData = {
+    body: CaloriesPutRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/calories/{id}';
+};
+
+export type UpdateCalorieEntryErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    409: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type UpdateCalorieEntryResponses = {
+    /**
+     * Success
+     */
+    200: CalorieEntryDetailsResponse;
+};
+
+export type UpdateCalorieEntryResponse = UpdateCalorieEntryResponses[keyof UpdateCalorieEntryResponses];
+
+export type GetCaloriesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string | null;
+        to?: string | null;
+        limitDays?: number | null;
+    };
+    url: '/api/calories';
+};
+
+export type GetCaloriesErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type GetCaloriesResponses = {
+    /**
+     * Success
+     */
+    200: CaloriesGetResponse;
+};
+
+export type GetCaloriesResponse = GetCaloriesResponses[keyof GetCaloriesResponses];
+
+export type CreateCalorieEntryData = {
+    body: CalorieEntryPostRequest;
+    path?: never;
+    query?: never;
+    url: '/api/calories';
+};
+
+export type CreateCalorieEntryErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    409: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type CreateCalorieEntryResponses = {
+    /**
+     * Created
+     */
+    201: CalorieEntryDetailsResponse;
+};
+
+export type CreateCalorieEntryResponse = CreateCalorieEntryResponses[keyof CreateCalorieEntryResponses];
+
+export type GetDailyCaloriesData = {
+    body?: never;
+    path: {
+        date: string;
+    };
+    query?: never;
+    url: '/api/calories/days/{date}';
+};
+
+export type GetDailyCaloriesErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type GetDailyCaloriesResponses = {
+    /**
+     * Success
+     */
+    200: DailyCaloriesResponse;
+};
+
+export type GetDailyCaloriesResponse = GetDailyCaloriesResponses[keyof GetDailyCaloriesResponses];
 
 export type CalculateProteinData = {
     body: ProteinPostRequest;

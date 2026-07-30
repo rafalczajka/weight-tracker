@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WeightTracker.Data.Calories;
 using WeightTracker.Data.Weights;
 
 namespace WeightTracker.Data;
@@ -15,6 +16,7 @@ public static class DependencyInjection
         });
 
         services.AddHostedService<StartupCheck>();
+        services.AddSingleton<ICalorieService, CalorieService>();
         services.AddSingleton<IWeightService, WeightService>();
 
         return services;
