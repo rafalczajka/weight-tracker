@@ -34,7 +34,7 @@ internal static class CalculationServiceTestData
     public static T GetValue<T>(Result<T> result)
     {
         Assert.True(result.TryGet(out var value), result.Error?.Message);
-        return value!;
+        return value;
     }
 
     public static ErrorBase GetError<T>(Result<T> result) =>
