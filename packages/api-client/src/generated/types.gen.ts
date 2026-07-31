@@ -76,6 +76,28 @@ export type WeightsDeleteRequest = {
     [key: string]: never;
 };
 
+export type UserResponse = {
+    heightCm?: number | null;
+    sex?: Sex | null;
+    dateOfBirth?: string | null;
+    activityLevel?: ActivityLevel | null;
+    proteinGoal?: ProteinGoal | null;
+};
+
+export type Sex = 'female' | 'male';
+
+export type ActivityLevel = 'sedentary' | 'lightlyActive' | 'moderatelyActive' | 'veryActive' | 'extraActive';
+
+export type ProteinGoal = 'generalHealth' | 'muscleGain';
+
+export type UserPutRequest = {
+    heightCm?: number | null;
+    sex?: Sex | null;
+    dateOfBirth?: string | null;
+    activityLevel?: ActivityLevel | null;
+    proteinGoal?: ProteinGoal | null;
+};
+
 export type Product = {
     code: string;
     name?: string | null;
@@ -162,11 +184,9 @@ export type ProteinResult = {
 };
 
 export type ProteinPostRequest = {
-    weightKg: number;
-    goal: ProteinGoal;
+    weightKg?: number | null;
+    goal?: ProteinGoal | null;
 };
-
-export type ProteinGoal = 'generalHealth' | 'muscleGain';
 
 export type CalorieResult = {
     restingCaloriesPerDay: number;
@@ -174,16 +194,12 @@ export type CalorieResult = {
 };
 
 export type CaloriesPostRequest = {
-    weightKg: number;
-    heightCm: number;
-    ageYears: number;
-    sex: Sex;
-    activityLevel: ActivityLevel;
+    weightKg?: number | null;
+    heightCm?: number | null;
+    ageYears?: number | null;
+    sex?: Sex | null;
+    activityLevel?: ActivityLevel | null;
 };
-
-export type Sex = 'female' | 'male';
-
-export type ActivityLevel = 'sedentary' | 'lightlyActive' | 'moderatelyActive' | 'veryActive' | 'extraActive';
 
 export type BmiPostResponse = {
     bmi: number;
@@ -201,8 +217,8 @@ export type BmiRange = {
 };
 
 export type BmiPostRequest = {
-    weightKg: number;
-    heightCm: number;
+    weightKg?: number | null;
+    heightCm?: number | null;
 };
 
 export type DeleteWeightEntryData = {
@@ -491,6 +507,85 @@ export type GetLatestWeightEntryResponses = {
 };
 
 export type GetLatestWeightEntryResponse = GetLatestWeightEntryResponses[keyof GetLatestWeightEntryResponses];
+
+export type GetUserProfileData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/user';
+};
+
+export type GetUserProfileErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type GetUserProfileResponses = {
+    /**
+     * Success
+     */
+    200: UserResponse;
+};
+
+export type GetUserProfileResponse = GetUserProfileResponses[keyof GetUserProfileResponses];
+
+export type UpdateUserProfileData = {
+    body: UserPutRequest;
+    path?: never;
+    query?: never;
+    url: '/api/user';
+};
+
+export type UpdateUserProfileErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+    /**
+     * Not Found
+     */
+    404: unknown;
+    409: unknown;
+    /**
+     * Server Error
+     */
+    500: unknown;
+};
+
+export type UpdateUserProfileResponses = {
+    /**
+     * Success
+     */
+    200: UserResponse;
+};
+
+export type UpdateUserProfileResponse = UpdateUserProfileResponses[keyof UpdateUserProfileResponses];
 
 export type GetFoodData = {
     body?: never;

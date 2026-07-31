@@ -1,3 +1,5 @@
+using WeightTracker.Core.Users;
+
 namespace WeightTracker.Core.Calculations.Protein;
 
 public static class ProteinCalculator

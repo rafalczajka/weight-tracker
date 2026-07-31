@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace WeightTracker.Api.Endpoints.Calculations.Bmi;
 
-internal sealed record BmiPostRequest(decimal WeightKg, decimal HeightCm);
+internal sealed record BmiPostRequest(decimal? WeightKg, decimal? HeightCm);
 
 internal sealed class BmiPostRequestValidator : Validator<BmiPostRequest>
 {

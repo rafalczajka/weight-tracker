@@ -1,15 +1,13 @@
-using System.Text.Json.Serialization;
 using FluentValidation;
-using WeightTracker.Core.Calculations.Calories;
 
 namespace WeightTracker.Api.Endpoints.Calculations.Calories;
 
 internal sealed record CaloriesPostRequest(
-    decimal WeightKg,
-    decimal HeightCm,
-    int AgeYears,
-    [property: JsonRequired] Sex Sex,
-    [property: JsonRequired] ActivityLevel ActivityLevel);
+    decimal? WeightKg,
+    decimal? HeightCm,
+    int? AgeYears,
+    Sex? Sex,
+    ActivityLevel? ActivityLevel);
 
 internal sealed class CaloriesPostRequestValidator : Validator<CaloriesPostRequest>
 {
@@ -32,11 +30,11 @@ internal sealed class CaloriesPostRequestValidator : Validator<CaloriesPostReque
             .WithMessage("Age must be between 18 and 120 years.");
 
         RuleFor(request => request.Sex)
-            .IsInEnum()
+            .Must(value => !value.HasValue || Enum.IsDefined(value.Value))
             .WithMessage("Sex is invalid.");
 
         RuleFor(request => request.ActivityLevel)
-            .IsInEnum()
+            .Must(value => !value.HasValue || Enum.IsDefined(value.Value))
             .WithMessage("Activity level is invalid.");
     }
 }

@@ -1,6 +1,7 @@
 using WeightTracker.Core.Calculations.Calories;
+using WeightTracker.Core.Users;
 
-namespace WeightTracker.Core.UnitTests.Calculations;
+namespace WeightTracker.Core.UnitTests.Calculations.Calories;
 
 public sealed class CalorieCalculatorTests
 {

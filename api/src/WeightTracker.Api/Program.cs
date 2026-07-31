@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApiAuthentication(builder.Configuration);
 builder.Services.AddProblemDetails();
+builder.Services.ConfigureHttpJsonOptions(options => ConfigureJsonSerializer(options.SerializerOptions));
 
 builder.Services.AddApiOutputCache();
 builder.Services.AddFastEndpoints();
@@ -32,6 +33,7 @@ builder.Services.SwaggerDocument(options =>
 });
 
 builder.Services.AddScoped<CurrentUser>();
+builder.Services.AddCore();
 builder.Services.AddData(builder.Configuration);
 builder.Services.AddFoodData();
 
@@ -50,6 +52,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Run();
+return;
 
 static void ConfigureJsonSerializer(JsonSerializerOptions options)
 {

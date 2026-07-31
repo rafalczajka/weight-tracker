@@ -11,6 +11,10 @@ internal static class DependencyInjection
                 .AddPolicy<CaloriesCachePolicy>()
                 .Expire(CachePolicies.CaloriesDuration), true);
 
+            options.AddPolicy(CachePolicies.UserProfile, builder => builder
+                .AddPolicy<UserProfileCachePolicy>()
+                .Expire(CachePolicies.UserProfileDuration), true);
+
             options.AddPolicy(CachePolicies.Weights, builder => builder
                 .AddPolicy<WeightsCachePolicy>()
                 .Expire(CachePolicies.WeightsDuration), true);

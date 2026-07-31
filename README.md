@@ -41,7 +41,7 @@ docker compose -f infra/local/compose.yml run --rm storage-init
 dotnet run --project api/src/WeightTracker.Api
 ```
 
-The `storage-init` service creates the local `CalorieData` and `WeightData`
+The `storage-init` service creates the local `CalorieData`, `UserData` and `WeightData`
 tables. It must finish successfully before the API starts.
 
 Run or build the CLI:

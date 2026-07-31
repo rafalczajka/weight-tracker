@@ -1,6 +1,6 @@
 using WeightTracker.Core.Calculations.Bmi;
 
-namespace WeightTracker.Core.UnitTests.Calculations;
+namespace WeightTracker.Core.UnitTests.Calculations.Bmi;
 
 public sealed class BmiCalculatorTests
 {

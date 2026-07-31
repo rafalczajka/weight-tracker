@@ -10,6 +10,8 @@ internal static class Extensions
     {
         public RouteHandlerBuilder CacheCalories() => builder.CacheOutput(CachePolicies.Calories);
 
+        public RouteHandlerBuilder CacheUserProfile() => builder.CacheOutput(CachePolicies.UserProfile);
+
         public RouteHandlerBuilder CacheWeights() => builder.CacheOutput(CachePolicies.Weights);
 
         public RouteHandlerBuilder CacheFood() => builder.CacheOutput(CachePolicies.Food);
@@ -17,6 +19,9 @@ internal static class Extensions
 
     public static ValueTask EvictCaloriesAsync(this IOutputCacheStore cache, string userId) =>
         cache.EvictByTagAsync(CacheTags.Calories(userId), CancellationToken.None);
+
+    public static ValueTask EvictUserProfileAsync(this IOutputCacheStore cache, string userId) =>
+        cache.EvictByTagAsync(CacheTags.UserProfile(userId), CancellationToken.None);
 
     public static ValueTask EvictWeightsAsync(this IOutputCacheStore cache, string userId) =>
         cache.EvictByTagAsync(CacheTags.Weights(userId), CancellationToken.None);

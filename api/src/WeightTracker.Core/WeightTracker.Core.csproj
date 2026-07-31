@@ -1,8 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="PxBunny.Result" />
     <PackageReference Include="PxBunny.Result.Generator" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WeightTracker.Core.UnitTests" />
   </ItemGroup>
 
 </Project>

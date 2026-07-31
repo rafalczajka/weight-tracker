@@ -1,6 +1,7 @@
 using WeightTracker.Core.Calculations.Protein;
+using WeightTracker.Core.Users;
 
-namespace WeightTracker.Core.UnitTests.Calculations;
+namespace WeightTracker.Core.UnitTests.Calculations.Protein;
 
 public sealed class ProteinCalculatorTests
 {

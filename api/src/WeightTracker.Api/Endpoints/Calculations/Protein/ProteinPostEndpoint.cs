@@ -1,11 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using WeightTracker.Api.Extensions;
+using WeightTracker.Core.Calculations;
 using WeightTracker.Core.Calculations.Protein;
 
 namespace WeightTracker.Api.Endpoints.Calculations.Protein;
 
-internal sealed class ProteinPostEndpoint : Endpoint<ProteinPostRequest, ProteinResult>
+internal sealed class ProteinPostEndpoint : Endpoint<ProteinPostRequest, IResult>
 {
+    public required ICalculationService<ProteinCalculationInput, ProteinResult> CalculationService { get; init; }
+
+    public required CurrentUser CurrentUser { get; init; }
+
     public override void Configure()
     {
         Post("api/calculations/protein");
@@ -15,11 +20,18 @@ internal sealed class ProteinPostEndpoint : Endpoint<ProteinPostRequest, Protein
             .ProducesCommonProblems());
     }
 
-    public override Task<ProteinResult> ExecuteAsync(
+    public override async Task<IResult> ExecuteAsync(
         ProteinPostRequest request,
         CancellationToken ct)
     {
-        var result = ProteinCalculator.Calculate(request.WeightKg, request.Goal);
-        return Task.FromResult(result);
+        if (string.IsNullOrWhiteSpace(CurrentUser.Id))
+            return Results.Unauthorized();
+
+        var result = await CalculationService.CalculateAsync(
+            CurrentUser.Id,
+            new ProteinCalculationInput(request.WeightKg, request.Goal),
+            ct);
+
+        return result.Handle(data => Results.Ok(data));
     }
 }

@@ -1,4 +1,4 @@
-namespace WeightTracker.Core.Calculations.Calories;
+namespace WeightTracker.Core.Users;
 
 public enum ActivityLevel
 {

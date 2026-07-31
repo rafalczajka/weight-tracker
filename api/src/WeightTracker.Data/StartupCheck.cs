@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using WeightTracker.Data.Calories;
+using WeightTracker.Data.Users;
 using WeightTracker.Data.Weights;
 
 namespace WeightTracker.Data;
@@ -8,7 +9,12 @@ internal sealed class StartupCheck(TableServiceClient tableServiceClient) : IHos
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var tables = new[] { CalorieEntity.TableName, WeightEntity.TableName };
+        var tables = new[]
+        {
+            CalorieEntity.TableName,
+            UserEntity.TableName,
+            WeightEntity.TableName
+        };
 
         foreach (var table in tables)
         {

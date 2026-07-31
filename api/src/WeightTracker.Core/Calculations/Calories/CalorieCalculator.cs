@@ -1,3 +1,5 @@
+using WeightTracker.Core.Users;
+
 namespace WeightTracker.Core.Calculations.Calories;
 
 public static class CalorieCalculator
@@ -19,10 +21,7 @@ public static class CalorieCalculator
 
         var sexAdjustment = GetSexAdjustment(sex);
         var activityMultiplier = GetActivityMultiplier(activityLevel);
-        var restingCalories = (10m * weightKg)
-            + (6.25m * heightCm)
-            - (5m * ageYears)
-            + sexAdjustment;
+        var restingCalories = (10m * weightKg) + (6.25m * heightCm) - (5m * ageYears) + sexAdjustment;
         var maintenanceCalories = restingCalories * activityMultiplier;
 
         return new CalorieResult(

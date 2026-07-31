@@ -1,4 +1,4 @@
-namespace WeightTracker.Core.Calculations.Protein;
+namespace WeightTracker.Core.Users;
 
 public enum ProteinGoal
 {

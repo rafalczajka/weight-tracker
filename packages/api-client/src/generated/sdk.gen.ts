@@ -3,7 +3,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { CalculateBmiData, CalculateBmiErrors, CalculateBmiResponses, CalculateCaloriesData, CalculateCaloriesErrors, CalculateCaloriesResponses, CalculateProteinData, CalculateProteinErrors, CalculateProteinResponses, CreateCalorieEntryData, CreateCalorieEntryErrors, CreateCalorieEntryResponses, CreateWeightEntryData, CreateWeightEntryErrors, CreateWeightEntryResponses, DeleteCalorieEntryData, DeleteCalorieEntryErrors, DeleteCalorieEntryResponses, DeleteWeightEntryData, DeleteWeightEntryErrors, DeleteWeightEntryResponses, GetCaloriesData, GetCaloriesErrors, GetCaloriesResponses, GetDailyCaloriesData, GetDailyCaloriesErrors, GetDailyCaloriesResponses, GetFoodData, GetFoodErrors, GetFoodResponses, GetLatestWeightEntryData, GetLatestWeightEntryErrors, GetLatestWeightEntryResponses, GetWeightEntryData, GetWeightEntryErrors, GetWeightEntryResponses, GetWeightsData, GetWeightsErrors, GetWeightsResponses, GetWeightsSummaryData, GetWeightsSummaryErrors, GetWeightsSummaryResponses, UpdateCalorieEntryData, UpdateCalorieEntryErrors, UpdateCalorieEntryResponses, UpdateWeightEntryData, UpdateWeightEntryErrors, UpdateWeightEntryResponses } from './types.gen';
+import type { CalculateBmiData, CalculateBmiErrors, CalculateBmiResponses, CalculateCaloriesData, CalculateCaloriesErrors, CalculateCaloriesResponses, CalculateProteinData, CalculateProteinErrors, CalculateProteinResponses, CreateCalorieEntryData, CreateCalorieEntryErrors, CreateCalorieEntryResponses, CreateWeightEntryData, CreateWeightEntryErrors, CreateWeightEntryResponses, DeleteCalorieEntryData, DeleteCalorieEntryErrors, DeleteCalorieEntryResponses, DeleteWeightEntryData, DeleteWeightEntryErrors, DeleteWeightEntryResponses, GetCaloriesData, GetCaloriesErrors, GetCaloriesResponses, GetDailyCaloriesData, GetDailyCaloriesErrors, GetDailyCaloriesResponses, GetFoodData, GetFoodErrors, GetFoodResponses, GetLatestWeightEntryData, GetLatestWeightEntryErrors, GetLatestWeightEntryResponses, GetUserProfileData, GetUserProfileErrors, GetUserProfileResponses, GetWeightEntryData, GetWeightEntryErrors, GetWeightEntryResponses, GetWeightsData, GetWeightsErrors, GetWeightsResponses, GetWeightsSummaryData, GetWeightsSummaryErrors, GetWeightsSummaryResponses, UpdateCalorieEntryData, UpdateCalorieEntryErrors, UpdateCalorieEntryResponses, UpdateUserProfileData, UpdateUserProfileErrors, UpdateUserProfileResponses, UpdateWeightEntryData, UpdateWeightEntryErrors, UpdateWeightEntryResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -67,6 +67,22 @@ export const getLatestWeightEntry = <ThrowOnError extends boolean = false>(optio
     security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
     url: '/api/weights/latest',
     ...options
+});
+
+export const getUserProfile = <ThrowOnError extends boolean = false>(options?: Options<GetUserProfileData, ThrowOnError>): RequestResult<GetUserProfileResponses, GetUserProfileErrors, ThrowOnError> => (options?.client ?? client).get<GetUserProfileResponses, GetUserProfileErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
+    url: '/api/user',
+    ...options
+});
+
+export const updateUserProfile = <ThrowOnError extends boolean = false>(options: Options<UpdateUserProfileData, ThrowOnError>): RequestResult<UpdateUserProfileResponses, UpdateUserProfileErrors, ThrowOnError> => (options.client ?? client).put<UpdateUserProfileResponses, UpdateUserProfileErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'X-API-KEY', type: 'apiKey' }],
+    url: '/api/user',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
 
 export const getFood = <ThrowOnError extends boolean = false>(options: Options<GetFoodData, ThrowOnError>): RequestResult<GetFoodResponses, GetFoodErrors, ThrowOnError> => (options.client ?? client).get<GetFoodResponses, GetFoodErrors, ThrowOnError>({

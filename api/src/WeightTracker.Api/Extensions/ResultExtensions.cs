@@ -1,4 +1,5 @@
 using PxBunny.Result;
+using System.Linq;
 using WeightTracker.Core.Errors;
 
 namespace WeightTracker.Api.Extensions;
@@ -23,6 +24,10 @@ internal static class ResultExtensions
 
     private static IResult HandleError(ErrorBase error) => error switch
     {
+        ValidationError validationError when validationError.Errors.Count > 0 =>
+            Results.ValidationProblem(
+                validationError.Errors.ToDictionary(pair => pair.Key, pair => pair.Value),
+                title: validationError.Message),
         ValidationError => Results.BadRequest(),
         ConflictError => Results.Conflict(),
         NotFoundError => Results.NotFound(),

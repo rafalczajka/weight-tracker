@@ -18,7 +18,7 @@ services:
     command:
       - -c
       - |
-        for table in CalorieData WeightData; do
+        for table in CalorieData UserData WeightData; do
           attempts=0
           until az storage table create --name "$$table" --output none; do
             attempts=$$((attempts + 1))

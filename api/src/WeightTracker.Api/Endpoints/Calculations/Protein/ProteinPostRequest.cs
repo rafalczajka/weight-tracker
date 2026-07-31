@@ -1,12 +1,10 @@
-using System.Text.Json.Serialization;
 using FluentValidation;
-using WeightTracker.Core.Calculations.Protein;
 
 namespace WeightTracker.Api.Endpoints.Calculations.Protein;
 
 internal sealed record ProteinPostRequest(
-    decimal WeightKg,
-    [property: JsonRequired] ProteinGoal Goal);
+    decimal? WeightKg,
+    ProteinGoal? Goal);
 
 internal sealed class ProteinPostRequestValidator : Validator<ProteinPostRequest>
 {
@@ -19,7 +17,7 @@ internal sealed class ProteinPostRequestValidator : Validator<ProteinPostRequest
             .WithMessage("Weight must not exceed 500 kg.");
 
         RuleFor(request => request.Goal)
-            .IsInEnum()
+            .Must(value => !value.HasValue || Enum.IsDefined(value.Value))
             .WithMessage("Protein goal is invalid.");
     }
 }
