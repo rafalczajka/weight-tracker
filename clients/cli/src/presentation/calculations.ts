@@ -7,6 +7,7 @@ import type {
 import chalk from 'chalk';
 import Table from 'cli-table3';
 import type { CliOutput } from '../output';
+import { formatLabel } from './format';
 
 export function printBmiResult(
   output: CliOutput,
@@ -87,14 +88,6 @@ function formatBmiRange(range: BmiRange): string {
 
 function formatNumber(value: number | null | undefined): string {
   return value == null ? '' : value.toString();
-}
-
-function formatLabel(value: string): string {
-  const words = value
-    .replace(/([a-z])([A-Z0-9])/g, '$1 $2')
-    .replaceAll('-', ' ');
-
-  return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
 function printValue(output: CliOutput, label: string, value: string): void {

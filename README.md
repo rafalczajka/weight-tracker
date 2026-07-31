@@ -49,11 +49,15 @@ Run or build the CLI:
 ```bash
 pnpm --filter @weight-tracker/cli dev --help
 pnpm --filter @weight-tracker/cli build:binary
-clients/cli/dist/wtrack.exe --help
-clients/cli/dist/wtrack.exe weight list --plot --moving-average 30
-clients/cli/dist/wtrack.exe calories list --limit-days 7
-clients/cli/dist/wtrack.exe food get <barcode>
-clients/cli/dist/wtrack.exe calculate bmi --weight 80 --height 180
+
+cd ./clients/cli/dist/
+
+wtrack.exe --help
+wtrack.exe weight list --plot --moving-average 30
+wtrack.exe calories list --limit-days 7
+wtrack.exe food get <barcode>
+wtrack.exe profile update --height 180 --activity moderately-active
+wtrack.exe calculate bmi
 ```
 
 `bash scripts/install-cli.sh` builds the CLI and optionally installs it using

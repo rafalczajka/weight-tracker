@@ -6,10 +6,12 @@ import {
   createFoodCommand,
   createLoginCommand,
   createLogoutCommand,
+  createProfileCommand,
   createWeightCommand,
 } from './commands';
 import { CLI_NAME } from './constants';
 import { AppError, CliUsageError } from './errors';
+import { formatApiError } from './presentation/errors';
 import type { CliServices } from './services';
 
 export type { CliServices } from './services';
@@ -24,6 +26,7 @@ export function createProgram(services: CliServices): Command {
   const commands = [
     createLoginCommand(services),
     createLogoutCommand(services),
+    createProfileCommand(services),
     createWeightCommand(services),
     createCaloriesCommand(services),
     createFoodCommand(services),
@@ -70,7 +73,12 @@ export async function runCli(
       return 2;
     }
 
-    if (error instanceof ApiError || error instanceof AppError) {
+    if (error instanceof ApiError) {
+      services.output.printError(formatApiError(error));
+      return 1;
+    }
+
+    if (error instanceof AppError) {
       services.output.printError(error.message);
       return 1;
     }

@@ -5,5 +5,6 @@ export {
   ApiError,
   createWeightTrackerClient,
   withBearerToken,
+  type ValidationErrors,
   type WeightTrackerClientOptions,
 } from './client';

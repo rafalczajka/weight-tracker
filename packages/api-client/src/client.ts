@@ -5,13 +5,21 @@ export interface WeightTrackerClientOptions {
   fetch?: typeof globalThis.fetch;
 }
 
+export type ValidationErrors = Readonly<Record<string, readonly string[]>>;
+
 export class ApiError extends Error {
   readonly status: number | undefined;
+  readonly validationErrors: ValidationErrors | undefined;
 
-  constructor(message: string, status?: number) {
+  constructor(
+    message: string,
+    status?: number,
+    validationErrors?: ValidationErrors,
+  ) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
+    this.validationErrors = validationErrors;
   }
 }
 
@@ -29,11 +37,15 @@ export function createWeightTrackerClient({
       return error;
     }
 
+    const validationProblem = parseValidationProblem(error);
+
     return new ApiError(
-      response
-        ? `Server responded with an error (${response.status}).`
-        : 'Weight API request failed.',
+      validationProblem?.title ??
+        (response
+          ? `Server responded with an error (${response.status}).`
+          : 'Weight API request failed.'),
       response?.status,
+      validationProblem?.errors,
     );
   });
 
@@ -46,4 +58,37 @@ export function withBearerToken(client: Client, accessToken: string) {
     client,
     throwOnError: true as const,
   };
+}
+
+interface ValidationProblem {
+  errors: ValidationErrors;
+  title?: string;
+}
+
+function parseValidationProblem(error: unknown): ValidationProblem | undefined {
+  if (!isRecord(error) || !isRecord(error.errors)) {
+    return undefined;
+  }
+
+  const errors: Record<string, string[]> = {};
+
+  for (const [field, messages] of Object.entries(error.errors)) {
+    if (
+      !Array.isArray(messages) ||
+      !messages.every(message => typeof message === 'string')
+    ) {
+      return undefined;
+    }
+
+    errors[field] = [...messages];
+  }
+
+  return {
+    errors,
+    ...(typeof error.title === 'string' ? { title: error.title } : {}),
+  };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

@@ -6,24 +6,19 @@ import {
 import { Command, type OptionValues } from 'commander';
 import { printProteinResult } from '../../presentation/calculations';
 import type { CliServices } from '../../services';
-import { parseWeightKg } from '../../validation';
+import { parseProteinGoal, parseWeightKg } from '../../validation';
 import { runWithAccessToken } from '../helpers';
-import { parseProteinGoal } from './validation';
 
 interface ProteinOptions extends OptionValues {
-  goal: ProteinGoal;
-  weight: number;
+  goal?: ProteinGoal;
+  weight?: number;
 }
 
 export function createProteinCommand(services: CliServices): Command {
   return new Command('protein')
     .description('Calculate daily protein requirements')
-    .requiredOption('--weight <kg>', 'Weight in kg', parseWeightKg)
-    .requiredOption(
-      '--goal <value>',
-      'general-health or muscle-gain',
-      parseProteinGoal,
-    )
+    .option('--weight <kg>', 'Weight in kg', parseWeightKg)
+    .option('--goal <value>', 'general-health or muscle-gain', parseProteinGoal)
     .action((options: ProteinOptions) => calculateProtein(services, options));
 }
 
@@ -38,8 +33,8 @@ async function calculateProtein(
       const response = await requestProteinCalculation({
         ...withBearerToken(services.api, accessToken),
         body: {
-          goal: options.goal,
-          weightKg: options.weight,
+          goal: options.goal ?? null,
+          weightKg: options.weight ?? null,
         },
       });
 
