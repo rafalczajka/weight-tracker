@@ -1,7 +1,6 @@
 # Weight Tracker
 
-Weight tracking system with a .NET API, a TypeScript CLI and a React Native
-mobile application.
+A personal health app for tracking weight, nutrition, and health goals.
 
 ## Setup
 
