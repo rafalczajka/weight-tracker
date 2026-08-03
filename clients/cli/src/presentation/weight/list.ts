@@ -7,7 +7,7 @@ import chalk from 'chalk';
 import Table from 'cli-table3';
 import { WEIGHT_UNIT } from '../../constants';
 import type { CliOutput } from '../../output';
-import { formatUtcDate } from '../../validation';
+import { formatUtcDate } from '../../parsers';
 
 interface AverageComparison {
   label: string;

@@ -3,7 +3,7 @@ import { Command } from 'commander';
 import { DATE_FORMAT_LABEL } from '../../constants';
 import { printDailyCalories } from '../../presentation/calories';
 import type { CliServices } from '../../services';
-import { formatUtcDate, parseDate } from '../../validation';
+import { formatUtcDate, parseDate } from '../../parsers';
 import { runWithAccessToken } from '../helpers';
 
 export function createCalorieGetCommand(services: CliServices): Command {

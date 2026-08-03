@@ -2,11 +2,10 @@ import { getCalories, withBearerToken } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
 import { DATE_FORMAT_LABEL } from '../../constants';
 import { CliUsageError } from '../../errors';
+import { parseDate, parseLimitDays } from '../../parsers';
 import { printCalorieList } from '../../presentation/calories';
 import type { CliServices } from '../../services';
-import { parseDate } from '../../validation';
 import { runWithAccessToken } from '../helpers';
-import { parseLimitDays } from './validation';
 
 interface ListOptions extends OptionValues {
   from?: string;

@@ -5,7 +5,7 @@ import {
 import { Command, type OptionValues } from 'commander';
 import { printBmiResult } from '../../presentation/calculations';
 import type { CliServices } from '../../services';
-import { parseHeightCm, parseWeightKg } from '../../validation';
+import { parseHeightCm, parseWeightKg } from '../../parsers';
 import { runWithAccessToken } from '../helpers';
 
 interface BmiOptions extends OptionValues {

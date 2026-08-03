@@ -6,7 +6,7 @@ import {
 import { Command, type OptionValues } from 'commander';
 import { printProteinResult } from '../../presentation/calculations';
 import type { CliServices } from '../../services';
-import { parseProteinGoal, parseWeightKg } from '../../validation';
+import { parseProteinGoal, parseWeightKg } from '../../parsers';
 import { runWithAccessToken } from '../helpers';
 
 interface ProteinOptions extends OptionValues {

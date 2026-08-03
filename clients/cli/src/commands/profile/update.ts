@@ -16,7 +16,7 @@ import {
   parseHeightCm,
   parseProteinGoal,
   parseSex,
-} from '../../validation';
+} from '../../parsers';
 import { runWithAccessToken } from '../helpers';
 import { getProfile, putProfile } from './requests';
 

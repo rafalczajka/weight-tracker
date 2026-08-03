@@ -2,7 +2,7 @@ import { deleteWeightEntry, withBearerToken } from '@weight-tracker/api-client';
 import { Command } from 'commander';
 import { DATE_FORMAT_LABEL } from '../../constants';
 import type { CliServices } from '../../services';
-import { parseDate } from '../../validation';
+import { parseDate } from '../../parsers';
 import { runWithAccessToken } from '../helpers';
 
 export function createWeightRemoveCommand(services: CliServices): Command {

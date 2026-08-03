@@ -13,7 +13,7 @@ import {
   parseHeightCm,
   parseSex,
   parseWeightKg,
-} from '../../validation';
+} from '../../parsers';
 import { runWithAccessToken } from '../helpers';
 
 interface CalorieOptions extends OptionValues {

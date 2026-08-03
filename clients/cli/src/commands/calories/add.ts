@@ -4,11 +4,11 @@ import {
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
 import { DATE_FORMAT_LABEL } from '../../constants';
+import { parseCaloriesKcal, parseDate } from '../../parsers';
 import { printCalorieEntry } from '../../presentation/calories';
 import type { CliServices } from '../../services';
-import { parseDate } from '../../validation';
 import { runWithAccessToken } from '../helpers';
-import { parseCaloriesKcal, parseDescription } from './validation';
+import { parseDescription } from './validation';
 
 interface AddOptions extends OptionValues {
   date?: string;

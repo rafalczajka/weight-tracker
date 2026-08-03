@@ -14,7 +14,7 @@ import {
 import { CliUsageError } from '../../errors';
 import { printWeightList } from '../../presentation/weight';
 import type { CliServices } from '../../services';
-import { parseDate, parseMovingAverageDays, parseTail } from '../../validation';
+import { parseDate, parseMovingAverageDays, parseTail } from '../../parsers';
 import { runWithAccessToken } from '../helpers';
 
 interface ListOptions extends OptionValues {

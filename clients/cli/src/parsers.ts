@@ -7,6 +7,7 @@ import { InvalidArgumentError } from 'commander';
 import { MAX_WEIGHT_KG } from './constants';
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+const MAX_INT32 = 2_147_483_647;
 
 const ACTIVITY_LEVELS = {
   sedentary: 'sedentary',
@@ -87,20 +88,30 @@ export function parseHeightCm(value: string): number {
 }
 
 export function parseAgeYears(value: string): number {
-  const ageYears = Number(value);
+  return parsePositiveInteger(
+    value,
+    'Age must be an integer between 18 and 120.',
+    18,
+    120,
+  );
+}
 
-  if (
-    !/^\d+$/.test(value) ||
-    !Number.isSafeInteger(ageYears) ||
-    ageYears < 18 ||
-    ageYears > 120
-  ) {
-    throw new InvalidArgumentError(
-      'Age must be an integer between 18 and 120.',
-    );
-  }
+export function parseCaloriesKcal(value: string): number {
+  return parsePositiveInteger(
+    value,
+    'Calories must be a positive integer.',
+    1,
+    MAX_INT32,
+  );
+}
 
-  return ageYears;
+export function parseLimitDays(value: string): number {
+  return parsePositiveInteger(
+    value,
+    'Limit days must be a positive integer.',
+    1,
+    MAX_INT32,
+  );
 }
 
 export function parseActivityLevel(value: string): ActivityLevel {
@@ -150,21 +161,32 @@ export function parseTail(value: string): number {
 }
 
 export function parseMovingAverageDays(value: string): number {
-  const windowDays = Number(value);
-
-  if (
-    !/^\d+$/.test(value) ||
-    !Number.isSafeInteger(windowDays) ||
-    windowDays <= 0
-  ) {
-    throw new InvalidArgumentError(
-      'Moving average days must be a positive integer.',
-    );
-  }
-
-  return windowDays;
+  return parsePositiveInteger(
+    value,
+    'Moving average days must be a positive integer.',
+  );
 }
 
 export function formatUtcDate(date: Date): string {
   return date.toISOString().slice(0, 10);
+}
+
+function parsePositiveInteger(
+  value: string,
+  message: string,
+  minimum = 1,
+  maximum = Number.MAX_SAFE_INTEGER,
+): number {
+  const result = Number(value);
+
+  if (
+    !/^\d+$/.test(value) ||
+    !Number.isSafeInteger(result) ||
+    result < minimum ||
+    result > maximum
+  ) {
+    throw new InvalidArgumentError(message);
+  }
+
+  return result;
 }

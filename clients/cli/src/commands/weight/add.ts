@@ -2,7 +2,7 @@ import { createWeightEntry, withBearerToken } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
 import { DATE_FORMAT_LABEL } from '../../constants';
 import type { CliServices } from '../../services';
-import { parseDate, parseWeightKg } from '../../validation';
+import { parseDate, parseWeightKg } from '../../parsers';
 import { printMessage, runWithAccessToken } from '../helpers';
 
 interface AddOptions extends OptionValues {
