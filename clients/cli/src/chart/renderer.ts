@@ -7,6 +7,7 @@ import { pathToFileURL } from 'node:url';
 import type { WeightsGetResponse } from '@weight-tracker/api-client';
 import { openBrowser } from '../browser';
 import { AppError } from '../errors';
+import type { BmiChartData } from './bmi';
 import { createWeightChartDocument } from './document';
 import { createWeightChartModel } from './model';
 
@@ -17,9 +18,10 @@ const TEMP_DIRECTORY_NAME = 'wtrack';
 
 export async function showWeightChart(
   report: WeightsGetResponse,
+  bmiData?: BmiChartData,
 ): Promise<void> {
   try {
-    const model = createWeightChartModel(report);
+    const model = createWeightChartModel(report, bmiData);
 
     if (!model) {
       return;

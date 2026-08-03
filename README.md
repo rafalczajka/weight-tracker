@@ -52,7 +52,7 @@ pnpm --filter @weight-tracker/cli build:binary
 cd ./clients/cli/dist/
 
 wtrack.exe --help
-wtrack.exe weight list --plot --moving-average 30
+wtrack.exe weight list --plot --moving-average 30 --bmi
 wtrack.exe calories list --limit-days 7
 wtrack.exe food get <barcode>
 wtrack.exe profile update --height 180 --activity moderately-active

@@ -2,10 +2,10 @@ namespace WeightTracker.Core.Calculations.Bmi;
 
 public sealed record BmiRange(
     BmiCategory Category,
-    decimal? MinimumInclusive,
-    decimal? MaximumExclusive)
+    decimal? MinimumBmiInclusive,
+    decimal? MaximumBmiExclusive)
 {
     public bool Contains(decimal bmi) =>
-        (MinimumInclusive is not { } minimum || bmi >= minimum)
-        && (MaximumExclusive is not { } maximum || bmi < maximum);
+        (MinimumBmiInclusive is not { } minimum || bmi >= minimum)
+        && (MaximumBmiExclusive is not { } maximum || bmi < maximum);
 }

@@ -202,18 +202,23 @@ export type CaloriesPostRequest = {
 };
 
 export type BmiPostResponse = {
+    weightKg: number;
+    heightCm: number;
     bmi: number;
     category: BmiCategory;
-    classification: string;
-    ranges: Array<BmiRange>;
+    categoryName: string;
+    ranges: Array<BmiRangeResponse>;
 };
 
 export type BmiCategory = 'underweight' | 'healthyWeight' | 'overweight' | 'obesityClass1' | 'obesityClass2' | 'obesityClass3';
 
-export type BmiRange = {
+export type BmiRangeResponse = {
     category: BmiCategory;
-    minimumInclusive?: number | null;
-    maximumExclusive?: number | null;
+    categoryName: string;
+    minimumBmiInclusive?: number | null;
+    maximumBmiExclusive?: number | null;
+    minimumWeightKgInclusive?: number | null;
+    maximumWeightKgExclusive?: number | null;
 };
 
 export type BmiPostRequest = {

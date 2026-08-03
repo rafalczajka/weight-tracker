@@ -40,6 +40,8 @@ public sealed class BmiCalculatorTests
 
         Assert.Equal(24.7m, result.Value);
         Assert.Equal(BmiCategory.HealthyWeight, result.Category);
+        Assert.Equal(80m, result.WeightKg);
+        Assert.Equal(180m, result.HeightCm);
     }
 
     [Theory]
@@ -81,6 +83,33 @@ public sealed class BmiCalculatorTests
         ];
 
         Assert.Equal(expectedRanges, BmiCalculator.AdultRanges);
+    }
+
+    [Fact]
+    public void GetAdultWeightRanges_ConvertsBmiBoundsToKilograms()
+    {
+        var ranges = BmiCalculator.GetAdultWeightRanges(heightCm: 180m);
+
+        Assert.Collection(
+            ranges,
+            range => Assert.Equal(
+                new BmiWeightRange(BmiCategory.Underweight, null, 18.5m, null, 59.94m),
+                range),
+            range => Assert.Equal(
+                new BmiWeightRange(BmiCategory.HealthyWeight, 18.5m, 25m, 59.94m, 81m),
+                range),
+            range => Assert.Equal(
+                new BmiWeightRange(BmiCategory.Overweight, 25m, 30m, 81m, 97.2m),
+                range),
+            range => Assert.Equal(
+                new BmiWeightRange(BmiCategory.ObesityClass1, 30m, 35m, 97.2m, 113.4m),
+                range),
+            range => Assert.Equal(
+                new BmiWeightRange(BmiCategory.ObesityClass2, 35m, 40m, 113.4m, 129.6m),
+                range),
+            range => Assert.Equal(
+                new BmiWeightRange(BmiCategory.ObesityClass3, 40m, null, 129.6m, null),
+                range));
     }
 
     [Theory]

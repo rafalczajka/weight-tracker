@@ -3,6 +3,11 @@ import type {
   WeightsEntryResponse,
   WeightsGetResponse,
 } from '@weight-tracker/api-client';
+import {
+  createBmiChartModel,
+  type BmiChartData,
+  type BmiChartModel,
+} from './bmi';
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const INVALID_DATA_MESSAGE = 'Weight chart data is invalid.';
@@ -18,6 +23,7 @@ interface ChartSeries {
 }
 
 export interface WeightChartModel {
+  bmi: BmiChartModel | null;
   movingAverage: ChartSeries & {
     windowDays: number;
   };
@@ -26,6 +32,7 @@ export interface WeightChartModel {
 
 export function createWeightChartModel(
   report: WeightsGetResponse,
+  bmiData?: BmiChartData,
 ): WeightChartModel | null {
   if (report.data.length === 0) {
     return null;
@@ -55,12 +62,21 @@ export function createWeightChartModel(
     throw new Error(INVALID_DATA_MESSAGE);
   }
 
+  const weight = createSeries(weightPoints);
+  const movingAverageSeries = createSeries(averagePoints);
+
   return {
+    bmi: bmiData
+      ? createBmiChartModel(bmiData, [
+          ...weight.weightsKg,
+          ...movingAverageSeries.weightsKg,
+        ])
+      : null,
     movingAverage: {
-      ...createSeries(averagePoints),
+      ...movingAverageSeries,
       windowDays: movingAverage.windowDays,
     },
-    weight: createSeries(weightPoints),
+    weight,
   };
 }
 

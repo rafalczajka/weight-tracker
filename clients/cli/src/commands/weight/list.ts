@@ -1,6 +1,12 @@
-import { getWeights, withBearerToken } from '@weight-tracker/api-client';
+import {
+  calculateBmi,
+  getWeights,
+  withBearerToken,
+  type WeightsEntryResponse,
+  type WeightsGetResponse,
+} from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
-import { showWeightChart } from '../../chart';
+import { showWeightChart, type BmiChartData } from '../../chart';
 import {
   DATE_FORMAT_LABEL,
   DEFAULT_MOVING_AVERAGE_DAYS,
@@ -12,6 +18,7 @@ import { parseDate, parseMovingAverageDays, parseTail } from '../../validation';
 import { runWithAccessToken } from '../helpers';
 
 interface ListOptions extends OptionValues {
+  bmi: boolean;
   from?: string;
   movingAverage?: number;
   plot: boolean;
@@ -31,6 +38,7 @@ export function createWeightListCommand(services: CliServices): Command {
     .option('--to <date>', `End date in ${DATE_FORMAT_LABEL} format`, parseDate)
     .option('--tail <count>', 'Show only last N records in table', parseTail, 7)
     .option('--plot', 'Display chart in browser')
+    .option('--bmi', 'Display BMI reference range on --plot')
     .option(
       '--moving-average <days>',
       `Moving-average window for --plot (default: ${DEFAULT_MOVING_AVERAGE_DAYS})`,
@@ -51,10 +59,46 @@ async function listWeights(
   printWeightList(services.output, report, options.tail, now);
 
   if (options.plot && report.data.length > 0) {
+    const bmiData = options.bmi
+      ? await getBmiChartData(services, report)
+      : undefined;
+
     await services.output.withStatus('Plotting data...', () =>
-      showWeightChart(report),
+      showWeightChart(report, bmiData),
     );
   }
+}
+
+async function getBmiChartData(
+  services: CliServices,
+  report: WeightsGetResponse,
+): Promise<BmiChartData> {
+  const latestWeight = getLatestWeight(report.data);
+
+  return runWithAccessToken(
+    services,
+    'Fetching BMI ranges...',
+    async accessToken => {
+      const bmiResponse = await calculateBmi({
+        ...withBearerToken(services.api, accessToken),
+        body: { heightCm: null, weightKg: latestWeight.weightKg },
+      });
+
+      return {
+        category: bmiResponse.data.category,
+        categoryName: bmiResponse.data.categoryName,
+        ranges: bmiResponse.data.ranges,
+      };
+    },
+  );
+}
+
+function getLatestWeight(
+  entries: readonly WeightsEntryResponse[],
+): WeightsEntryResponse {
+  return entries.reduce((latest, entry) =>
+    entry.date > latest.date ? entry : latest,
+  );
 }
 
 async function getReport(services: CliServices, options: ListOptions) {
@@ -82,6 +126,10 @@ async function getReport(services: CliServices, options: ListOptions) {
 }
 
 function validateOptions(options: ListOptions): void {
+  if (options.bmi && !options.plot) {
+    throw new CliUsageError('The --bmi option can only be used with --plot.');
+  }
+
   if (options.movingAverage !== undefined && !options.plot) {
     throw new CliUsageError(
       'The --moving-average option can only be used with --plot.',

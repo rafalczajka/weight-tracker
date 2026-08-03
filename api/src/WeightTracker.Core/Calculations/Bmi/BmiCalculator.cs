@@ -29,6 +29,25 @@ public static class BmiCalculator
             MidpointRounding.AwayFromZero);
         var category = AdultRanges.Single(range => range.Contains(bmi)).Category;
 
-        return new BmiResult(bmi, category);
+        return new BmiResult(bmi, category, weightKg, heightCm);
     }
+
+    public static IReadOnlyList<BmiWeightRange> GetAdultWeightRanges(decimal heightCm)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(heightCm);
+
+        var heightMeters = heightCm / CentimetersPerMeter;
+
+        return
+        [
+            .. AdultRanges.Select(range => new BmiWeightRange(
+                range.Category,
+                range.MinimumBmiInclusive,
+                range.MaximumBmiExclusive,
+                ToWeightKg(range.MinimumBmiInclusive, heightMeters),
+                ToWeightKg(range.MaximumBmiExclusive, heightMeters)))
+        ];
+    }
+
+    private static decimal? ToWeightKg(decimal? bmi, decimal heightMeters) => bmi * heightMeters * heightMeters;
 }

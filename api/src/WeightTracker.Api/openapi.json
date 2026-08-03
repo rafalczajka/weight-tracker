@@ -1765,12 +1765,22 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "weightKg",
+          "heightCm",
           "bmi",
           "category",
-          "classification",
+          "categoryName",
           "ranges"
         ],
         "properties": {
+          "weightKg": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "heightCm": {
+            "type": "number",
+            "format": "decimal"
+          },
           "bmi": {
             "type": "number",
             "format": "decimal"
@@ -1778,13 +1788,13 @@
           "category": {
             "$ref": "#/components/schemas/BmiCategory"
           },
-          "classification": {
+          "categoryName": {
             "type": "string"
           },
           "ranges": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/BmiRange"
+              "$ref": "#/components/schemas/BmiRangeResponse"
             }
           }
         }
@@ -1809,22 +1819,36 @@
           "obesityClass3"
         ]
       },
-      "BmiRange": {
+      "BmiRangeResponse": {
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "category"
+          "category",
+          "categoryName"
         ],
         "properties": {
           "category": {
             "$ref": "#/components/schemas/BmiCategory"
           },
-          "minimumInclusive": {
+          "categoryName": {
+            "type": "string"
+          },
+          "minimumBmiInclusive": {
             "type": "number",
             "format": "decimal",
             "nullable": true
           },
-          "maximumExclusive": {
+          "maximumBmiExclusive": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "minimumWeightKgInclusive": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "maximumWeightKgExclusive": {
             "type": "number",
             "format": "decimal",
             "nullable": true
