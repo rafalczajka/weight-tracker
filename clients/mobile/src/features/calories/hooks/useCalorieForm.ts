@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { normalizeDescription } from '@weight-tracker/client-core';
 import {
   getCaloriesError,
   getDescriptionError,
@@ -51,7 +52,7 @@ export function useCalorieForm(
 
     return {
       caloriesKcal: parsedCalories,
-      description: description.trim() || null,
+      description: normalizeDescription(description),
     };
   }
 

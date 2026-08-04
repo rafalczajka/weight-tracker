@@ -3,11 +3,11 @@ import type {
   WeightsEntryResponse,
   WeightsGetResponse,
 } from '@weight-tracker/api-client';
+import { formatApiDate } from '@weight-tracker/client-core';
 import chalk from 'chalk';
 import Table from 'cli-table3';
 import { WEIGHT_UNIT } from '@/constants';
 import type { CliOutput } from '@/output';
-import { formatUtcDate } from '@/parsers';
 
 interface AverageComparison {
   label: string;
@@ -46,7 +46,7 @@ export function printWeightList(
   output.print();
   printStats(output, report.stats);
 
-  const todayEntry = entries.find(entry => entry.date === formatUtcDate(now));
+  const todayEntry = entries.find(entry => entry.date === formatApiDate(now));
 
   if (todayEntry) {
     printCurrentWeight(

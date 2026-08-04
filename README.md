@@ -78,5 +78,8 @@ pnpm generate
 bash scripts/check-generated.sh
 ```
 
+Generated request schemas are used by `packages/client-core` to share input
+parsing and validation between the CLI and mobile application.
+
 Archived applications under `legacy/` are excluded from active tooling and
 dependency updates.

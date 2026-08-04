@@ -5,6 +5,7 @@ import {
   type WeightsEntryResponse,
   type WeightsGetResponse,
 } from '@weight-tracker/api-client';
+import { isApiDateRangeValid } from '@weight-tracker/client-core';
 import { Command, type OptionValues } from 'commander';
 import { showWeightChart, type BmiChartData } from '@/chart';
 import { DATE_FORMAT_LABEL, DEFAULT_MOVING_AVERAGE_DAYS } from '@/constants';
@@ -133,7 +134,7 @@ function validateOptions(options: ListOptions): void {
     );
   }
 
-  if (options.from && options.to && options.from > options.to) {
+  if (!isApiDateRangeValid(options.from, options.to)) {
     throw new CliUsageError('Date from must be before or equal to date to.');
   }
 }

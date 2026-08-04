@@ -1,17 +1,9 @@
-const POSITIVE_INTEGER_PATTERN = /^\d+$/;
+import {
+  isCalorieDescriptionValid,
+  parseCaloriesKcal,
+} from '@weight-tracker/client-core';
 
-export function parseCaloriesKcal(value: string): number | null {
-  const normalized = value.trim();
-
-  if (!POSITIVE_INTEGER_PATTERN.test(normalized)) {
-    return null;
-  }
-
-  const caloriesKcal = Number(normalized);
-  return Number.isSafeInteger(caloriesKcal) && caloriesKcal > 0
-    ? caloriesKcal
-    : null;
-}
+export { parseCaloriesKcal };
 
 export function getCaloriesError(value: string): string | null {
   if (!value.trim()) {
@@ -24,7 +16,5 @@ export function getCaloriesError(value: string): string | null {
 }
 
 export function getDescriptionError(value: string): string | null {
-  return value.trim().length > 200
-    ? 'Description must not exceed 200 characters.'
-    : null;
+  return isCalorieDescriptionValid(value) ? null : 'Description is too long.';
 }

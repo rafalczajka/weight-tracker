@@ -3,12 +3,12 @@ import {
   withBearerToken,
   type CalorieEntryDetailsResponse,
 } from '@weight-tracker/api-client';
+import { formatApiDate } from '@weight-tracker/client-core';
 import React, { useState } from 'react';
 import { Keyboard } from 'react-native';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import { FormScreen, type StatusNoticeValue } from '@/components';
-import { getTodayApiDate } from '@/date';
 import { useMutationTracker } from '@/mutations';
 import type { ThemeColors } from '@/theme';
 import { CalorieForm } from '../components/CalorieForm';
@@ -29,7 +29,7 @@ export function AddCalorieScreen({
 }: AddCalorieScreenProps) {
   const form = useCalorieForm();
   const { runMutation } = useMutationTracker();
-  const [date, setDate] = useState(initialDate ?? getTodayApiDate());
+  const [date, setDate] = useState(initialDate ?? formatApiDate(new Date()));
   const [submitting, setSubmitting] = useState(false);
   const [notice, setNotice] = useState<StatusNoticeValue | null>(null);
 

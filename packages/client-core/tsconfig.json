@@ -1,0 +1,7 @@
+{
+  "extends": "@weight-tracker/typescript-config/library.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts"]
+}

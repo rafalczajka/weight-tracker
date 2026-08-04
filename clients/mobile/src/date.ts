@@ -1,8 +1,4 @@
-const API_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
-
-export function getTodayApiDate(now = new Date()): string {
-  return now.toISOString().slice(0, 10);
-}
+import { isApiDate, isApiDateRangeValid } from '@weight-tracker/client-core';
 
 export function formatPickerDate(date: Date): string {
   const year = date.getFullYear();
@@ -13,13 +9,15 @@ export function formatPickerDate(date: Date): string {
 }
 
 export function parseApiDate(value: string): Date {
-  const match = API_DATE_PATTERN.exec(value);
-
-  if (!match) {
+  if (!isApiDate(value)) {
     return new Date();
   }
 
-  return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 12);
+  const year = Number(value.slice(0, 4));
+  const month = Number(value.slice(5, 7));
+  const day = Number(value.slice(8, 10));
+
+  return new Date(year, month - 1, day, 12);
 }
 
 export function formatDisplayDate(value: string): string {
@@ -38,7 +36,7 @@ export function formatDisplayDate(value: string): string {
 }
 
 export function getDateRangeError(from?: string, to?: string): string | null {
-  return from && to && from > to
-    ? 'Start date must be before or equal to end date.'
-    : null;
+  return isApiDateRangeValid(from, to)
+    ? null
+    : 'Start date must be before or equal to end date.';
 }

@@ -70,7 +70,6 @@ export function CalorieForm({
         disabled={disabled}
         error={descriptionError}
         label="Description (optional)"
-        maxLength={200}
         multiline
         onBlur={onDescriptionBlur}
         onChangeText={onDescriptionChange}

@@ -6,10 +6,10 @@ import {
   type DailyCaloriesResponse,
   type WeightSummary,
 } from '@weight-tracker/api-client';
+import { formatApiDate } from '@weight-tracker/client-core';
 import { useCallback, useRef, useState } from 'react';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
-import { getTodayApiDate } from '@/date';
 import { useRequestController } from '@/hooks/useRequestController';
 
 interface HomeData {
@@ -30,7 +30,7 @@ export function useHomeData(auth: AuthSessionController) {
   const load = useCallback(
     async (refresh = false) => {
       const controller = startRequest();
-      const date = getTodayApiDate();
+      const date = formatApiDate(new Date());
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
 

@@ -3,10 +3,15 @@ import type {
   ProteinGoal,
   Sex,
 } from '@weight-tracker/api-client';
+import {
+  isApiDate,
+  parseAgeYears as parseAgeYearsInput,
+  parseCaloriesKcal as parseCaloriesKcalInput,
+  parseHeightCm as parseHeightCmInput,
+  parseWeightKg as parseWeightKgInput,
+} from '@weight-tracker/client-core';
 import { InvalidArgumentError } from 'commander';
-import { MAX_WEIGHT_KG } from './constants';
 
-const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 const MAX_INT32 = 2_147_483_647;
 
 const ACTIVITY_LEVELS = {
@@ -28,25 +33,7 @@ const SEXES = {
 } as const satisfies Record<string, Sex>;
 
 export function parseDate(value: string): string {
-  const match = DATE_PATTERN.exec(value);
-
-  if (!match) {
-    throw new InvalidArgumentError('Date must be in YYYY-MM-DD format.');
-  }
-
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = Number(match[3]);
-  const date = new Date(0);
-  date.setUTCHours(0, 0, 0, 0);
-  date.setUTCFullYear(year, month - 1, day);
-
-  if (
-    year === 0 ||
-    date.getUTCFullYear() !== year ||
-    date.getUTCMonth() !== month - 1 ||
-    date.getUTCDate() !== day
-  ) {
+  if (!isApiDate(value)) {
     throw new InvalidArgumentError('Date must be in YYYY-MM-DD format.');
   }
 
@@ -54,16 +41,11 @@ export function parseDate(value: string): string {
 }
 
 export function parseWeightKg(value: string): number {
-  const weightKg = Number(value);
+  const weightKg = parseWeightKgInput(value);
 
-  if (
-    !value.trim() ||
-    !Number.isFinite(weightKg) ||
-    weightKg <= 0 ||
-    weightKg > MAX_WEIGHT_KG
-  ) {
+  if (weightKg === null) {
     throw new InvalidArgumentError(
-      `Weight must be a number greater than 0 and at most ${MAX_WEIGHT_KG} kg.`,
+      'Weight must be a number within the supported range.',
     );
   }
 
@@ -71,16 +53,11 @@ export function parseWeightKg(value: string): number {
 }
 
 export function parseHeightCm(value: string): number {
-  const heightCm = Number(value);
+  const heightCm = parseHeightCmInput(value);
 
-  if (
-    !value.trim() ||
-    !Number.isFinite(heightCm) ||
-    heightCm <= 0 ||
-    heightCm > 300
-  ) {
+  if (heightCm === null) {
     throw new InvalidArgumentError(
-      'Height must be a number greater than 0 and at most 300 cm.',
+      'Height must be a number within the supported range.',
     );
   }
 
@@ -88,21 +65,25 @@ export function parseHeightCm(value: string): number {
 }
 
 export function parseAgeYears(value: string): number {
-  return parsePositiveInteger(
-    value,
-    'Age must be an integer between 18 and 120.',
-    18,
-    120,
-  );
+  const ageYears = parseAgeYearsInput(value);
+
+  if (ageYears === null) {
+    throw new InvalidArgumentError(
+      'Age must be an integer within the supported range.',
+    );
+  }
+
+  return ageYears;
 }
 
 export function parseCaloriesKcal(value: string): number {
-  return parsePositiveInteger(
-    value,
-    'Calories must be a positive integer.',
-    1,
-    MAX_INT32,
-  );
+  const caloriesKcal = parseCaloriesKcalInput(value);
+
+  if (caloriesKcal === null) {
+    throw new InvalidArgumentError('Calories must be a positive integer.');
+  }
+
+  return caloriesKcal;
 }
 
 export function parseLimitDays(value: string): number {
@@ -165,10 +146,6 @@ export function parseMovingAverageDays(value: string): number {
     value,
     'Moving average days must be a positive integer.',
   );
-}
-
-export function formatUtcDate(date: Date): string {
-  return date.toISOString().slice(0, 10);
 }
 
 function parsePositiveInteger(

@@ -3,13 +3,13 @@ import type {
   WeightsEntryResponse,
   WeightsGetResponse,
 } from '@weight-tracker/api-client';
+import { isApiDate } from '@weight-tracker/client-core';
 import {
   createBmiChartModel,
   type BmiChartData,
   type BmiChartModel,
 } from './bmi';
 
-const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const INVALID_DATA_MESSAGE = 'Weight chart data is invalid.';
 
 interface ChartPoint {
@@ -89,7 +89,7 @@ function parseAveragePoint(entry: WeightMovingAverageValue): ChartPoint {
 }
 
 function parsePoint(date: string, weightKg: number): ChartPoint {
-  if (!isValidDate(date) || !Number.isFinite(weightKg)) {
+  if (!isApiDate(date) || !Number.isFinite(weightKg)) {
     throw new Error(INVALID_DATA_MESSAGE);
   }
 
@@ -101,16 +101,6 @@ function createSeries(points: ChartPoint[]): ChartSeries {
     dates: points.map(point => point.date),
     weightsKg: points.map(point => point.weightKg),
   };
-}
-
-function isValidDate(date: string): boolean {
-  const timestamp = Date.parse(`${date}T00:00:00Z`);
-
-  if (!DATE_PATTERN.test(date) || !Number.isFinite(timestamp)) {
-    return false;
-  }
-
-  return new Date(timestamp).toISOString().slice(0, 10) === date;
 }
 
 function compareByDate(left: ChartPoint, right: ChartPoint): number {

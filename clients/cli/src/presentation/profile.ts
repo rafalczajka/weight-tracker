@@ -1,8 +1,8 @@
 import type { UserResponse } from '@weight-tracker/api-client';
+import { formatLabel } from '@weight-tracker/client-core';
 import chalk from 'chalk';
 import Table from 'cli-table3';
 import type { CliOutput } from '@/output';
-import { formatLabel } from './format';
 
 export function printUserProfile(
   output: CliOutput,

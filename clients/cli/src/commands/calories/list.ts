@@ -1,4 +1,5 @@
 import { getCalories, withBearerToken } from '@weight-tracker/api-client';
+import { isApiDateRangeValid } from '@weight-tracker/client-core';
 import { Command, type OptionValues } from 'commander';
 import { DATE_FORMAT_LABEL } from '@/constants';
 import { CliUsageError } from '@/errors';
@@ -60,7 +61,7 @@ async function listCalories(
 }
 
 function validateDateRange(options: ListOptions): void {
-  if (options.from && options.to && options.from > options.to) {
+  if (!isApiDateRangeValid(options.from, options.to)) {
     throw new CliUsageError('Date from must be before or equal to date to.');
   }
 }

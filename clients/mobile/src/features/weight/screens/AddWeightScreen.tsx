@@ -4,12 +4,12 @@ import {
   withBearerToken,
   type WeightsEntryResponse,
 } from '@weight-tracker/api-client';
+import { formatApiDate } from '@weight-tracker/client-core';
 import React, { useState } from 'react';
 import { Keyboard } from 'react-native';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import { FormScreen, TextButton, type StatusNoticeValue } from '@/components';
-import { getTodayApiDate } from '@/date';
 import { useMutationTracker } from '@/mutations';
 import type { ThemeColors } from '@/theme';
 import { WeightForm } from '../components/WeightForm';
@@ -32,7 +32,7 @@ export function AddWeightScreen({
 }: AddWeightScreenProps) {
   const form = useWeightForm();
   const { runMutation } = useMutationTracker();
-  const [date, setDate] = useState(initialDate ?? getTodayApiDate());
+  const [date, setDate] = useState(initialDate ?? formatApiDate(new Date()));
   const [submitting, setSubmitting] = useState(false);
   const [conflict, setConflict] = useState(false);
   const [notice, setNotice] = useState<StatusNoticeValue | null>(null);

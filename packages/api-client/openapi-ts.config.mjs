@@ -9,6 +9,10 @@ export default defineConfig({
   },
   plugins: [
     '@hey-api/typescript',
+    {
+      name: 'zod',
+      responses: false,
+    },
     '@hey-api/client-fetch',
     {
       name: '@hey-api/sdk',

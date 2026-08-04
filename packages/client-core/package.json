@@ -1,22 +1,19 @@
 {
-  "name": "@weight-tracker/api-client",
+  "name": "@weight-tracker/client-core",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./schemas": "./src/generated/zod.gen.ts"
+    ".": "./src/index.ts"
   },
   "scripts": {
-    "generate": "openapi-ts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "zod": "4.4.3"
+    "@weight-tracker/api-client": "workspace:*"
   },
   "devDependencies": {
-    "@hey-api/openapi-ts": "0.99.0",
     "@weight-tracker/eslint-config": "workspace:*",
     "@weight-tracker/typescript-config": "workspace:*",
     "eslint": "8.57.1",

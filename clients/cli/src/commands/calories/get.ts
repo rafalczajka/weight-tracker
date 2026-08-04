@@ -1,9 +1,10 @@
 import { getDailyCalories, withBearerToken } from '@weight-tracker/api-client';
+import { formatApiDate } from '@weight-tracker/client-core';
 import { Command } from 'commander';
 import { DATE_FORMAT_LABEL } from '@/constants';
 import { printDailyCalories } from '@/presentation/calories';
 import type { CliServices } from '@/services';
-import { formatUtcDate, parseDate } from '@/parsers';
+import { parseDate } from '@/parsers';
 import { runWithAccessToken } from '@/commands/helpers';
 
 export function createCalorieGetCommand(services: CliServices): Command {
@@ -21,7 +22,7 @@ async function getCaloriesForDate(
   services: CliServices,
   date?: string,
 ): Promise<void> {
-  const selectedDate = date ?? formatUtcDate(services.now?.() ?? new Date());
+  const selectedDate = date ?? formatApiDate(services.now?.() ?? new Date());
   const day = await runWithAccessToken(
     services,
     'Fetching daily calories...',

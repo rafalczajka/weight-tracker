@@ -24,11 +24,7 @@ export function createCalorieAddCommand(services: CliServices): Command {
       `Date in ${DATE_FORMAT_LABEL} format`,
       parseDate,
     )
-    .option(
-      '--description <text>',
-      'Optional description (max 200 characters)',
-      parseDescription,
-    )
+    .option('--description <text>', 'Optional description', parseDescription)
     .action((caloriesKcal: number, options: AddOptions) =>
       addCalorieEntry(services, caloriesKcal, options),
     );

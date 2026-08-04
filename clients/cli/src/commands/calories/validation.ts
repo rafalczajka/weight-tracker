@@ -1,12 +1,13 @@
+import {
+  isCalorieDescriptionValid,
+  normalizeDescription,
+} from '@weight-tracker/client-core';
 import { InvalidArgumentError } from 'commander';
-import { MAX_CALORIE_DESCRIPTION_LENGTH } from '@/constants';
 
 export function parseDescription(value: string): string {
-  if (value.length > MAX_CALORIE_DESCRIPTION_LENGTH) {
-    throw new InvalidArgumentError(
-      `Description must not exceed ${MAX_CALORIE_DESCRIPTION_LENGTH} characters.`,
-    );
+  if (!isCalorieDescriptionValid(value)) {
+    throw new InvalidArgumentError('Description is too long.');
   }
 
-  return value.trim();
+  return normalizeDescription(value) ?? '';
 }
