@@ -1,19 +1,11 @@
-import { useFocusEffect } from '@react-navigation/native';
-import {
-  getDailyCalories,
-  getWeightsSummary,
-  withBearerToken,
-  type DailyCaloriesResponse,
-  type WeightSummary,
-} from '@weight-tracker/api-client';
-import React, { useCallback, useRef, useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { apiClient } from '../../api-client';
-import { runAuthorized, type AuthSessionController } from '../../auth';
-import { ListRow, Screen, ScreenState } from '../../components';
-import { formatDisplayDate, getTodayApiDate } from '../../date';
-import { formatCaloriesKcal, formatWeightKg } from '../../format';
-import type { ThemeColors } from '../../theme';
+import type { AuthSessionController } from '@/auth';
+import { ListRow, Screen, ScreenState } from '@/components';
+import { formatDisplayDate } from '@/date';
+import { formatCaloriesKcal, formatWeightKg } from '@/format';
+import type { ThemeColors } from '@/theme';
+import { useHomeData } from './useHomeData';
 
 interface HomeScreenProps {
   auth: AuthSessionController;
@@ -25,11 +17,6 @@ interface HomeScreenProps {
   onScanProduct: () => void;
 }
 
-interface HomeData {
-  calories: DailyCaloriesResponse;
-  weight: WeightSummary;
-}
-
 export function HomeScreen({
   auth,
   colors,
@@ -39,59 +26,8 @@ export function HomeScreen({
   onEditWeight,
   onScanProduct,
 }: HomeScreenProps) {
-  const authRef = useRef(auth);
-  authRef.current = auth;
-  const [data, setData] = useState<HomeData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const today = getTodayApiDate();
-
-  const load = useCallback(async (signal?: AbortSignal, refresh = false) => {
-    refresh ? setRefreshing(true) : setLoading(true);
-    setError(null);
-
-    try {
-      const result = await runAuthorized(authRef.current, async accessToken => {
-        const options = withBearerToken(apiClient, accessToken);
-        const [weightResponse, caloriesResponse] = await Promise.all([
-          getWeightsSummary({ ...options, signal }),
-          getDailyCalories({
-            ...options,
-            path: { date: getTodayApiDate() },
-            signal,
-          }),
-        ]);
-
-        return {
-          calories: caloriesResponse.data,
-          weight: weightResponse.data,
-        };
-      });
-
-      if (result && !signal?.aborted) {
-        setData(result);
-      }
-    } catch {
-      if (!signal?.aborted) {
-        setError("Unable to load today's summary.");
-      }
-    } finally {
-      if (!signal?.aborted) {
-        setLoading(false);
-        setRefreshing(false);
-      }
-    }
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      const controller = new AbortController();
-      load(controller.signal);
-
-      return () => controller.abort();
-    }, [load]),
-  );
+  const { data, error, loading, refresh, refreshing, retry } =
+    useHomeData(auth);
 
   if (loading && !data) {
     return (
@@ -108,7 +44,7 @@ export function HomeScreen({
           actionLabel="Try again"
           colors={colors}
           kind="error"
-          onAction={() => load()}
+          onAction={retry}
           title={error}
         />
       </Screen>
@@ -119,6 +55,7 @@ export function HomeScreen({
     return null;
   }
 
+  const today = data.date;
   const todayWeightKg = data.weight.today.weightKg;
   const weightAction =
     data.weight.today.hasEntry && todayWeightKg != null
@@ -126,7 +63,7 @@ export function HomeScreen({
       : () => onAddWeight(data.weight.today.date);
 
   return (
-    <Screen onRefresh={() => load(undefined, true)} refreshing={refreshing}>
+    <Screen onRefresh={refresh} refreshing={refreshing}>
       <Text style={[styles.date, { color: colors.muted }]}>
         {formatDisplayDate(today)}
       </Text>

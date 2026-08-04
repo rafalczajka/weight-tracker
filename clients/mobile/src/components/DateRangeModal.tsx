@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getDateRangeError } from '../date';
-import type { ThemeColors } from '../theme';
+import { getDateRangeError } from '@/date';
+import type { ThemeColors } from '@/theme';
 import { DateField } from './DateField';
 import { PrimaryButton } from './PrimaryButton';
 import { TextButton } from './TextButton';

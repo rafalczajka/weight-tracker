@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { createStackScreenOptions } from '../../navigation/options';
-import type { ThemeColors } from '../../theme';
+import { createStackScreenOptions } from '@/navigation/options';
+import type { ThemeColors } from '@/theme';
 import { ScanScreen } from './ScanScreen';
 
 export type ScanStackParamList = {

@@ -4,9 +4,9 @@ import type {
   WeightsEntryResponse,
   WeightsGetResponse,
 } from '@weight-tracker/api-client';
-import { formatDisplayDate } from '../../../date';
-import { formatWeightChange, formatWeightKg } from '../../../format';
-import type { ThemeColors } from '../../../theme';
+import { formatDisplayDate } from '@/date';
+import { formatWeightChange, formatWeightKg } from '@/format';
+import type { ThemeColors } from '@/theme';
 
 interface WeightHistoryTableProps {
   colors: ThemeColors;

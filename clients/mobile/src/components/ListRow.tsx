@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react-native';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import type { ThemeColors } from '../theme';
+import type { ThemeColors } from '@/theme';
 
 interface ListRowProps {
   colors: ThemeColors;

@@ -16,6 +16,7 @@ const MutationContext = createContext<MutationContextValue | null>(null);
 
 export function MutationProvider({ children }: PropsWithChildren) {
   const [activeMutations, setActiveMutations] = useState(0);
+
   const runMutation = useCallback(
     async <T,>(operation: () => Promise<T>): Promise<T> => {
       setActiveMutations(value => value + 1);
@@ -28,6 +29,7 @@ export function MutationProvider({ children }: PropsWithChildren) {
     },
     [],
   );
+
   const value = useMemo(
     () => ({ busy: activeMutations > 0, runMutation }),
     [activeMutations, runMutation],

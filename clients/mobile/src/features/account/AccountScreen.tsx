@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SignOutButton, type AuthNotice } from '../../auth';
-import { Screen, StatusNotice } from '../../components';
-import type { ThemeColors } from '../../theme';
+import { SignOutButton, type AuthNotice } from '@/auth';
+import { Screen, StatusNotice } from '@/components';
+import type { ThemeColors } from '@/theme';
 
 interface AccountScreenProps {
   colors: ThemeColors;

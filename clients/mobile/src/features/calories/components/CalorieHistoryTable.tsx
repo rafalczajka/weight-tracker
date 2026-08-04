@@ -1,9 +1,9 @@
 import type { DailyCaloriesResponse } from '@weight-tracker/api-client';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { formatDisplayDate } from '../../../date';
-import { formatCaloriesKcal } from '../../../format';
-import type { ThemeColors } from '../../../theme';
+import { formatDisplayDate } from '@/date';
+import { formatCaloriesKcal } from '@/format';
+import type { ThemeColors } from '@/theme';
 
 interface CalorieHistoryTableProps {
   colors: ThemeColors;

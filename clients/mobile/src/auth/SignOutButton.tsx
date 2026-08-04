@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
-import type { ThemeColors } from '../theme';
+import type { ThemeColors } from '@/theme';
 
 interface SignOutButtonProps {
   colors: ThemeColors;

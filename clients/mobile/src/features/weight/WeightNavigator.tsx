@@ -5,10 +5,10 @@ import {
 } from '@react-navigation/native-stack';
 import { Plus } from 'lucide-react-native';
 import React from 'react';
-import type { AuthSessionController } from '../../auth';
-import { IconButton } from '../../components';
-import { createStackScreenOptions } from '../../navigation/options';
-import type { ThemeColors } from '../../theme';
+import type { AuthSessionController } from '@/auth';
+import { IconButton } from '@/components';
+import { createStackScreenOptions } from '@/navigation/options';
+import type { ThemeColors } from '@/theme';
 import { AddWeightScreen } from './screens/AddWeightScreen';
 import { EditWeightScreen } from './screens/EditWeightScreen';
 import { WeightDetailsScreen } from './screens/WeightDetailsScreen';
@@ -61,14 +61,12 @@ export function WeightNavigator({ auth, colors }: WeightNavigatorProps) {
             colors={colors}
             initialDate={route.params?.date}
             onCreated={entry =>
-              navigation.replace('WeightDetails', {
+              navigation.popTo('WeightDetails', {
                 date: entry.date,
                 initialNotice: 'Weight added.',
               })
             }
-            onViewExisting={date =>
-              navigation.replace('WeightDetails', { date })
-            }
+            onViewExisting={date => navigation.popTo('WeightDetails', { date })}
           />
         )}
       </Stack.Screen>
@@ -101,7 +99,7 @@ export function WeightNavigator({ auth, colors }: WeightNavigatorProps) {
             colors={colors}
             entry={route.params}
             onSaved={entry =>
-              navigation.navigate('WeightDetails', {
+              navigation.popTo('WeightDetails', {
                 date: entry.date,
                 initialNotice: 'Weight updated.',
               })

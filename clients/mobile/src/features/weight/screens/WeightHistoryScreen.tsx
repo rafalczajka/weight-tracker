@@ -1,14 +1,9 @@
 import type { WeightsEntryResponse } from '@weight-tracker/api-client';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import type { AuthSessionController } from '../../../auth';
-import {
-  DateRangeModal,
-  Screen,
-  ScreenState,
-  TextButton,
-} from '../../../components';
-import type { ThemeColors } from '../../../theme';
+import type { AuthSessionController } from '@/auth';
+import { DateRangeModal, Screen, ScreenState, TextButton } from '@/components';
+import type { ThemeColors } from '@/theme';
 import { WeightHistoryTable } from '../components/WeightHistoryTable';
 import { useWeightHistory } from '../hooks/useWeightHistory';
 

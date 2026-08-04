@@ -6,8 +6,8 @@ import {
   PrimaryButton,
   StatusNotice,
   type StatusNoticeValue,
-} from '../../../components';
-import type { ThemeColors } from '../../../theme';
+} from '@/components';
+import type { ThemeColors } from '@/theme';
 
 interface WeightFormProps {
   buttonLabel: string;

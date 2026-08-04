@@ -6,10 +6,10 @@ import {
 import { Plus, ScanBarcode } from 'lucide-react-native';
 import React, { createContext, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
-import type { AuthSessionController } from '../../auth';
-import { IconButton } from '../../components';
-import { createStackScreenOptions } from '../../navigation/options';
-import type { ThemeColors } from '../../theme';
+import type { AuthSessionController } from '@/auth';
+import { IconButton } from '@/components';
+import { createStackScreenOptions } from '@/navigation/options';
+import type { ThemeColors } from '@/theme';
 import { AddCalorieScreen } from './screens/AddCalorieScreen';
 import { CalorieEntryDetailsScreen } from './screens/CalorieEntryDetailsScreen';
 import { CalorieHistoryScreen } from './screens/CalorieHistoryScreen';
@@ -92,7 +92,7 @@ export function CaloriesNavigator({
               colors={colors}
               initialDate={route.params?.date}
               onCreated={entry =>
-                navigation.replace('DailyCalories', {
+                navigation.popTo('DailyCalories', {
                   date: entry.date,
                   initialNotice: 'Calorie entry added.',
                 })
@@ -131,7 +131,7 @@ export function CaloriesNavigator({
               colors={colors}
               entry={route.params}
               onSaved={entry =>
-                navigation.navigate('CalorieEntryDetails', {
+                navigation.popTo('CalorieEntryDetails', {
                   date: entry.date,
                   id: entry.id,
                   initialNotice: 'Calorie entry updated.',

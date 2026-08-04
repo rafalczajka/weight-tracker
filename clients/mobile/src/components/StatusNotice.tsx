@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import type { ThemeColors } from '../theme';
+import type { ThemeColors } from '@/theme';
 
 export interface StatusNoticeValue {
   kind: 'error' | 'info' | 'success';
@@ -38,8 +38,8 @@ export function StatusNotice({ colors, notice }: StatusNoticeProps) {
 
 const styles = StyleSheet.create({
   noticeArea: {
-    height: 56,
     justifyContent: 'center',
+    minHeight: 56,
     paddingTop: 16,
   },
   noticeText: {

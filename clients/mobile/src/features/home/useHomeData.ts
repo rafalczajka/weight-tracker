@@ -1,18 +1,27 @@
 import { useFocusEffect } from '@react-navigation/native';
 import {
-  getWeightEntry,
+  getDailyCalories,
+  getWeightsSummary,
   withBearerToken,
-  type WeightsEntryResponse,
+  type DailyCaloriesResponse,
+  type WeightSummary,
 } from '@weight-tracker/api-client';
 import { useCallback, useRef, useState } from 'react';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
+import { getTodayApiDate } from '@/date';
 import { useRequestController } from '@/hooks/useRequestController';
 
-export function useWeightEntry(auth: AuthSessionController, date: string) {
+interface HomeData {
+  calories: DailyCaloriesResponse;
+  date: string;
+  weight: WeightSummary;
+}
+
+export function useHomeData(auth: AuthSessionController) {
   const authRef = useRef(auth);
   authRef.current = auth;
-  const [entry, setEntry] = useState<WeightsEntryResponse | null>(null);
+  const [data, setData] = useState<HomeData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,29 +30,38 @@ export function useWeightEntry(auth: AuthSessionController, date: string) {
   const load = useCallback(
     async (refresh = false) => {
       const controller = startRequest();
+      const date = getTodayApiDate();
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
 
       try {
-        const loadedEntry = await runAuthorized(
+        const result = await runAuthorized(
           authRef.current,
           async accessToken => {
-            const response = await getWeightEntry({
-              ...withBearerToken(apiClient, accessToken),
-              path: { date },
-              signal: controller.signal,
-            });
+            const options = withBearerToken(apiClient, accessToken);
+            const [weightResponse, caloriesResponse] = await Promise.all([
+              getWeightsSummary({ ...options, signal: controller.signal }),
+              getDailyCalories({
+                ...options,
+                path: { date },
+                signal: controller.signal,
+              }),
+            ]);
 
-            return response.data;
+            return {
+              calories: caloriesResponse.data,
+              date,
+              weight: weightResponse.data,
+            };
           },
         );
 
-        if (loadedEntry && !controller.signal.aborted) {
-          setEntry(loadedEntry);
+        if (result && !controller.signal.aborted) {
+          setData(result);
         }
       } catch {
         if (!controller.signal.aborted) {
-          setError('Unable to load this weight entry.');
+          setError("Unable to load today's summary.");
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -52,19 +70,18 @@ export function useWeightEntry(auth: AuthSessionController, date: string) {
         }
       }
     },
-    [date, startRequest],
+    [startRequest],
   );
 
   useFocusEffect(
     useCallback(() => {
       load();
-
       return abortRequest;
     }, [abortRequest, load]),
   );
 
   return {
-    entry,
+    data,
     error,
     loading,
     refresh: () => load(true),

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import type { ThemeColors } from '../theme';
+import type { ThemeColors } from '@/theme';
 import { PrimaryButton } from './PrimaryButton';
 
 type ScreenStateKind = 'empty' | 'error' | 'loading' | 'unavailable';

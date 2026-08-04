@@ -11,9 +11,9 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { SignInView, type AuthSessionController, useAuthSession } from './auth';
-import { Navigator } from './navigation';
-import { darkColors, lightColors, type ThemeColors } from './theme';
+import { SignInView, type AuthSessionController, useAuthSession } from '@/auth';
+import { Navigator } from '@/navigation';
+import { darkColors, lightColors, type ThemeColors } from '@/theme';
 
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';

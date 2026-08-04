@@ -4,8 +4,8 @@ import DateTimePicker, {
 import { CalendarDays } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { formatDisplayDate, formatPickerDate, parseApiDate } from '../date';
-import type { ThemeColors } from '../theme';
+import { formatDisplayDate, formatPickerDate, parseApiDate } from '@/date';
+import type { ThemeColors } from '@/theme';
 
 interface DateFieldProps {
   colors: ThemeColors;

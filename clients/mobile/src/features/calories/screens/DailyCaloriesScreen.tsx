@@ -1,7 +1,7 @@
 import type { CalorieEntryResponse } from '@weight-tracker/api-client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import type { AuthSessionController } from '../../../auth';
+import type { AuthSessionController } from '@/auth';
 import {
   ListRow,
   Screen,
@@ -9,10 +9,10 @@ import {
   StatusNotice,
   TextButton,
   type StatusNoticeValue,
-} from '../../../components';
-import { formatDisplayDate } from '../../../date';
-import { formatCaloriesKcal } from '../../../format';
-import type { ThemeColors } from '../../../theme';
+} from '@/components';
+import { formatDisplayDate } from '@/date';
+import { formatCaloriesKcal } from '@/format';
+import type { ThemeColors } from '@/theme';
 import { useDailyCalories } from '../hooks/useDailyCalories';
 
 interface DailyCaloriesScreenProps {
@@ -33,9 +33,13 @@ export function DailyCaloriesScreen({
   onOpenEntry,
 }: DailyCaloriesScreenProps) {
   const details = useDailyCalories(auth, date);
-  const [notice] = useState<StatusNoticeValue | null>(
+  const [notice, setNotice] = useState<StatusNoticeValue | null>(
     initialNotice ? { kind: 'success', text: initialNotice } : null,
   );
+
+  useEffect(() => {
+    setNotice(initialNotice ? { kind: 'success', text: initialNotice } : null);
+  }, [initialNotice]);
 
   if (details.loading && !details.day) {
     return (

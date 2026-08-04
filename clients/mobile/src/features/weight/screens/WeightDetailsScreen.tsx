@@ -3,10 +3,10 @@ import {
   withBearerToken,
   type WeightsEntryResponse,
 } from '@weight-tracker/api-client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { apiClient } from '../../../api-client';
-import { runAuthorized, type AuthSessionController } from '../../../auth';
+import { apiClient } from '@/apiClient';
+import { runAuthorized, type AuthSessionController } from '@/auth';
 import {
   ListRow,
   Screen,
@@ -14,11 +14,11 @@ import {
   StatusNotice,
   TextButton,
   type StatusNoticeValue,
-} from '../../../components';
-import { formatDisplayDate } from '../../../date';
-import { formatWeightChange, formatWeightKg } from '../../../format';
-import { useMutationTracker } from '../../../mutations';
-import type { ThemeColors } from '../../../theme';
+} from '@/components';
+import { formatDisplayDate } from '@/date';
+import { formatWeightChange, formatWeightKg } from '@/format';
+import { useMutationTracker } from '@/mutations';
+import type { ThemeColors } from '@/theme';
 import { useWeightEntry } from '../hooks/useWeightEntry';
 
 interface WeightDetailsScreenProps {
@@ -46,6 +46,10 @@ export function WeightDetailsScreen({
   const [notice, setNotice] = useState<StatusNoticeValue | null>(
     initialNotice ? { kind: 'success', text: initialNotice } : null,
   );
+
+  useEffect(() => {
+    setNotice(initialNotice ? { kind: 'success', text: initialNotice } : null);
+  }, [initialNotice]);
 
   function confirmDelete() {
     Alert.alert(

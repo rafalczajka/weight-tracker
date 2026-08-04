@@ -5,9 +5,10 @@ import {
   type CaloriesGetResponse,
 } from '@weight-tracker/api-client';
 import { useCallback, useRef, useState } from 'react';
-import { apiClient } from '../../../api-client';
-import { runAuthorized, type AuthSessionController } from '../../../auth';
-import type { DateRange } from '../../../components';
+import { apiClient } from '@/apiClient';
+import { runAuthorized, type AuthSessionController } from '@/auth';
+import type { DateRange } from '@/components';
+import { useRequestController } from '@/hooks/useRequestController';
 
 const INITIAL_DAY_LIMIT = 7;
 
@@ -20,9 +21,11 @@ export function useCalorieHistory(auth: AuthSessionController) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { abortRequest, startRequest } = useRequestController();
 
   const load = useCallback(
-    async (signal?: AbortSignal, refresh = false) => {
+    async (refresh = false) => {
+      const controller = startRequest();
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
 
@@ -37,37 +40,36 @@ export function useCalorieHistory(auth: AuthSessionController) {
                 ...(range.to ? { to: range.to } : {}),
                 limitDays,
               },
-              signal,
+              signal: controller.signal,
             });
 
             return response.data;
           },
         );
 
-        if (loadedResult && !signal?.aborted) {
+        if (loadedResult && !controller.signal.aborted) {
           setResult(loadedResult);
         }
       } catch {
-        if (!signal?.aborted) {
+        if (!controller.signal.aborted) {
           setError('Unable to load calorie history.');
         }
       } finally {
-        if (!signal?.aborted) {
+        if (!controller.signal.aborted) {
           setLoading(false);
           setRefreshing(false);
         }
       }
     },
-    [limitDays, range.from, range.to],
+    [limitDays, range.from, range.to, startRequest],
   );
 
   useFocusEffect(
     useCallback(() => {
-      const controller = new AbortController();
-      load(controller.signal);
+      load();
 
-      return () => controller.abort();
-    }, [load]),
+      return abortRequest;
+    }, [abortRequest, load]),
   );
 
   return {
@@ -80,7 +82,7 @@ export function useCalorieHistory(auth: AuthSessionController) {
     loadMore: () => setLimitDays(value => value + INITIAL_DAY_LIMIT),
     loading,
     range,
-    refresh: () => load(undefined, true),
+    refresh: () => load(true),
     refreshing,
     result,
     retry: () => load(),

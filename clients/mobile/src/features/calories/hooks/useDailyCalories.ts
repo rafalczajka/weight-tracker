@@ -5,8 +5,9 @@ import {
   type DailyCaloriesResponse,
 } from '@weight-tracker/api-client';
 import { useCallback, useRef, useState } from 'react';
-import { apiClient } from '../../../api-client';
-import { runAuthorized, type AuthSessionController } from '../../../auth';
+import { apiClient } from '@/apiClient';
+import { runAuthorized, type AuthSessionController } from '@/auth';
+import { useRequestController } from '@/hooks/useRequestController';
 
 export function useDailyCalories(auth: AuthSessionController, date: string) {
   const authRef = useRef(auth);
@@ -15,9 +16,11 @@ export function useDailyCalories(auth: AuthSessionController, date: string) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { abortRequest, startRequest } = useRequestController();
 
   const load = useCallback(
-    async (signal?: AbortSignal, refresh = false) => {
+    async (refresh = false) => {
+      const controller = startRequest();
       refresh ? setRefreshing(true) : setLoading(true);
       setError(null);
 
@@ -28,44 +31,43 @@ export function useDailyCalories(auth: AuthSessionController, date: string) {
             const response = await getDailyCalories({
               ...withBearerToken(apiClient, accessToken),
               path: { date },
-              signal,
+              signal: controller.signal,
             });
 
             return response.data;
           },
         );
 
-        if (loadedDay && !signal?.aborted) {
+        if (loadedDay && !controller.signal.aborted) {
           setDay(loadedDay);
         }
       } catch {
-        if (!signal?.aborted) {
+        if (!controller.signal.aborted) {
           setError('Unable to load calorie entries.');
         }
       } finally {
-        if (!signal?.aborted) {
+        if (!controller.signal.aborted) {
           setLoading(false);
           setRefreshing(false);
         }
       }
     },
-    [date],
+    [date, startRequest],
   );
 
   useFocusEffect(
     useCallback(() => {
-      const controller = new AbortController();
-      load(controller.signal);
+      load();
 
-      return () => controller.abort();
-    }, [load]),
+      return abortRequest;
+    }, [abortRequest, load]),
   );
 
   return {
     day,
     error,
     loading,
-    refresh: () => load(undefined, true),
+    refresh: () => load(true),
     refreshing,
     retry: () => load(),
   };

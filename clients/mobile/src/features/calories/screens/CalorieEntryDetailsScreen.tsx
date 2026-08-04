@@ -3,10 +3,10 @@ import {
   withBearerToken,
   type CalorieEntryDetailsResponse,
 } from '@weight-tracker/api-client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { apiClient } from '../../../api-client';
-import { runAuthorized, type AuthSessionController } from '../../../auth';
+import { apiClient } from '@/apiClient';
+import { runAuthorized, type AuthSessionController } from '@/auth';
 import {
   ListRow,
   Screen,
@@ -14,11 +14,11 @@ import {
   StatusNotice,
   TextButton,
   type StatusNoticeValue,
-} from '../../../components';
-import { formatDisplayDate } from '../../../date';
-import { formatCaloriesKcal } from '../../../format';
-import { useMutationTracker } from '../../../mutations';
-import type { ThemeColors } from '../../../theme';
+} from '@/components';
+import { formatDisplayDate } from '@/date';
+import { formatCaloriesKcal } from '@/format';
+import { useMutationTracker } from '@/mutations';
+import type { ThemeColors } from '@/theme';
 import { useDailyCalories } from '../hooks/useDailyCalories';
 
 interface CalorieEntryDetailsScreenProps {
@@ -47,6 +47,10 @@ export function CalorieEntryDetailsScreen({
     initialNotice ? { kind: 'success', text: initialNotice } : null,
   );
   const entry = details.day?.entries.find(item => item.id === id);
+
+  useEffect(() => {
+    setNotice(initialNotice ? { kind: 'success', text: initialNotice } : null);
+  }, [initialNotice]);
 
   function confirmDelete() {
     Alert.alert(

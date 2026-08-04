@@ -1,8 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import type { AuthSessionController } from '../../auth';
-import { createStackScreenOptions } from '../../navigation/options';
-import type { ThemeColors } from '../../theme';
+import type { AuthSessionController } from '@/auth';
+import { createStackScreenOptions } from '@/navigation/options';
+import type { ThemeColors } from '@/theme';
 import { HomeScreen } from './HomeScreen';
 
 export type HomeStackParamList = {

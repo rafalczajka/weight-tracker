@@ -1,6 +1,6 @@
 import React from 'react';
-import { Screen, ScreenState } from '../../components';
-import type { ThemeColors } from '../../theme';
+import { Screen, ScreenState } from '@/components';
+import type { ThemeColors } from '@/theme';
 
 interface ScanScreenProps {
   colors: ThemeColors;

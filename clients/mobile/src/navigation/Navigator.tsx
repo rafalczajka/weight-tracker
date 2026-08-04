@@ -14,14 +14,14 @@ import {
 } from 'lucide-react-native';
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import type { AuthSessionController } from '../auth';
-import { AccountNavigator } from '../features/account';
-import { CaloriesNavigator } from '../features/calories';
-import { HomeNavigator } from '../features/home';
-import { ScanNavigator } from '../features/scan';
-import { WeightNavigator } from '../features/weight';
-import { MutationProvider } from '../mutations';
-import type { ThemeColors } from '../theme';
+import type { AuthSessionController } from '@/auth';
+import { AccountNavigator } from '@/features/account';
+import { CaloriesNavigator } from '@/features/calories';
+import { HomeNavigator } from '@/features/home';
+import { ScanNavigator } from '@/features/scan';
+import { WeightNavigator } from '@/features/weight';
+import { MutationProvider } from '@/mutations';
+import type { ThemeColors } from '@/theme';
 import type { RootTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();

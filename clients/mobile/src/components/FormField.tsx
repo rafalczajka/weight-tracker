@@ -6,7 +6,7 @@ import {
   View,
   type KeyboardTypeOptions,
 } from 'react-native';
-import type { ThemeColors } from '../theme';
+import type { ThemeColors } from '@/theme';
 
 interface FormFieldProps {
   accessibilityLabel: string;

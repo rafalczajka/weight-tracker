@@ -5,20 +5,13 @@ import {
   type WeightsEntryResponse,
 } from '@weight-tracker/api-client';
 import React, { useState } from 'react';
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { apiClient } from '../../../api-client';
-import { runAuthorized, type AuthSessionController } from '../../../auth';
-import { TextButton, type StatusNoticeValue } from '../../../components';
-import { getTodayApiDate } from '../../../date';
-import { useMutationTracker } from '../../../mutations';
-import type { ThemeColors } from '../../../theme';
+import { Keyboard } from 'react-native';
+import { apiClient } from '@/apiClient';
+import { runAuthorized, type AuthSessionController } from '@/auth';
+import { FormScreen, TextButton, type StatusNoticeValue } from '@/components';
+import { getTodayApiDate } from '@/date';
+import { useMutationTracker } from '@/mutations';
+import type { ThemeColors } from '@/theme';
 import { WeightForm } from '../components/WeightForm';
 import { useWeightForm } from '../hooks/useWeightForm';
 
@@ -91,61 +84,33 @@ export function AddWeightScreen({
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.fill}
-    >
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={styles.content}>
-          <WeightForm
-            buttonLabel="Add weight"
-            colors={colors}
-            date={date}
-            dateEditable
-            disabled={submitting || auth.busy}
-            notice={notice}
-            onDateChange={value => {
-              setDate(value);
-              setConflict(false);
-              setNotice(null);
-            }}
-            onSubmit={submit}
-            onWeightBlur={form.validateWeight}
-            onWeightChange={form.changeWeight}
-            submitting={submitting}
-            weight={form.weight}
-            weightError={form.weightError}
-          />
-          {conflict ? (
-            <TextButton
-              colors={colors}
-              label="View existing entry"
-              onPress={() => onViewExisting(date)}
-            />
-          ) : null}
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <FormScreen>
+      <WeightForm
+        buttonLabel="Add weight"
+        colors={colors}
+        date={date}
+        dateEditable
+        disabled={submitting || auth.busy}
+        notice={notice}
+        onDateChange={value => {
+          setDate(value);
+          setConflict(false);
+          setNotice(null);
+        }}
+        onSubmit={submit}
+        onWeightBlur={form.validateWeight}
+        onWeightChange={form.changeWeight}
+        submitting={submitting}
+        weight={form.weight}
+        weightError={form.weightError}
+      />
+      {conflict ? (
+        <TextButton
+          colors={colors}
+          label="View existing entry"
+          onPress={() => onViewExisting(date)}
+        />
+      ) : null}
+    </FormScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  content: {
-    alignSelf: 'center',
-    maxWidth: 420,
-    paddingHorizontal: 24,
-    width: '100%',
-  },
-  fill: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    paddingBottom: 32,
-    paddingTop: 24,
-  },
-});
