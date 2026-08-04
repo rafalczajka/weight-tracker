@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { PrimaryButton, StatusNotice, type ThemeColors } from '../ui';
+import { PrimaryButton, StatusNotice } from '../components';
+import type { ThemeColors } from '../theme';
 import type { AuthNotice } from './useAuthSession';
 
 interface SignInViewProps {

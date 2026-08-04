@@ -6,23 +6,23 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import type { ThemeColors } from '../../ui/theme';
-import type { Notice, WeightEntryController } from './useWeightEntry';
+import type { ThemeColors } from '../../theme';
+import type { AddWeightController, AddWeightNotice } from './useAddWeight';
 import { WeightForm } from './WeightForm';
 
-interface WeightEntryScreenProps {
+interface AddWeightScreenProps {
   colors: ThemeColors;
-  controller: WeightEntryController;
+  controller: AddWeightController;
   disabled: boolean;
-  notice: Notice | null;
+  notice: AddWeightNotice | null;
 }
 
-export function WeightEntryScreen({
+export function AddWeightScreen({
   colors,
   controller,
   disabled,
   notice,
-}: WeightEntryScreenProps) {
+}: AddWeightScreenProps) {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}

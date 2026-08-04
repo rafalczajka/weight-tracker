@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { SignInView, type AuthSessionController, useAuthSession } from './auth';
-import { Navigator } from './Navigator';
-import { darkColors, lightColors, type ThemeColors } from './ui';
+import { Navigator } from './navigation';
+import { darkColors, lightColors, type ThemeColors } from './theme';
 
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -26,12 +26,9 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView
-        edges={auth.status === 'signed-in' ? ['top'] : undefined}
-        style={[styles.screen, { backgroundColor: colors.background }]}
-      >
+      <View style={[styles.screen, { backgroundColor: colors.background }]}>
         <AppContent auth={auth} colors={colors} isDarkMode={isDarkMode} />
-      </SafeAreaView>
+      </View>
     </SafeAreaProvider>
   );
 }
@@ -57,12 +54,7 @@ function AppContent({ auth, colors, isDarkMode }: AppContentProps) {
     case 'signed-out':
       return <SignedOutView auth={auth} colors={colors} />;
     case 'signed-in':
-      return (
-        <View style={styles.fill}>
-          <AppHeader color={colors.text} compact />
-          <Navigator auth={auth} colors={colors} isDarkMode={isDarkMode} />
-        </View>
-      );
+      return <Navigator auth={auth} colors={colors} isDarkMode={isDarkMode} />;
   }
 }
 
@@ -73,41 +65,40 @@ interface SignedOutViewProps {
 
 function SignedOutView({ auth, colors }: SignedOutViewProps) {
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.fill}
-    >
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
+    <SafeAreaView style={styles.fill}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.fill}
       >
-        <View style={styles.content}>
-          <AppHeader color={colors.text} />
-          <SignInView
-            colors={colors}
-            disabled={auth.busy}
-            loading={auth.signingIn}
-            notice={auth.notice}
-            onSignIn={auth.signIn}
-          />
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.content}>
+            <AppHeader color={colors.text} />
+            <SignInView
+              colors={colors}
+              disabled={auth.busy}
+              loading={auth.signingIn}
+              notice={auth.notice}
+              onSignIn={auth.signIn}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 interface AppHeaderProps {
   color: string;
-  compact?: boolean;
 }
 
-function AppHeader({ color, compact = false }: AppHeaderProps) {
+function AppHeader({ color }: AppHeaderProps) {
   return (
-    <View style={compact ? styles.compactHeader : undefined}>
-      <Text accessibilityRole="header" style={[styles.brand, { color }]}>
-        Weight Tracker
-      </Text>
-    </View>
+    <Text accessibilityRole="header" style={[styles.brand, { color }]}>
+      Weight Tracker
+    </Text>
   );
 }
 
@@ -127,11 +118,6 @@ const styles = StyleSheet.create({
   },
   fill: {
     flex: 1,
-  },
-  compactHeader: {
-    paddingBottom: 12,
-    paddingHorizontal: 24,
-    paddingTop: 18,
   },
   loading: {
     alignItems: 'center',

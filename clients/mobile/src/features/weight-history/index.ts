@@ -1,1 +1,0 @@
-export { WeightHistoryScreen } from './WeightHistoryScreen';

@@ -4,17 +4,17 @@ import { addTodayWeight, ApiError } from '../../api';
 import { getWeightError, parseWeightKg } from './validation';
 
 type Operation = 'submitting' | null;
-export type NoticeKind = 'error' | 'info' | 'success';
+export type AddWeightNoticeKind = 'error' | 'info' | 'success';
 
-export interface Notice {
-  kind: NoticeKind;
+export interface AddWeightNotice {
+  kind: AddWeightNoticeKind;
   text: string;
 }
 
-export interface WeightEntryController {
+export interface AddWeightController {
   weight: string;
   weightError: string | null;
-  notice: Notice | null;
+  notice: AddWeightNotice | null;
   formDisabled: boolean;
   submitting: boolean;
   changeWeight: (value: string) => void;
@@ -22,19 +22,19 @@ export interface WeightEntryController {
   submitWeight: () => Promise<void>;
 }
 
-interface UseWeightEntryOptions {
+interface UseAddWeightOptions {
   getAccessToken: () => Promise<string | null>;
   onUnauthorized: () => Promise<void>;
 }
 
-export function useWeightEntry({
+export function useAddWeight({
   getAccessToken,
   onUnauthorized,
-}: UseWeightEntryOptions): WeightEntryController {
+}: UseAddWeightOptions): AddWeightController {
   const [operation, setOperation] = useState<Operation>(null);
   const [weight, setWeight] = useState('');
   const [weightError, setWeightError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<Notice | null>(null);
+  const [notice, setNotice] = useState<AddWeightNotice | null>(null);
   const [completed, setCompleted] = useState(false);
 
   async function submitWeight() {

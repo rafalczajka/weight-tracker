@@ -1,26 +1,29 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
   type Theme,
 } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ChartLine, Plus, UserRound } from 'lucide-react-native';
+import {
+  House,
+  Scale,
+  ScanBarcode,
+  UserRound,
+  Utensils,
+} from 'lucide-react-native';
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import type { AuthSessionController } from './auth';
-import { AccountScreen } from './features/account';
-import { useWeightEntry, WeightEntryScreen } from './features/weight-entry';
-import { WeightHistoryScreen } from './features/weight-history';
-import type { ThemeColors } from './ui';
+import type { AuthSessionController } from '../auth';
+import { AccountNavigator } from '../features/account';
+import { CaloriesNavigator } from '../features/calories';
+import { HomeNavigator } from '../features/home';
+import { ScanNavigator } from '../features/scan';
+import { useAddWeight, WeightNavigator } from '../features/weight';
+import type { ThemeColors } from '../theme';
+import type { RootTabParamList } from './types';
 
-type AuthenticatedTabParamList = {
-  Account: undefined;
-  Add: undefined;
-  Chart: undefined;
-};
-
-const Tab = createBottomTabNavigator<AuthenticatedTabParamList>();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
 interface NavigatorProps {
   auth: AuthSessionController;
@@ -29,7 +32,7 @@ interface NavigatorProps {
 }
 
 export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
-  const weightEntry = useWeightEntry({
+  const addWeight = useAddWeight({
     getAccessToken: auth.getAccessToken,
     onUnauthorized: auth.expireSession,
   });
@@ -41,11 +44,11 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
   return (
     <NavigationContainer theme={navigationTheme}>
       <Tab.Navigator
-        initialRouteName="Add"
+        initialRouteName="Home"
         screenOptions={({ route }) => ({
           headerShown: false,
           sceneStyle: { backgroundColor: colors.background },
-          tabBarActiveTintColor: colors.chartLine,
+          tabBarActiveTintColor: colors.accent,
           tabBarHideOnKeyboard: true,
           tabBarIcon: ({ color, size }) =>
             renderTabIcon(route.name, color, size),
@@ -58,33 +61,30 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
           },
         })}
       >
-        <Tab.Screen name="Add">
+        <Tab.Screen name="Home">
+          {() => <HomeNavigator colors={colors} />}
+        </Tab.Screen>
+        <Tab.Screen name="Weight">
           {() => (
-            <WeightEntryScreen
+            <WeightNavigator
+              addWeight={addWeight}
+              auth={auth}
               colors={colors}
-              controller={weightEntry}
-              disabled={auth.busy}
-              notice={auth.notice ?? weightEntry.notice}
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name="Chart">
-          {() => (
-            <WeightHistoryScreen
-              colors={colors}
-              getAccessToken={auth.getAccessToken}
-              onUnauthorized={auth.expireSession}
-            />
-          )}
+        <Tab.Screen name="Scan">
+          {() => <ScanNavigator colors={colors} />}
+        </Tab.Screen>
+        <Tab.Screen name="Calories">
+          {() => <CaloriesNavigator colors={colors} />}
         </Tab.Screen>
         <Tab.Screen name="Account">
           {() => (
-            <AccountScreen
+            <AccountNavigator
+              addWeight={addWeight}
+              auth={auth}
               colors={colors}
-              disabled={auth.busy || weightEntry.submitting}
-              loading={auth.signingOut}
-              notice={auth.notice}
-              onSignOut={auth.signOut}
             />
           )}
         </Tab.Screen>
@@ -94,17 +94,21 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
 }
 
 function renderTabIcon(
-  name: keyof AuthenticatedTabParamList,
+  name: keyof RootTabParamList,
   color: string,
   size: number,
 ) {
   const properties = { color, size, strokeWidth: 2 };
 
   switch (name) {
-    case 'Add':
-      return <Plus {...properties} />;
-    case 'Chart':
-      return <ChartLine {...properties} />;
+    case 'Home':
+      return <House {...properties} />;
+    case 'Weight':
+      return <Scale {...properties} />;
+    case 'Scan':
+      return <ScanBarcode {...properties} />;
+    case 'Calories':
+      return <Utensils {...properties} />;
     case 'Account':
       return <UserRound {...properties} />;
   }
@@ -124,7 +128,7 @@ function createNavigationTheme(
       border: colors.border,
       card: colors.input,
       notification: colors.error,
-      primary: colors.chartLine,
+      primary: colors.accent,
       text: colors.text,
     },
   };

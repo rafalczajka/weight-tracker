@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { PrimaryButton, StatusNotice, type ThemeColors } from '../../ui';
-import type { Notice } from './useWeightEntry';
+import { PrimaryButton, StatusNotice } from '../../components';
+import type { ThemeColors } from '../../theme';
+import type { AddWeightNotice } from './useAddWeight';
 
 interface WeightFormProps {
   colors: ThemeColors;
   disabled: boolean;
-  notice: Notice | null;
+  notice: AddWeightNotice | null;
   submitting: boolean;
   weight: string;
   weightError: string | null;
