@@ -4,8 +4,8 @@ import { createStackScreenOptions } from '../../navigation/options';
 import type { ThemeColors } from '../../theme';
 import { ScanScreen } from './ScanScreen';
 
-type ScanStackParamList = {
-  Scan: undefined;
+export type ScanStackParamList = {
+  Scanner: undefined;
 };
 
 const Stack = createNativeStackNavigator<ScanStackParamList>();
@@ -17,7 +17,7 @@ interface ScanNavigatorProps {
 export function ScanNavigator({ colors }: ScanNavigatorProps) {
   return (
     <Stack.Navigator screenOptions={createStackScreenOptions(colors)}>
-      <Stack.Screen name="Scan" options={{ title: 'Scan' }}>
+      <Stack.Screen name="Scanner" options={{ title: 'Scan' }}>
         {() => <ScanScreen colors={colors} />}
       </Stack.Screen>
     </Stack.Navigator>

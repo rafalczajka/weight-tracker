@@ -1,2 +1,2 @@
-export { HomeNavigator } from './HomeNavigator';
+export { HomeNavigator, type HomeStackParamList } from './HomeNavigator';
 export { HomeScreen } from './HomeScreen';

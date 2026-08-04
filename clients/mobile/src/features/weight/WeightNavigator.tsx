@@ -4,74 +4,116 @@ import {
   type NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import { Plus } from 'lucide-react-native';
-import React, { createContext, useContext, useMemo } from 'react';
+import React from 'react';
 import type { AuthSessionController } from '../../auth';
 import { IconButton } from '../../components';
 import { createStackScreenOptions } from '../../navigation/options';
 import type { ThemeColors } from '../../theme';
-import { AddWeightScreen } from './AddWeightScreen';
-import type { AddWeightController } from './useAddWeight';
-import { WeightScreen } from './WeightScreen';
+import { AddWeightScreen } from './screens/AddWeightScreen';
+import { EditWeightScreen } from './screens/EditWeightScreen';
+import { WeightDetailsScreen } from './screens/WeightDetailsScreen';
+import { WeightHistoryScreen } from './screens/WeightHistoryScreen';
 
-type WeightStackParamList = {
-  Weight: undefined;
-  AddWeight: undefined;
+export type WeightStackParamList = {
+  WeightHistory: { initialNotice?: string } | undefined;
+  AddWeight: { date?: string } | undefined;
+  WeightDetails: {
+    date: string;
+    initialNotice?: string;
+    previousWeightKg?: number;
+  };
+  EditWeight: { date: string; weightKg: number };
 };
 
 const Stack = createNativeStackNavigator<WeightStackParamList>();
-const WeightNavigationContext = createContext({ actionsDisabled: false });
-
-const weightScreenOptions = {
-  headerRight: AddWeightHeaderButton,
-  title: 'Weight',
-};
 
 interface WeightNavigatorProps {
   auth: AuthSessionController;
   colors: ThemeColors;
-  addWeight: AddWeightController;
 }
 
-export function WeightNavigator({
-  auth,
-  colors,
-  addWeight,
-}: WeightNavigatorProps) {
-  const actionsDisabled = auth.busy || addWeight.submitting;
-  const navigationContext = useMemo(
-    () => ({ actionsDisabled }),
-    [actionsDisabled],
-  );
-
+export function WeightNavigator({ auth, colors }: WeightNavigatorProps) {
   return (
-    <WeightNavigationContext.Provider value={navigationContext}>
-      <Stack.Navigator screenOptions={createStackScreenOptions(colors)}>
-        <Stack.Screen name="Weight" options={weightScreenOptions}>
-          {({ navigation }) => (
-            <WeightScreen
-              colors={colors}
-              disabled={actionsDisabled}
-              onAddWeight={() => navigation.navigate('AddWeight')}
-            />
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="AddWeight" options={{ title: 'Add Weight' }}>
-          {() => (
-            <AddWeightScreen
-              colors={colors}
-              controller={addWeight}
-              disabled={auth.busy}
-              notice={auth.notice ?? addWeight.notice}
-            />
-          )}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </WeightNavigationContext.Provider>
+    <Stack.Navigator screenOptions={createStackScreenOptions(colors)}>
+      <Stack.Screen
+        name="WeightHistory"
+        options={{ headerRight: AddWeightHeaderButton, title: 'Weight' }}
+      >
+        {({ navigation, route }) => (
+          <WeightHistoryScreen
+            auth={auth}
+            colors={colors}
+            initialNotice={route.params?.initialNotice}
+            onAddWeight={() => navigation.navigate('AddWeight')}
+            onOpenEntry={(entry, previousWeightKg) =>
+              navigation.navigate('WeightDetails', {
+                date: entry.date,
+                previousWeightKg,
+              })
+            }
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="AddWeight" options={{ title: 'Add Weight' }}>
+        {({ navigation, route }) => (
+          <AddWeightScreen
+            auth={auth}
+            colors={colors}
+            initialDate={route.params?.date}
+            onCreated={entry =>
+              navigation.replace('WeightDetails', {
+                date: entry.date,
+                initialNotice: 'Weight added.',
+              })
+            }
+            onViewExisting={date =>
+              navigation.replace('WeightDetails', { date })
+            }
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="WeightDetails" options={{ title: 'Weight Details' }}>
+        {({ navigation, route }) => (
+          <WeightDetailsScreen
+            auth={auth}
+            colors={colors}
+            date={route.params.date}
+            initialNotice={route.params.initialNotice}
+            previousWeightKg={route.params.previousWeightKg}
+            onDeleted={() =>
+              navigation.popTo('WeightHistory', {
+                initialNotice: 'Weight entry deleted.',
+              })
+            }
+            onEdit={entry =>
+              navigation.navigate('EditWeight', {
+                date: entry.date,
+                weightKg: entry.weightKg,
+              })
+            }
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="EditWeight" options={{ title: 'Edit Weight' }}>
+        {({ navigation, route }) => (
+          <EditWeightScreen
+            auth={auth}
+            colors={colors}
+            entry={route.params}
+            onSaved={entry =>
+              navigation.navigate('WeightDetails', {
+                date: entry.date,
+                initialNotice: 'Weight updated.',
+              })
+            }
+          />
+        )}
+      </Stack.Screen>
+    </Stack.Navigator>
   );
 }
 
 function AddWeightHeaderButton() {
-  const { actionsDisabled } = useContext(WeightNavigationContext);
   const navigation =
     useNavigation<NativeStackNavigationProp<WeightStackParamList>>();
   const { colors } = useTheme();
@@ -79,7 +121,6 @@ function AddWeightHeaderButton() {
   return (
     <IconButton
       accessibilityLabel="Add weight"
-      disabled={actionsDisabled}
       onPress={() => navigation.navigate('AddWeight')}
     >
       <Plus color={colors.text} size={22} strokeWidth={2} />

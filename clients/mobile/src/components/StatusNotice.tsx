@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { ThemeColors } from '../theme';
 
-interface NoticeValue {
+export interface StatusNoticeValue {
   kind: 'error' | 'info' | 'success';
   text: string;
 }
 
 interface StatusNoticeProps {
   colors: ThemeColors;
-  notice: NoticeValue | null;
+  notice: StatusNoticeValue | null;
 }
 
 export function StatusNotice({ colors, notice }: StatusNoticeProps) {

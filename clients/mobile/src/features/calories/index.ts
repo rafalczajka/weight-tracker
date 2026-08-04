@@ -1,2 +1,4 @@
-export { CaloriesNavigator } from './CaloriesNavigator';
-export { CaloriesScreen } from './CaloriesScreen';
+export {
+  CaloriesNavigator,
+  type CaloriesStackParamList,
+} from './CaloriesNavigator';

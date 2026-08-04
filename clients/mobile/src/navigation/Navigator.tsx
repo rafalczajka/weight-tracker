@@ -19,7 +19,8 @@ import { AccountNavigator } from '../features/account';
 import { CaloriesNavigator } from '../features/calories';
 import { HomeNavigator } from '../features/home';
 import { ScanNavigator } from '../features/scan';
-import { useAddWeight, WeightNavigator } from '../features/weight';
+import { WeightNavigator } from '../features/weight';
+import { MutationProvider } from '../mutations';
 import type { ThemeColors } from '../theme';
 import type { RootTabParamList } from './types';
 
@@ -32,10 +33,6 @@ interface NavigatorProps {
 }
 
 export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
-  const addWeight = useAddWeight({
-    getAccessToken: auth.getAccessToken,
-    onUnauthorized: auth.expireSession,
-  });
   const navigationTheme = useMemo(
     () => createNavigationTheme(colors, isDarkMode),
     [colors, isDarkMode],
@@ -43,52 +40,78 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={({ route }) => ({
-          headerShown: false,
-          sceneStyle: { backgroundColor: colors.background },
-          tabBarActiveTintColor: colors.accent,
-          tabBarHideOnKeyboard: true,
-          tabBarIcon: ({ color, size }) =>
-            renderTabIcon(route.name, color, size),
-          tabBarInactiveTintColor: colors.muted,
-          tabBarLabelStyle: styles.tabLabel,
-          tabBarStyle: {
-            backgroundColor: colors.input,
-            borderTopColor: colors.border,
-            paddingTop: 6,
-          },
-        })}
-      >
-        <Tab.Screen name="Home">
-          {() => <HomeNavigator colors={colors} />}
-        </Tab.Screen>
-        <Tab.Screen name="Weight">
-          {() => (
-            <WeightNavigator
-              addWeight={addWeight}
-              auth={auth}
-              colors={colors}
-            />
-          )}
-        </Tab.Screen>
-        <Tab.Screen name="Scan">
-          {() => <ScanNavigator colors={colors} />}
-        </Tab.Screen>
-        <Tab.Screen name="Calories">
-          {() => <CaloriesNavigator colors={colors} />}
-        </Tab.Screen>
-        <Tab.Screen name="Account">
-          {() => (
-            <AccountNavigator
-              addWeight={addWeight}
-              auth={auth}
-              colors={colors}
-            />
-          )}
-        </Tab.Screen>
-      </Tab.Navigator>
+      <MutationProvider>
+        <Tab.Navigator
+          initialRouteName="Home"
+          screenOptions={({ route }) => ({
+            headerShown: false,
+            sceneStyle: { backgroundColor: colors.background },
+            tabBarActiveTintColor: colors.accent,
+            tabBarHideOnKeyboard: true,
+            tabBarIcon: ({ color, size }) =>
+              renderTabIcon(route.name, color, size),
+            tabBarInactiveTintColor: colors.muted,
+            tabBarLabelStyle: styles.tabLabel,
+            tabBarStyle: {
+              backgroundColor: colors.input,
+              borderTopColor: colors.border,
+              paddingTop: 6,
+            },
+          })}
+        >
+          <Tab.Screen name="Home">
+            {({ navigation }) => (
+              <HomeNavigator
+                auth={auth}
+                colors={colors}
+                onAddCalories={date =>
+                  navigation.navigate('Calories', {
+                    params: { date },
+                    screen: 'AddCalorie',
+                  })
+                }
+                onAddWeight={date =>
+                  navigation.navigate('Weight', {
+                    params: { date },
+                    screen: 'AddWeight',
+                  })
+                }
+                onOpenCalories={date =>
+                  navigation.navigate('Calories', {
+                    params: { date },
+                    screen: 'DailyCalories',
+                  })
+                }
+                onEditWeight={(date, weightKg) =>
+                  navigation.navigate('Weight', {
+                    params: { date, weightKg },
+                    screen: 'EditWeight',
+                  })
+                }
+                onScanProduct={() => navigation.navigate('Scan')}
+              />
+            )}
+          </Tab.Screen>
+          <Tab.Screen name="Weight">
+            {() => <WeightNavigator auth={auth} colors={colors} />}
+          </Tab.Screen>
+          <Tab.Screen name="Scan">
+            {() => <ScanNavigator colors={colors} />}
+          </Tab.Screen>
+          <Tab.Screen name="Calories">
+            {({ navigation }) => (
+              <CaloriesNavigator
+                auth={auth}
+                colors={colors}
+                onScanProduct={() => navigation.navigate('Scan')}
+              />
+            )}
+          </Tab.Screen>
+          <Tab.Screen name="Account">
+            {() => <AccountNavigator auth={auth} colors={colors} />}
+          </Tab.Screen>
+        </Tab.Navigator>
+      </MutationProvider>
     </NavigationContainer>
   );
 }

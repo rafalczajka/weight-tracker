@@ -5,3 +5,4 @@ export {
   type AuthNotice,
   type AuthSessionController,
 } from './useAuthSession';
+export { runAuthorized } from './authorizedRequest';

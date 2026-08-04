@@ -1,5 +1,6 @@
 import React, { type PropsWithChildren } from 'react';
 import {
+  RefreshControl,
   ScrollView,
   StyleSheet,
   type StyleProp,
@@ -9,12 +10,16 @@ import {
 interface ScreenProps extends PropsWithChildren {
   centered?: boolean;
   contentStyle?: StyleProp<ViewStyle>;
+  onRefresh?: () => void;
+  refreshing?: boolean;
 }
 
 export function Screen({
   centered = false,
   children,
   contentStyle,
+  onRefresh,
+  refreshing = false,
 }: ScreenProps) {
   return (
     <ScrollView
@@ -23,6 +28,11 @@ export function Screen({
         centered && styles.centered,
         contentStyle,
       ]}
+      refreshControl={
+        onRefresh ? (
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        ) : undefined
+      }
     >
       {children}
     </ScrollView>
