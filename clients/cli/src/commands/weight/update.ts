@@ -1,9 +1,9 @@
 import { updateWeightEntry, withBearerToken } from '@weight-tracker/api-client';
 import { Command } from 'commander';
-import { DATE_FORMAT_LABEL } from '../../constants';
-import type { CliServices } from '../../services';
-import { parseDate, parseWeightKg } from '../../parsers';
-import { printMessage, runWithAccessToken } from '../helpers';
+import { DATE_FORMAT_LABEL } from '@/constants';
+import type { CliServices } from '@/services';
+import { parseDate, parseWeightKg } from '@/parsers';
+import { printMessage, runWithAccessToken } from '@/commands/helpers';
 
 export function createWeightUpdateCommand(services: CliServices): Command {
   return new Command('update')

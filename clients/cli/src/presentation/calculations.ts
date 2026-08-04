@@ -6,7 +6,7 @@ import type {
 } from '@weight-tracker/api-client';
 import chalk from 'chalk';
 import Table from 'cli-table3';
-import type { CliOutput } from '../output';
+import type { CliOutput } from '@/output';
 
 export function printBmiResult(
   output: CliOutput,

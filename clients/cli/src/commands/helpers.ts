@@ -1,4 +1,4 @@
-import type { CliServices } from '../services';
+import type { CliServices } from '@/services';
 
 export async function runWithAccessToken<T>(
   services: CliServices,

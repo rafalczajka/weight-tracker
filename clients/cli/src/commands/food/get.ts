@@ -1,8 +1,8 @@
 import { getFood, withBearerToken } from '@weight-tracker/api-client';
 import { Command } from 'commander';
-import { printProduct } from '../../presentation/food';
-import type { CliServices } from '../../services';
-import { runWithAccessToken } from '../helpers';
+import { printProduct } from '@/presentation/food';
+import type { CliServices } from '@/services';
+import { runWithAccessToken } from '@/commands/helpers';
 import { parseProductCode } from './validation';
 
 export function createFoodGetCommand(services: CliServices): Command {

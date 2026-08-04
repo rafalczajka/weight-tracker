@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import type { CliServices } from '../../services';
+import type { CliServices } from '@/services';
 import { createBmiCommand } from './bmi';
 import { createCaloriesCommand } from './calories';
 import { createProteinCommand } from './protein';

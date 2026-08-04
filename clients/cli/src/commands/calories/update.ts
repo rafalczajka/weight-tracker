@@ -3,10 +3,10 @@ import {
   withBearerToken,
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
-import { parseCaloriesKcal } from '../../parsers';
-import { printCalorieEntry } from '../../presentation/calories';
-import type { CliServices } from '../../services';
-import { runWithAccessToken } from '../helpers';
+import { parseCaloriesKcal } from '@/parsers';
+import { printCalorieEntry } from '@/presentation/calories';
+import type { CliServices } from '@/services';
+import { runWithAccessToken } from '@/commands/helpers';
 import { parseDescription } from './validation';
 
 interface UpdateOptions extends OptionValues {

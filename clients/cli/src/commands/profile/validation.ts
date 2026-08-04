@@ -1,4 +1,4 @@
-import { CliUsageError } from '../../errors';
+import { CliUsageError } from '@/errors';
 
 const PROFILE_FIELDS = [
   'height',

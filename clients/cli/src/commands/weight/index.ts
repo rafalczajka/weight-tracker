@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import type { CliServices } from '../../services';
+import type { CliServices } from '@/services';
 import { createWeightAddCommand } from './add';
 import { createWeightGetCommand } from './get';
 import { createWeightLatestCommand } from './latest';

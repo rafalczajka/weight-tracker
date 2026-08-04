@@ -1,5 +1,5 @@
 import { InvalidArgumentError } from 'commander';
-import { MAX_CALORIE_DESCRIPTION_LENGTH } from '../../constants';
+import { MAX_CALORIE_DESCRIPTION_LENGTH } from '@/constants';
 
 export function parseDescription(value: string): string {
   if (value.length > MAX_CALORIE_DESCRIPTION_LENGTH) {

@@ -1,7 +1,7 @@
 import { Command } from 'commander';
-import { printUserProfile } from '../../presentation/profile';
-import type { CliServices } from '../../services';
-import { runWithAccessToken } from '../helpers';
+import { printUserProfile } from '@/presentation/profile';
+import type { CliServices } from '@/services';
+import { runWithAccessToken } from '@/commands/helpers';
 import { getProfile } from './requests';
 
 export function createProfileGetCommand(services: CliServices): Command {

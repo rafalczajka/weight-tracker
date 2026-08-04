@@ -1,7 +1,7 @@
 import type { NutritionFacts, Product } from '@weight-tracker/api-client';
 import chalk from 'chalk';
 import Table from 'cli-table3';
-import type { CliOutput } from '../output';
+import type { CliOutput } from '@/output';
 
 export function printProduct(output: CliOutput, product: Product): void {
   output.print();

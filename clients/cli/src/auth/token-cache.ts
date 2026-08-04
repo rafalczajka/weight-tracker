@@ -5,7 +5,7 @@ import {
   FilePersistenceWithDataProtection,
   PersistenceCachePlugin,
 } from '@azure/msal-node-extensions';
-import { AppError } from '../errors';
+import { AppError } from '@/errors';
 
 const CACHE_DIRECTORY = 'wtrack';
 const CACHE_FILENAME = 'token-cache.bin';

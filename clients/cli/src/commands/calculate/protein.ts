@@ -4,10 +4,10 @@ import {
   type ProteinGoal,
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
-import { printProteinResult } from '../../presentation/calculations';
-import type { CliServices } from '../../services';
-import { parseProteinGoal, parseWeightKg } from '../../parsers';
-import { runWithAccessToken } from '../helpers';
+import { printProteinResult } from '@/presentation/calculations';
+import type { CliServices } from '@/services';
+import { parseProteinGoal, parseWeightKg } from '@/parsers';
+import { runWithAccessToken } from '@/commands/helpers';
 
 interface ProteinOptions extends OptionValues {
   goal?: ProteinGoal;

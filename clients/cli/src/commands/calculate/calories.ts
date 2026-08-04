@@ -5,16 +5,16 @@ import {
   type Sex,
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
-import { printCalorieResult } from '../../presentation/calculations';
-import type { CliServices } from '../../services';
+import { printCalorieResult } from '@/presentation/calculations';
+import type { CliServices } from '@/services';
 import {
   parseActivityLevel,
   parseAgeYears,
   parseHeightCm,
   parseSex,
   parseWeightKg,
-} from '../../parsers';
-import { runWithAccessToken } from '../helpers';
+} from '@/parsers';
+import { runWithAccessToken } from '@/commands/helpers';
 
 interface CalorieOptions extends OptionValues {
   activity?: ActivityLevel;

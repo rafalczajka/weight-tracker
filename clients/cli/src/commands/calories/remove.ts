@@ -3,8 +3,8 @@ import {
   withBearerToken,
 } from '@weight-tracker/api-client';
 import { Command } from 'commander';
-import type { CliServices } from '../../services';
-import { printMessage, runWithAccessToken } from '../helpers';
+import type { CliServices } from '@/services';
+import { printMessage, runWithAccessToken } from '@/commands/helpers';
 
 export function createCalorieRemoveCommand(services: CliServices): Command {
   return new Command('remove')

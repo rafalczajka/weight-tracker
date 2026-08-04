@@ -6,16 +6,13 @@ import {
   type WeightsGetResponse,
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
-import { showWeightChart, type BmiChartData } from '../../chart';
-import {
-  DATE_FORMAT_LABEL,
-  DEFAULT_MOVING_AVERAGE_DAYS,
-} from '../../constants';
-import { CliUsageError } from '../../errors';
-import { printWeightList } from '../../presentation/weight';
-import type { CliServices } from '../../services';
-import { parseDate, parseMovingAverageDays, parseTail } from '../../parsers';
-import { runWithAccessToken } from '../helpers';
+import { showWeightChart, type BmiChartData } from '@/chart';
+import { DATE_FORMAT_LABEL, DEFAULT_MOVING_AVERAGE_DAYS } from '@/constants';
+import { CliUsageError } from '@/errors';
+import { printWeightList } from '@/presentation/weight';
+import type { CliServices } from '@/services';
+import { parseDate, parseMovingAverageDays, parseTail } from '@/parsers';
+import { runWithAccessToken } from '@/commands/helpers';
 
 interface ListOptions extends OptionValues {
   bmi: boolean;

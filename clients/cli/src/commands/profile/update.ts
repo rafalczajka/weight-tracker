@@ -6,18 +6,18 @@ import type {
   UserResponse,
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
-import { DATE_FORMAT_LABEL } from '../../constants';
-import { CliUsageError } from '../../errors';
-import { printUserProfile } from '../../presentation/profile';
-import type { CliServices } from '../../services';
+import { DATE_FORMAT_LABEL } from '@/constants';
+import { CliUsageError } from '@/errors';
+import { printUserProfile } from '@/presentation/profile';
+import type { CliServices } from '@/services';
 import {
   parseActivityLevel,
   parseDate,
   parseHeightCm,
   parseProteinGoal,
   parseSex,
-} from '../../parsers';
-import { runWithAccessToken } from '../helpers';
+} from '@/parsers';
+import { runWithAccessToken } from '@/commands/helpers';
 import { getProfile, putProfile } from './requests';
 
 interface ProfileUpdateOptions extends OptionValues {

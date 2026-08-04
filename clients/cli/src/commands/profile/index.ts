@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import type { CliServices } from '../../services';
+import type { CliServices } from '@/services';
 import { createProfileClearCommand } from './clear';
 import { createProfileGetCommand } from './get';
 import { createProfileResetCommand } from './reset';

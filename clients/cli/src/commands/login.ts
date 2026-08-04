@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import type { CliServices } from '../services';
+import type { CliServices } from '@/services';
 import { printMessage } from './helpers';
 
 export function createLoginCommand(services: CliServices): Command {

@@ -3,10 +3,10 @@ import {
   withBearerToken,
 } from '@weight-tracker/api-client';
 import { Command, type OptionValues } from 'commander';
-import { printBmiResult } from '../../presentation/calculations';
-import type { CliServices } from '../../services';
-import { parseHeightCm, parseWeightKg } from '../../parsers';
-import { runWithAccessToken } from '../helpers';
+import { printBmiResult } from '@/presentation/calculations';
+import type { CliServices } from '@/services';
+import { parseHeightCm, parseWeightKg } from '@/parsers';
+import { runWithAccessToken } from '@/commands/helpers';
 
 interface BmiOptions extends OptionValues {
   height?: number;

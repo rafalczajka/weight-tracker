@@ -1,7 +1,7 @@
 import type { DailyCaloriesResponse } from '@weight-tracker/api-client';
 import chalk from 'chalk';
-import { CALORIE_UNIT } from '../../constants';
-import type { CliOutput } from '../../output';
+import { CALORIE_UNIT } from '@/constants';
+import type { CliOutput } from '@/output';
 
 export function printDailyCalories(
   output: CliOutput,

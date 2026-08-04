@@ -1,10 +1,10 @@
 import { getDailyCalories, withBearerToken } from '@weight-tracker/api-client';
 import { Command } from 'commander';
-import { DATE_FORMAT_LABEL } from '../../constants';
-import { printDailyCalories } from '../../presentation/calories';
-import type { CliServices } from '../../services';
-import { formatUtcDate, parseDate } from '../../parsers';
-import { runWithAccessToken } from '../helpers';
+import { DATE_FORMAT_LABEL } from '@/constants';
+import { printDailyCalories } from '@/presentation/calories';
+import type { CliServices } from '@/services';
+import { formatUtcDate, parseDate } from '@/parsers';
+import { runWithAccessToken } from '@/commands/helpers';
 
 export function createCalorieGetCommand(services: CliServices): Command {
   return new Command('get')

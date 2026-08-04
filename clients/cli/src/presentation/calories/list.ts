@@ -1,7 +1,7 @@
 import type { CaloriesGetResponse } from '@weight-tracker/api-client';
 import Table from 'cli-table3';
-import { CALORIE_UNIT } from '../../constants';
-import type { CliOutput } from '../../output';
+import { CALORIE_UNIT } from '@/constants';
+import type { CliOutput } from '@/output';
 
 export function printCalorieList(
   output: CliOutput,

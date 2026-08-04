@@ -3,9 +3,9 @@ import {
   withBearerToken,
 } from '@weight-tracker/api-client';
 import { Command } from 'commander';
-import { printWeightEntry } from '../../presentation/weight';
-import type { CliServices } from '../../services';
-import { runWithAccessToken } from '../helpers';
+import { printWeightEntry } from '@/presentation/weight';
+import type { CliServices } from '@/services';
+import { runWithAccessToken } from '@/commands/helpers';
 
 export function createWeightLatestCommand(services: CliServices): Command {
   return new Command('latest')

@@ -5,9 +5,9 @@ import type {
 } from '@weight-tracker/api-client';
 import chalk from 'chalk';
 import Table from 'cli-table3';
-import { WEIGHT_UNIT } from '../../constants';
-import type { CliOutput } from '../../output';
-import { formatUtcDate } from '../../parsers';
+import { WEIGHT_UNIT } from '@/constants';
+import type { CliOutput } from '@/output';
+import { formatUtcDate } from '@/parsers';
 
 interface AverageComparison {
   label: string;

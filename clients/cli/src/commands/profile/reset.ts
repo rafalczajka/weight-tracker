@@ -1,8 +1,8 @@
 import type { UserPutRequest } from '@weight-tracker/api-client';
 import { Command } from 'commander';
-import { printUserProfile } from '../../presentation/profile';
-import type { CliServices } from '../../services';
-import { runWithAccessToken } from '../helpers';
+import { printUserProfile } from '@/presentation/profile';
+import type { CliServices } from '@/services';
+import { runWithAccessToken } from '@/commands/helpers';
 import { putProfile } from './requests';
 
 const EMPTY_PROFILE: UserPutRequest = {

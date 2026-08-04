@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import type { CliServices } from '../../services';
+import type { CliServices } from '@/services';
 import { createFoodGetCommand } from './get';
 
 export function createFoodCommand(services: CliServices): Command {

@@ -1,7 +1,7 @@
 import type { WeightsEntryResponse } from '@weight-tracker/api-client';
 import chalk from 'chalk';
-import { WEIGHT_UNIT } from '../../constants';
-import type { CliOutput } from '../../output';
+import { WEIGHT_UNIT } from '@/constants';
+import type { CliOutput } from '@/output';
 
 export function printWeightEntry(
   output: CliOutput,

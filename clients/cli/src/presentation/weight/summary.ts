@@ -1,7 +1,7 @@
 import type { WeightSummary } from '@weight-tracker/api-client';
 import chalk from 'chalk';
-import { WEIGHT_UNIT } from '../../constants';
-import type { CliOutput } from '../../output';
+import { WEIGHT_UNIT } from '@/constants';
+import type { CliOutput } from '@/output';
 
 const ADHERENCE_WINDOW = 30;
 const STATUS_OK = '\u2713';

@@ -1,8 +1,8 @@
 import { getWeightsSummary, withBearerToken } from '@weight-tracker/api-client';
 import { Command } from 'commander';
-import { printWeightSummary } from '../../presentation/weight';
-import type { CliServices } from '../../services';
-import { runWithAccessToken } from '../helpers';
+import { printWeightSummary } from '@/presentation/weight';
+import type { CliServices } from '@/services';
+import { runWithAccessToken } from '@/commands/helpers';
 
 export function createWeightSummaryCommand(services: CliServices): Command {
   return new Command('summary')
