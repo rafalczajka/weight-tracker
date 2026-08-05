@@ -59,7 +59,6 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
             tabBarStyle: {
               backgroundColor: colors.input,
               borderTopColor: colors.border,
-              paddingTop: 6,
             },
           })}
         >
