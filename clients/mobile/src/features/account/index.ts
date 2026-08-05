@@ -2,4 +2,4 @@ export {
   AccountNavigator,
   type AccountStackParamList,
 } from './AccountNavigator';
-export { AccountScreen } from './AccountScreen';
+export { AccountScreen } from './screens/AccountScreen';

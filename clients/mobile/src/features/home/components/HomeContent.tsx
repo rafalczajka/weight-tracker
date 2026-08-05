@@ -17,7 +17,10 @@ interface HomeContentProps {
   onAddCalories: (date: string) => void;
   onAddWeight: (date: string) => void;
   onEditWeight: (date: string, weightKg: number) => void;
+  onOpenBmiCalculator: () => void;
+  onOpenCalorieCalculator: () => void;
   onOpenCalories: (date: string) => void;
+  onOpenProteinCalculator: () => void;
   onRefresh: () => void;
   onScanProduct: () => void;
   refreshing: boolean;
@@ -32,7 +35,10 @@ export function HomeContent({
   onAddCalories,
   onAddWeight,
   onEditWeight,
+  onOpenBmiCalculator,
+  onOpenCalorieCalculator,
   onOpenCalories,
+  onOpenProteinCalculator,
   onRefresh,
   onScanProduct,
   refreshing,
@@ -111,6 +117,28 @@ export function HomeContent({
           title="Add calories"
         />
         <ListRow colors={colors} onPress={onScanProduct} title="Scan product" />
+      </View>
+
+      <SectionTitle colors={colors}>Calculators</SectionTitle>
+      <View style={[styles.section, { borderTopColor: colors.border }]}>
+        <ListRow
+          colors={colors}
+          onPress={onOpenBmiCalculator}
+          subtitle="Check your BMI and adult ranges"
+          title="BMI"
+        />
+        <ListRow
+          colors={colors}
+          onPress={onOpenCalorieCalculator}
+          subtitle="Estimate resting and maintenance calories"
+          title="Calorie requirement"
+        />
+        <ListRow
+          colors={colors}
+          onPress={onOpenProteinCalculator}
+          subtitle="Estimate your daily protein range"
+          title="Protein requirement"
+        />
       </View>
     </Screen>
   );

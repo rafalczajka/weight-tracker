@@ -2,12 +2,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import type { AuthSessionController } from '@/auth';
 import { createStackScreenOptions } from '@/navigation/options';
-import { useMutationTracker } from '@/mutations';
 import type { ThemeColors } from '@/theme';
-import { AccountScreen } from './AccountScreen';
+import { AccountScreen } from './screens/AccountScreen';
+import { EditProfileScreen } from './screens/EditProfileScreen';
 
 export type AccountStackParamList = {
-  AccountOverview: undefined;
+  AccountOverview: { initialNotice?: string } | undefined;
+  EditProfile: undefined;
 };
 
 const Stack = createNativeStackNavigator<AccountStackParamList>();
@@ -18,18 +19,26 @@ interface AccountNavigatorProps {
 }
 
 export function AccountNavigator({ auth, colors }: AccountNavigatorProps) {
-  const mutations = useMutationTracker();
-
   return (
     <Stack.Navigator screenOptions={createStackScreenOptions(colors)}>
       <Stack.Screen name="AccountOverview" options={{ title: 'Account' }}>
-        {() => (
+        {({ navigation, route }) => (
           <AccountScreen
+            auth={auth}
             colors={colors}
-            disabled={auth.busy || mutations.busy}
-            loading={auth.signingOut}
-            notice={auth.notice}
-            onSignOut={auth.signOut}
+            initialNotice={route.params?.initialNotice}
+            onEdit={() => navigation.navigate('EditProfile')}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="EditProfile" options={{ title: 'Edit Profile' }}>
+        {({ navigation }) => (
+          <EditProfileScreen
+            auth={auth}
+            colors={colors}
+            onSaved={message =>
+              navigation.popTo('AccountOverview', { initialNotice: message })
+            }
           />
         )}
       </Stack.Screen>

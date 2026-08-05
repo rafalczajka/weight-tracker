@@ -7,5 +7,6 @@ export { ListRow } from './ListRow';
 export { PrimaryButton } from './PrimaryButton';
 export { Screen } from './Screen';
 export { ScreenState } from './ScreenState';
+export { SelectField, type SelectOption } from './SelectField';
 export { StatusNotice, type StatusNoticeValue } from './StatusNotice';
 export { TextButton } from './TextButton';

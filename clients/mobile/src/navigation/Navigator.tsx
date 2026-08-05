@@ -72,9 +72,12 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
                 }
                 onAddWeight={date =>
                   navigation.navigate('Weight', {
-                    params: { date },
+                    ...(date ? { params: { date } } : {}),
                     screen: 'AddWeight',
                   })
+                }
+                onEditProfile={() =>
+                  navigation.navigate('Account', { screen: 'EditProfile' })
                 }
                 onOpenCalories={date =>
                   navigation.navigate('Calories', {

@@ -35,6 +35,7 @@ jest.mock('react-native-permissions', () => ({
 
 jest.mock('lucide-react-native', () => ({
   CalendarDays: () => null,
+  Check: () => null,
   ChevronDown: () => null,
   ChevronRight: () => null,
   ChevronUp: () => null,
@@ -45,4 +46,5 @@ jest.mock('lucide-react-native', () => ({
   ScanBarcode: () => null,
   UserRound: () => null,
   Utensils: () => null,
+  X: () => null,
 }));

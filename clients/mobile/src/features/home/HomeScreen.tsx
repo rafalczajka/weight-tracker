@@ -12,7 +12,10 @@ interface HomeScreenProps {
   onAddWeight: (date: string) => void;
   onOpenCalories: (date: string) => void;
   onEditWeight: (date: string, weightKg: number) => void;
+  onOpenBmiCalculator: () => void;
+  onOpenCalorieCalculator: () => void;
   onScanProduct: () => void;
+  onOpenProteinCalculator: () => void;
 }
 
 export function HomeScreen({
@@ -22,7 +25,10 @@ export function HomeScreen({
   onAddWeight,
   onOpenCalories,
   onEditWeight,
+  onOpenBmiCalculator,
+  onOpenCalorieCalculator,
   onScanProduct,
+  onOpenProteinCalculator,
 }: HomeScreenProps) {
   const home = useHomeData(auth);
 
@@ -61,7 +67,10 @@ export function HomeScreen({
       onAddCalories={onAddCalories}
       onAddWeight={onAddWeight}
       onEditWeight={onEditWeight}
+      onOpenBmiCalculator={onOpenBmiCalculator}
+      onOpenCalorieCalculator={onOpenCalorieCalculator}
       onOpenCalories={onOpenCalories}
+      onOpenProteinCalculator={onOpenProteinCalculator}
       onRefresh={home.refresh}
       onScanProduct={onScanProduct}
       refreshing={home.refreshing}
