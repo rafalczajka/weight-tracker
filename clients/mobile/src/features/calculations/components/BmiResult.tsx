@@ -6,6 +6,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ListRow } from '@/components';
 import { formatWeightKg } from '@/format';
+import { useCompactLayout } from '@/hooks/useCompactLayout';
 import type { ThemeColors } from '@/theme';
 
 interface BmiResultProps {
@@ -14,9 +15,16 @@ interface BmiResultProps {
 }
 
 export function BmiResult({ colors, result }: BmiResultProps) {
+  const compact = useCompactLayout();
+
   return (
     <View accessibilityLiveRegion="polite" style={styles.result}>
-      <Text style={[styles.title, { color: colors.text }]}>Result</Text>
+      <Text
+        accessibilityRole="header"
+        style={[styles.title, { color: colors.text }]}
+      >
+        Result
+      </Text>
       <View style={[styles.rows, { borderTopColor: colors.border }]}>
         <ListRow colors={colors} title="BMI" value={formatNumber(result.bmi)} />
         <ListRow colors={colors} title="Category" value={result.categoryName} />
@@ -32,13 +40,17 @@ export function BmiResult({ colors, result }: BmiResultProps) {
         />
       </View>
 
-      <Text style={[styles.rangesTitle, { color: colors.text }]}>
+      <Text
+        accessibilityRole="header"
+        style={[styles.rangesTitle, { color: colors.text }]}
+      >
         BMI ranges
       </Text>
       <View style={[styles.rows, { borderTopColor: colors.border }]}>
         {result.ranges.map(range => (
           <BmiRangeRow
             colors={colors}
+            compact={compact}
             current={range.category === result.category}
             key={range.category}
             range={range}
@@ -51,10 +63,12 @@ export function BmiResult({ colors, result }: BmiResultProps) {
 
 function BmiRangeRow({
   colors,
+  compact,
   current,
   range,
 }: {
   colors: ThemeColors;
+  compact: boolean;
   current: boolean;
   range: BmiRangeResponse;
 }) {
@@ -64,8 +78,15 @@ function BmiRangeRow({
 
   return (
     <View
+      accessible
+      accessibilityLabel={`${range.categoryName}, BMI ${formatRange(
+        range.minimumBmiInclusive,
+        range.maximumBmiExclusive,
+      )}, weight ${formatWeightRange(range)}`}
+      accessibilityState={{ selected: current }}
       style={[
         styles.range,
+        compact && styles.rangeCompact,
         { borderBottomColor: colors.border },
         currentColors,
       ]}
@@ -79,7 +100,13 @@ function BmiRangeRow({
           {formatRange(range.minimumBmiInclusive, range.maximumBmiExclusive)}
         </Text>
       </View>
-      <Text style={[styles.weightRange, { color: colors.text }]}>
+      <Text
+        style={[
+          styles.weightRange,
+          compact && styles.weightRangeCompact,
+          { color: colors.text },
+        ]}
+      >
         {formatWeightRange(range)}
       </Text>
     </View>
@@ -131,6 +158,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: 0,
   },
+  rangeCompact: {
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+  },
   rangeText: {
     flex: 1,
     minWidth: 0,
@@ -165,5 +196,10 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     marginLeft: 12,
     textAlign: 'right',
+  },
+  weightRangeCompact: {
+    marginLeft: 0,
+    marginTop: 8,
+    textAlign: 'left',
   },
 });

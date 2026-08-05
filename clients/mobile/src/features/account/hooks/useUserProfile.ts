@@ -8,6 +8,7 @@ import { useCallback, useRef, useState } from 'react';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import { useRequestController } from '@/hooks/useRequestController';
+import { getRequestErrorMessage } from '@/network';
 
 export function useUserProfile(auth: AuthSessionController) {
   const authRef = useRef(auth);
@@ -40,9 +41,14 @@ export function useUserProfile(auth: AuthSessionController) {
         if (loadedProfile && !controller.signal.aborted) {
           setProfile(loadedProfile);
         }
-      } catch {
+      } catch (requestError) {
         if (!controller.signal.aborted) {
-          setError('Unable to load your profile.');
+          setError(
+            getRequestErrorMessage(
+              requestError,
+              'Unable to load your profile.',
+            ),
+          );
         }
       } finally {
         if (!controller.signal.aborted) {

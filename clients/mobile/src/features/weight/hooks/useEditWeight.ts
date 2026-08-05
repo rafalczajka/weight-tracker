@@ -9,6 +9,7 @@ import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import type { StatusNoticeValue } from '@/components';
 import { useMutationTracker } from '@/mutations';
+import { getRequestErrorMessage } from '@/network';
 import { useWeightForm } from './useWeightForm';
 
 interface UseEditWeightOptions {
@@ -54,8 +55,14 @@ export function useEditWeight({ auth, entry, onSaved }: UseEditWeightOptions) {
       if (updatedEntry) {
         onSaved(updatedEntry);
       }
-    } catch {
-      setNotice({ kind: 'error', text: 'Unable to update weight. Try again.' });
+    } catch (requestError) {
+      setNotice({
+        kind: 'error',
+        text: getRequestErrorMessage(
+          requestError,
+          'Unable to update weight. Try again.',
+        ),
+      });
     } finally {
       setSubmitting(false);
     }

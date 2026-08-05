@@ -1,4 +1,7 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  createBottomTabNavigator,
+  type BottomTabNavigationProp,
+} from '@react-navigation/bottom-tabs';
 import {
   DarkTheme,
   DefaultTheme,
@@ -17,6 +20,7 @@ import { StyleSheet } from 'react-native';
 import type { AuthSessionController } from '@/auth';
 import { AccountNavigator } from '@/features/account';
 import { CaloriesNavigator } from '@/features/calories';
+import type { CalculatorRouteName } from '@/features/calculations';
 import { HomeNavigator } from '@/features/home';
 import { ScanNavigator } from '@/features/scan';
 import { WeightNavigator } from '@/features/weight';
@@ -70,14 +74,17 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
                     screen: 'AddCalorie',
                   })
                 }
-                onAddWeight={date =>
+                onAddWeight={(date, returnToCalculator) =>
                   navigation.navigate('Weight', {
-                    ...(date ? { params: { date } } : {}),
+                    params: { date, returnToCalculator },
                     screen: 'AddWeight',
                   })
                 }
-                onEditProfile={() =>
-                  navigation.navigate('Account', { screen: 'EditProfile' })
+                onEditProfile={returnToCalculator =>
+                  navigation.navigate('Account', {
+                    params: { returnToCalculator },
+                    screen: 'EditProfile',
+                  })
                 }
                 onOpenCalories={date =>
                   navigation.navigate('Calories', {
@@ -98,7 +105,15 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
             )}
           </Tab.Screen>
           <Tab.Screen name="Weight">
-            {() => <WeightNavigator auth={auth} colors={colors} />}
+            {({ navigation }) => (
+              <WeightNavigator
+                auth={auth}
+                colors={colors}
+                onReturnToCalculator={calculator =>
+                  openCalculator(navigation, calculator)
+                }
+              />
+            )}
           </Tab.Screen>
           <Tab.Screen name="Scan">
             {({ navigation }) => (
@@ -132,12 +147,27 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
             )}
           </Tab.Screen>
           <Tab.Screen name="Account">
-            {() => <AccountNavigator auth={auth} colors={colors} />}
+            {({ navigation }) => (
+              <AccountNavigator
+                auth={auth}
+                colors={colors}
+                onReturnToCalculator={calculator =>
+                  openCalculator(navigation, calculator)
+                }
+              />
+            )}
           </Tab.Screen>
         </Tab.Navigator>
       </MutationProvider>
     </NavigationContainer>
   );
+}
+
+function openCalculator(
+  navigation: BottomTabNavigationProp<RootTabParamList>,
+  calculator: CalculatorRouteName,
+) {
+  navigation.navigate('Home', { screen: calculator });
 }
 
 function renderTabIcon(

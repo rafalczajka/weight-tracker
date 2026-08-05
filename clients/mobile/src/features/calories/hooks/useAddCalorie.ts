@@ -10,6 +10,7 @@ import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import type { StatusNoticeValue } from '@/components';
 import { useMutationTracker } from '@/mutations';
+import { getRequestErrorMessage } from '@/network';
 import { useCalorieForm } from './useCalorieForm';
 
 interface UseAddCalorieOptions {
@@ -61,8 +62,14 @@ export function useAddCalorie({
       if (entry) {
         onCreated(entry);
       }
-    } catch {
-      setNotice({ kind: 'error', text: 'Unable to add calories. Try again.' });
+    } catch (requestError) {
+      setNotice({
+        kind: 'error',
+        text: getRequestErrorMessage(
+          requestError,
+          'Unable to add calories. Try again.',
+        ),
+      });
     } finally {
       setSubmitting(false);
     }

@@ -34,6 +34,7 @@ export function ProductDetailsContent({
       {product.imageUrl && !imageUnavailable ? (
         <Image
           accessibilityLabel={`${product.name ?? 'Product'} image`}
+          accessibilityRole="image"
           onError={() => setImageUnavailable(true)}
           resizeMode="contain"
           source={{ uri: product.imageUrl }}
@@ -142,16 +143,18 @@ function formatReference(prefix: string, facts: NutritionFacts): string {
 const styles = StyleSheet.create({
   image: {
     alignSelf: 'center',
-    height: 220,
-    width: 220,
+    aspectRatio: 1,
+    maxWidth: 220,
+    width: '70%',
   },
   imagePlaceholder: {
     alignItems: 'center',
     alignSelf: 'center',
     borderWidth: 1,
-    height: 180,
+    aspectRatio: 1,
     justifyContent: 'center',
-    width: 180,
+    maxWidth: 180,
+    width: '60%',
   },
   ingredients: {
     fontSize: 15,

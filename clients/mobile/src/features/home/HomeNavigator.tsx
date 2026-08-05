@@ -4,6 +4,7 @@ import type { AuthSessionController } from '@/auth';
 import {
   BmiCalculatorScreen,
   CalorieCalculatorScreen,
+  type CalculatorRouteName,
   ProteinCalculatorScreen,
 } from '@/features/calculations';
 import { createStackScreenOptions } from '@/navigation/options';
@@ -23,8 +24,8 @@ interface HomeNavigatorProps {
   auth: AuthSessionController;
   colors: ThemeColors;
   onAddCalories: (date: string) => void;
-  onAddWeight: (date?: string) => void;
-  onEditProfile: () => void;
+  onAddWeight: (date?: string, returnTo?: CalculatorRouteName) => void;
+  onEditProfile: (returnTo?: CalculatorRouteName) => void;
   onOpenCalories: (date: string) => void;
   onEditWeight: (date: string, weightKg: number) => void;
   onScanProduct: () => void;
@@ -58,8 +59,8 @@ export function HomeNavigator(props: HomeNavigatorProps) {
           <BmiCalculatorScreen
             auth={props.auth}
             colors={props.colors}
-            onAddWeight={() => props.onAddWeight()}
-            onUpdateProfile={props.onEditProfile}
+            onAddWeight={() => props.onAddWeight(undefined, 'BmiCalculator')}
+            onUpdateProfile={() => props.onEditProfile('BmiCalculator')}
           />
         )}
       </Stack.Screen>
@@ -71,8 +72,10 @@ export function HomeNavigator(props: HomeNavigatorProps) {
           <CalorieCalculatorScreen
             auth={props.auth}
             colors={props.colors}
-            onAddWeight={() => props.onAddWeight()}
-            onUpdateProfile={props.onEditProfile}
+            onAddWeight={() =>
+              props.onAddWeight(undefined, 'CalorieCalculator')
+            }
+            onUpdateProfile={() => props.onEditProfile('CalorieCalculator')}
           />
         )}
       </Stack.Screen>
@@ -84,8 +87,10 @@ export function HomeNavigator(props: HomeNavigatorProps) {
           <ProteinCalculatorScreen
             auth={props.auth}
             colors={props.colors}
-            onAddWeight={() => props.onAddWeight()}
-            onUpdateProfile={props.onEditProfile}
+            onAddWeight={() =>
+              props.onAddWeight(undefined, 'ProteinCalculator')
+            }
+            onUpdateProfile={() => props.onEditProfile('ProteinCalculator')}
           />
         )}
       </Stack.Screen>

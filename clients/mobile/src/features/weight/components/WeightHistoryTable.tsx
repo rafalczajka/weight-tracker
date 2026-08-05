@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type {
   WeightsEntryResponse,
   WeightsGetResponse,
 } from '@weight-tracker/api-client';
+import React, { useMemo } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { formatDisplayDate } from '@/date';
 import { formatWeightChange, formatWeightKg } from '@/format';
+import { useCompactLayout } from '@/hooks/useCompactLayout';
 import type { ThemeColors } from '@/theme';
 import { createWeightHistoryRows, type WeightHistoryRow } from '../history';
 
@@ -20,6 +21,7 @@ export function WeightHistoryTable({
   onOpenEntry,
   result,
 }: WeightHistoryTableProps) {
+  const compact = useCompactLayout();
   const rows = useMemo(
     () => createWeightHistoryRows(result.data),
     [result.data],
@@ -27,7 +29,13 @@ export function WeightHistoryTable({
 
   return (
     <>
-      <View style={[styles.stats, { borderColor: colors.border }]}>
+      <View
+        style={[
+          styles.stats,
+          compact && styles.statsCompact,
+          { borderColor: colors.border },
+        ]}
+      >
         <Stat
           colors={colors}
           label="Minimum"
@@ -45,33 +53,58 @@ export function WeightHistoryTable({
         />
       </View>
       <View style={[styles.table, { borderColor: colors.border }]}>
-        <View
-          style={[
-            styles.headerRow,
-            {
-              backgroundColor: colors.input,
-              borderBottomColor: colors.border,
-            },
-          ]}
-        >
-          <Text style={[styles.headerDate, { color: colors.muted }]}>Date</Text>
-          <Text style={[styles.headerValue, { color: colors.muted }]}>
-            Weight
-          </Text>
-          <Text style={[styles.headerValue, { color: colors.muted }]}>
-            Change
-          </Text>
-        </View>
+        {!compact ? <TableHeader colors={colors} /> : null}
         {rows.map(row => (
           <WeightTableRow
             colors={colors}
+            compact={compact}
             key={row.entry.date}
-            row={row}
             onPress={() => onOpenEntry(row.entry, row.previousWeightKg)}
+            row={row}
           />
         ))}
       </View>
     </>
+  );
+}
+
+function TableHeader({ colors }: { colors: ThemeColors }) {
+  return (
+    <View
+      style={[
+        styles.headerRow,
+        {
+          backgroundColor: colors.input,
+          borderBottomColor: colors.border,
+        },
+      ]}
+    >
+      <TableHeaderText colors={colors} date label="Date" />
+      <TableHeaderText colors={colors} label="Weight" />
+      <TableHeaderText colors={colors} label="Change" />
+    </View>
+  );
+}
+
+function TableHeaderText({
+  colors,
+  date = false,
+  label,
+}: {
+  colors: ThemeColors;
+  date?: boolean;
+  label: string;
+}) {
+  return (
+    <Text
+      accessibilityRole="header"
+      style={[
+        date ? styles.headerDate : styles.headerValue,
+        { color: colors.muted },
+      ]}
+    >
+      {label}
+    </Text>
   );
 }
 
@@ -94,55 +127,136 @@ function Stat({
 
 function WeightTableRow({
   colors,
+  compact,
   onPress,
   row,
 }: {
   colors: ThemeColors;
+  compact: boolean;
   onPress: () => void;
   row: WeightHistoryRow;
 }) {
+  const date = formatDisplayDate(row.entry.date);
+  const weight = formatWeightKg(row.entry.weightKg);
+  const change =
+    row.changeKg === undefined ? '-' : formatWeightChange(row.changeKg);
+
   return (
     <Pressable
+      accessibilityLabel={`${date}, weight ${weight}, change ${change}`}
       accessibilityRole="button"
       onPress={onPress}
       style={({ pressed }) => [
         styles.dataRow,
+        compact && styles.dataRowCompact,
         { borderBottomColor: colors.border },
         pressed && styles.pressed,
       ]}
     >
-      <Text numberOfLines={1} style={[styles.dateCell, { color: colors.text }]}>
-        {formatDisplayDate(row.entry.date)}
-      </Text>
-      <Text style={[styles.valueCell, { color: colors.text }]}>
-        {formatWeightKg(row.entry.weightKg)}
-      </Text>
       <Text
+        numberOfLines={compact ? undefined : 1}
         style={[
-          styles.valueCell,
-          {
-            color:
-              row.changeKg === undefined || row.changeKg === 0
-                ? colors.muted
-                : row.changeKg < 0
-                ? colors.success
-                : colors.error,
-          },
+          styles.dateCell,
+          compact && styles.compactDate,
+          { color: colors.text },
         ]}
       >
-        {row.changeKg === undefined ? '-' : formatWeightChange(row.changeKg)}
+        {date}
       </Text>
+      {compact ? (
+        <View style={styles.compactValues}>
+          <CompactValue colors={colors} label="Weight" value={weight} />
+          <CompactValue
+            colors={colors}
+            label="Change"
+            value={change}
+            valueColor={getChangeColor(colors, row.changeKg)}
+          />
+        </View>
+      ) : (
+        <>
+          <Text style={[styles.valueCell, { color: colors.text }]}>
+            {weight}
+          </Text>
+          <Text
+            style={[
+              styles.valueCell,
+              { color: getChangeColor(colors, row.changeKg) },
+            ]}
+          >
+            {change}
+          </Text>
+        </>
+      )}
     </Pressable>
   );
 }
 
+function CompactValue({
+  colors,
+  label,
+  value,
+  valueColor,
+}: {
+  colors: ThemeColors;
+  label: string;
+  value: string;
+  valueColor?: string;
+}) {
+  return (
+    <View style={styles.compactValue}>
+      <Text style={[styles.compactLabel, { color: colors.muted }]}>
+        {label}
+      </Text>
+      <Text style={[styles.compactText, { color: valueColor ?? colors.text }]}>
+        {value}
+      </Text>
+    </View>
+  );
+}
+
+function getChangeColor(colors: ThemeColors, changeKg?: number) {
+  if (changeKg === undefined || changeKg === 0) {
+    return colors.muted;
+  }
+
+  return changeKg < 0 ? colors.success : colors.error;
+}
+
 const styles = StyleSheet.create({
+  compactDate: {
+    fontSize: 15,
+    fontWeight: '700',
+    paddingRight: 0,
+  },
+  compactLabel: {
+    fontSize: 13,
+    letterSpacing: 0,
+  },
+  compactText: {
+    fontSize: 15,
+    fontWeight: '600',
+    letterSpacing: 0,
+  },
+  compactValue: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  compactValues: {
+    marginTop: 4,
+  },
   dataRow: {
     alignItems: 'center',
     borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
     minHeight: 54,
     paddingHorizontal: 12,
+  },
+  dataRowCompact: {
+    alignItems: 'stretch',
+    flexDirection: 'column',
+    paddingVertical: 12,
   },
   dateCell: {
     flex: 1.4,
@@ -190,6 +304,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 20,
     paddingVertical: 14,
+  },
+  statsCompact: {
+    alignItems: 'stretch',
+    flexDirection: 'column',
+    gap: 12,
   },
   statValue: {
     fontSize: 15,

@@ -9,6 +9,7 @@ import { useCallback, useRef, useState } from 'react';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import { useRequestController } from '@/hooks/useRequestController';
+import { getRequestErrorMessage } from '@/network';
 import type { CalculationContextData } from '../requirements';
 
 export function useCalculationContext(auth: AuthSessionController) {
@@ -49,9 +50,14 @@ export function useCalculationContext(auth: AuthSessionController) {
         setData(loadedData);
         setRevision(value => value + 1);
       }
-    } catch {
+    } catch (requestError) {
       if (!controller.signal.aborted) {
-        setError('Unable to load calculation data.');
+        setError(
+          getRequestErrorMessage(
+            requestError,
+            'Unable to load calculation data.',
+          ),
+        );
       }
     } finally {
       if (!controller.signal.aborted) {

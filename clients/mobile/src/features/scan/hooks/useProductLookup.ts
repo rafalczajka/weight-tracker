@@ -8,6 +8,7 @@ import { useCallback, useState } from 'react';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import { useRequestController } from '@/hooks/useRequestController';
+import { getRequestErrorMessage } from '@/network';
 
 export function useProductLookup(auth: AuthSessionController) {
   const [error, setError] = useState<string | null>(null);
@@ -67,5 +68,8 @@ function getLookupError(error: unknown): string {
     }
   }
 
-  return 'Unable to load product. Check your connection and try again.';
+  return getRequestErrorMessage(
+    error,
+    'Unable to load product. Check your connection and try again.',
+  );
 }

@@ -11,6 +11,7 @@ import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import type { StatusNoticeValue } from '@/components';
 import { useMutationTracker } from '@/mutations';
+import { getRequestErrorMessage } from '@/network';
 import { useWeightForm } from './useWeightForm';
 
 interface UseAddWeightOptions {
@@ -76,7 +77,13 @@ export function useAddWeight({
           text: 'Weight for this date has already been added.',
         });
       } else {
-        setNotice({ kind: 'error', text: 'Unable to add weight. Try again.' });
+        setNotice({
+          kind: 'error',
+          text: getRequestErrorMessage(
+            error,
+            'Unable to add weight. Try again.',
+          ),
+        });
       }
     } finally {
       setSubmitting(false);

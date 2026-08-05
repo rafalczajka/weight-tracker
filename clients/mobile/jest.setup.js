@@ -1,5 +1,9 @@
 /* global jest */
 
+jest.mock('@react-native-community/netinfo', () =>
+  require('@react-native-community/netinfo/jest/netinfo-mock.js'),
+);
+
 jest.mock('react-native-app-auth', () => ({
   authorize: jest.fn(),
   refresh: jest.fn(),

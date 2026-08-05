@@ -8,6 +8,7 @@ import { useCallback, useRef, useState } from 'react';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import { useRequestController } from '@/hooks/useRequestController';
+import { getRequestErrorMessage } from '@/network';
 
 export function useDailyCalories(auth: AuthSessionController, date: string) {
   const authRef = useRef(auth);
@@ -41,9 +42,14 @@ export function useDailyCalories(auth: AuthSessionController, date: string) {
         if (loadedDay && !controller.signal.aborted) {
           setDay(loadedDay);
         }
-      } catch {
+      } catch (requestError) {
         if (!controller.signal.aborted) {
-          setError('Unable to load calorie entries.');
+          setError(
+            getRequestErrorMessage(
+              requestError,
+              'Unable to load calorie entries.',
+            ),
+          );
         }
       } finally {
         if (!controller.signal.aborted) {

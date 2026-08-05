@@ -14,6 +14,7 @@ import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import type { StatusNoticeValue } from '@/components';
 import { useMutationTracker } from '@/mutations';
+import { getRequestErrorMessage } from '@/network';
 import {
   calculateProductCalories,
   getDefaultProductCalorieMode,
@@ -117,10 +118,13 @@ export function useProductCalorieForm({
       if (entry) {
         onCreated(entry.date);
       }
-    } catch {
+    } catch (requestError) {
       setNotice({
         kind: 'error',
-        text: 'Unable to add calories. Try again.',
+        text: getRequestErrorMessage(
+          requestError,
+          'Unable to add calories. Try again.',
+        ),
       });
     } finally {
       setSubmitting(false);

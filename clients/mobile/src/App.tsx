@@ -13,6 +13,7 @@ import {
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { SignInView, type AuthSessionController, useAuthSession } from '@/auth';
 import { Navigator } from '@/navigation';
+import { NetworkProvider, OfflineBanner, useIsOffline } from '@/network';
 import { darkColors, lightColors, type ThemeColors } from '@/theme';
 
 export default function App() {
@@ -26,9 +27,12 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <View style={[styles.screen, { backgroundColor: colors.background }]}>
-        <AppContent auth={auth} colors={colors} isDarkMode={isDarkMode} />
-      </View>
+      <NetworkProvider>
+        <View style={[styles.screen, { backgroundColor: colors.background }]}>
+          <OfflineBanner colors={colors} />
+          <AppContent auth={auth} colors={colors} isDarkMode={isDarkMode} />
+        </View>
+      </NetworkProvider>
     </SafeAreaProvider>
   );
 }
@@ -64,6 +68,8 @@ interface SignedOutViewProps {
 }
 
 function SignedOutView({ auth, colors }: SignedOutViewProps) {
+  const isOffline = useIsOffline();
+
   return (
     <SafeAreaView style={styles.fill}>
       <KeyboardAvoidingView
@@ -78,7 +84,7 @@ function SignedOutView({ auth, colors }: SignedOutViewProps) {
             <AppHeader color={colors.text} />
             <SignInView
               colors={colors}
-              disabled={auth.busy}
+              disabled={auth.busy || isOffline}
               loading={auth.signingIn}
               notice={auth.notice}
               onSignIn={auth.signIn}

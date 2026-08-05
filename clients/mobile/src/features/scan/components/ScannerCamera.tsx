@@ -5,6 +5,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { Camera, CameraType } from 'react-native-camera-kit';
@@ -34,12 +35,18 @@ export function ScannerCamera({
   onToggleTorch,
   torchEnabled,
 }: ScannerCameraProps) {
+  const { width } = useWindowDimensions();
+  const frameWidth = Math.max(160, Math.min(300, width - 40));
+
   return (
     <View style={styles.container}>
       {active ? (
         <Camera
           allowedBarcodeTypes={[...BARCODE_TYPES]}
-          barcodeFrameSize={{ height: 150, width: 300 }}
+          barcodeFrameSize={{
+            height: Math.min(150, frameWidth / 2),
+            width: frameWidth,
+          }}
           cameraType={CameraType.Back}
           frameColor={colors.accent}
           laserColor={colors.accent}

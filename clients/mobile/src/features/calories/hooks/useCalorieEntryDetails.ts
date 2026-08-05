@@ -8,6 +8,7 @@ import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import { useInitialNotice } from '@/hooks/useInitialNotice';
 import { useMutationTracker } from '@/mutations';
+import { getRequestErrorMessage } from '@/network';
 import { useDailyCalories } from './useDailyCalories';
 
 interface UseCalorieEntryDetailsOptions {
@@ -53,10 +54,13 @@ export function useCalorieEntryDetails({
       if (deleted) {
         onDeleted();
       }
-    } catch {
+    } catch (requestError) {
       setNotice({
         kind: 'error',
-        text: 'Unable to delete calorie entry. Try again.',
+        text: getRequestErrorMessage(
+          requestError,
+          'Unable to delete calorie entry. Try again.',
+        ),
       });
     } finally {
       setDeleting(false);

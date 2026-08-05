@@ -1,10 +1,12 @@
 import { ApiError } from '@weight-tracker/api-client';
+import { ensureOnline } from '@/network/networkState';
 import type { AuthSessionController } from './useAuthSession';
 
 export async function runAuthorized<T>(
   auth: AuthSessionController,
   request: (accessToken: string) => Promise<T>,
 ): Promise<T | undefined> {
+  await ensureOnline();
   const accessToken = await auth.getAccessToken();
 
   if (!accessToken) {

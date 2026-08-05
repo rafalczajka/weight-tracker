@@ -5,6 +5,7 @@ import type { AuthSessionController } from '@/auth';
 import { runAuthorized } from '@/auth';
 import type { StatusNoticeValue } from '@/components';
 import { useRequestController } from '@/hooks/useRequestController';
+import { getRequestErrorMessage } from '@/network';
 import {
   getValidationRequirements,
   type CalculationKind,
@@ -86,7 +87,10 @@ export function useCalculationRequest<TResult>({
           text:
             requirements.length > 0
               ? 'Some required data is still missing.'
-              : 'Unable to calculate the result.',
+              : getRequestErrorMessage(
+                  error,
+                  'Unable to calculate the result.',
+                ),
         });
       }
     } finally {

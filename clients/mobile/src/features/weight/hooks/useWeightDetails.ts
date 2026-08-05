@@ -10,6 +10,7 @@ import { runAuthorized, type AuthSessionController } from '@/auth';
 import { formatDisplayDate } from '@/date';
 import { useInitialNotice } from '@/hooks/useInitialNotice';
 import { useMutationTracker } from '@/mutations';
+import { getRequestErrorMessage } from '@/network';
 import { useWeightEntry } from './useWeightEntry';
 
 interface UseWeightDetailsOptions {
@@ -56,8 +57,14 @@ export function useWeightDetails({
       if (deleted) {
         onDeleted();
       }
-    } catch {
-      setNotice({ kind: 'error', text: 'Unable to delete weight. Try again.' });
+    } catch (requestError) {
+      setNotice({
+        kind: 'error',
+        text: getRequestErrorMessage(
+          requestError,
+          'Unable to delete weight. Try again.',
+        ),
+      });
     } finally {
       setDeleting(false);
     }

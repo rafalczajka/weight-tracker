@@ -12,7 +12,12 @@ interface ProteinResultProps {
 export function ProteinResult({ colors, result }: ProteinResultProps) {
   return (
     <View accessibilityLiveRegion="polite" style={styles.result}>
-      <Text style={[styles.title, { color: colors.text }]}>Result</Text>
+      <Text
+        accessibilityRole="header"
+        style={[styles.title, { color: colors.text }]}
+      >
+        Result
+      </Text>
       <View style={[styles.rows, { borderTopColor: colors.border }]}>
         <ListRow
           colors={colors}

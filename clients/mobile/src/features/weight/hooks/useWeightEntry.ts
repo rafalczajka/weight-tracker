@@ -8,6 +8,7 @@ import { useCallback, useRef, useState } from 'react';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import { useRequestController } from '@/hooks/useRequestController';
+import { getRequestErrorMessage } from '@/network';
 
 export function useWeightEntry(auth: AuthSessionController, date: string) {
   const authRef = useRef(auth);
@@ -41,9 +42,14 @@ export function useWeightEntry(auth: AuthSessionController, date: string) {
         if (loadedEntry && !controller.signal.aborted) {
           setEntry(loadedEntry);
         }
-      } catch {
+      } catch (requestError) {
         if (!controller.signal.aborted) {
-          setError('Unable to load this weight entry.');
+          setError(
+            getRequestErrorMessage(
+              requestError,
+              'Unable to load this weight entry.',
+            ),
+          );
         }
       } finally {
         if (!controller.signal.aborted) {

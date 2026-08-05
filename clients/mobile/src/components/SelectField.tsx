@@ -1,6 +1,14 @@
 import { Check, ChevronDown } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { ThemeColors } from '@/theme';
 
 export interface SelectOption<T extends string> {
@@ -29,6 +37,7 @@ export function SelectField<T extends string>({
   placeholder = 'Not set',
   value,
 }: SelectFieldProps<T>) {
+  const insets = useSafeAreaInsets();
   const [visible, setVisible] = useState(false);
   const selectedLabel = options.find(option => option.value === value)?.label;
 
@@ -70,7 +79,17 @@ export function SelectField<T extends string>({
         transparent
         visible={visible}
       >
-        <View style={styles.overlay}>
+        <View
+          accessibilityViewIsModal
+          onAccessibilityEscape={() => setVisible(false)}
+          style={[
+            styles.overlay,
+            {
+              paddingBottom: Math.max(24, insets.bottom + 12),
+              paddingTop: Math.max(24, insets.top + 12),
+            },
+          ]}
+        >
           <Pressable
             accessibilityLabel="Close selection"
             onPress={() => setVisible(false)}
@@ -80,21 +99,27 @@ export function SelectField<T extends string>({
             <Text style={[styles.dialogTitle, { color: colors.text }]}>
               {label}
             </Text>
-            <SelectRow
-              colors={colors}
-              label={placeholder}
-              onPress={() => select(null)}
-              selected={value === null}
-            />
-            {options.map(option => (
+            <ScrollView
+              accessibilityRole="radiogroup"
+              bounces={false}
+              showsVerticalScrollIndicator
+            >
               <SelectRow
                 colors={colors}
-                key={option.value}
-                label={option.label}
-                onPress={() => select(option.value)}
-                selected={option.value === value}
+                label={placeholder}
+                onPress={() => select(null)}
+                selected={value === null}
               />
-            ))}
+              {options.map(option => (
+                <SelectRow
+                  colors={colors}
+                  key={option.value}
+                  label={option.label}
+                  onPress={() => select(option.value)}
+                  selected={option.value === value}
+                />
+              ))}
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -142,6 +167,7 @@ const styles = StyleSheet.create({
   },
   dialog: {
     borderRadius: 6,
+    maxHeight: '100%',
     maxWidth: 420,
     paddingHorizontal: 16,
     paddingVertical: 8,

@@ -156,7 +156,10 @@ function SectionTitle({
   colors: ThemeColors;
 }) {
   return (
-    <Text style={[styles.sectionTitle, { color: colors.text }]}>
+    <Text
+      accessibilityRole="header"
+      style={[styles.sectionTitle, { color: colors.text }]}
+    >
       {children}
     </Text>
   );

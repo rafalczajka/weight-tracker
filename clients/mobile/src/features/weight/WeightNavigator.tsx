@@ -8,6 +8,7 @@ import { Plus } from 'lucide-react-native';
 import React from 'react';
 import type { AuthSessionController } from '@/auth';
 import { IconButton } from '@/components';
+import type { CalculatorRouteName } from '@/features/calculations';
 import { createStackScreenOptions } from '@/navigation/options';
 import type { ThemeColors } from '@/theme';
 import { AddWeightScreen } from './screens/AddWeightScreen';
@@ -17,7 +18,9 @@ import { WeightHistoryScreen } from './screens/WeightHistoryScreen';
 
 export type WeightStackParamList = {
   WeightHistory: { initialNotice?: string } | undefined;
-  AddWeight: { date?: string } | undefined;
+  AddWeight:
+    | { date?: string; returnToCalculator?: CalculatorRouteName }
+    | undefined;
   WeightDetails: {
     date: string;
     initialNotice?: string;
@@ -31,9 +34,14 @@ const Stack = createNativeStackNavigator<WeightStackParamList>();
 interface WeightNavigatorProps {
   auth: AuthSessionController;
   colors: ThemeColors;
+  onReturnToCalculator: (calculator: CalculatorRouteName) => void;
 }
 
-export function WeightNavigator({ auth, colors }: WeightNavigatorProps) {
+export function WeightNavigator({
+  auth,
+  colors,
+  onReturnToCalculator,
+}: WeightNavigatorProps) {
   return (
     <Stack.Navigator screenOptions={createStackScreenOptions(colors)}>
       <Stack.Screen name="WeightHistory" options={weightHistoryOptions}>
@@ -58,12 +66,20 @@ export function WeightNavigator({ auth, colors }: WeightNavigatorProps) {
             auth={auth}
             colors={colors}
             initialDate={route.params?.date}
-            onCreated={entry =>
+            onCreated={entry => {
+              if (route.params?.returnToCalculator) {
+                navigation.popTo('WeightHistory', {
+                  initialNotice: 'Weight added.',
+                });
+                onReturnToCalculator(route.params.returnToCalculator);
+                return;
+              }
+
               navigation.popTo('WeightDetails', {
                 date: entry.date,
                 initialNotice: 'Weight added.',
-              })
-            }
+              });
+            }}
             onViewExisting={date => navigation.popTo('WeightDetails', { date })}
           />
         )}

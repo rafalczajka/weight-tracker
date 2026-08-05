@@ -9,6 +9,7 @@ import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import type { DateRange } from '@/components';
 import { useRequestController } from '@/hooks/useRequestController';
+import { getRequestErrorMessage } from '@/network';
 
 const INITIAL_DAY_LIMIT = 7;
 
@@ -50,9 +51,14 @@ export function useCalorieHistory(auth: AuthSessionController) {
         if (loadedResult && !controller.signal.aborted) {
           setResult(loadedResult);
         }
-      } catch {
+      } catch (requestError) {
         if (!controller.signal.aborted) {
-          setError('Unable to load calorie history.');
+          setError(
+            getRequestErrorMessage(
+              requestError,
+              'Unable to load calorie history.',
+            ),
+          );
         }
       } finally {
         if (!controller.signal.aborted) {

@@ -10,6 +10,7 @@ import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import type { StatusNoticeValue } from '@/components';
 import { useMutationTracker } from '@/mutations';
+import { getRequestErrorMessage } from '@/network';
 import {
   areProfileValuesEqual,
   createEmptyProfileRequest,
@@ -150,7 +151,10 @@ export function useEditProfile({ auth, onSaved }: UseEditProfileOptions) {
       }
     } catch (error) {
       applyServerErrors(error);
-      setNotice({ kind: 'error', text: 'Unable to update your profile.' });
+      setNotice({
+        kind: 'error',
+        text: getRequestErrorMessage(error, 'Unable to update your profile.'),
+      });
     } finally {
       setSubmitting(false);
     }

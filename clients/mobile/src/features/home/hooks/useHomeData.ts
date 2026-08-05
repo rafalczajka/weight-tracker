@@ -11,6 +11,7 @@ import { useCallback, useRef, useState } from 'react';
 import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import { useRequestController } from '@/hooks/useRequestController';
+import { getRequestErrorMessage } from '@/network';
 
 interface HomeData {
   calories: DailyCaloriesResponse;
@@ -59,9 +60,14 @@ export function useHomeData(auth: AuthSessionController) {
         if (result && !controller.signal.aborted) {
           setData(result);
         }
-      } catch {
+      } catch (requestError) {
         if (!controller.signal.aborted) {
-          setError("Unable to load today's summary.");
+          setError(
+            getRequestErrorMessage(
+              requestError,
+              "Unable to load today's summary.",
+            ),
+          );
         }
       } finally {
         if (!controller.signal.aborted) {

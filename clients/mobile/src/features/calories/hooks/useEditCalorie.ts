@@ -9,6 +9,7 @@ import { apiClient } from '@/apiClient';
 import { runAuthorized, type AuthSessionController } from '@/auth';
 import type { StatusNoticeValue } from '@/components';
 import { useMutationTracker } from '@/mutations';
+import { getRequestErrorMessage } from '@/network';
 import { useCalorieForm } from './useCalorieForm';
 
 interface UseEditCalorieOptions {
@@ -58,10 +59,13 @@ export function useEditCalorie({
       if (updatedEntry) {
         onSaved(updatedEntry);
       }
-    } catch {
+    } catch (requestError) {
       setNotice({
         kind: 'error',
-        text: 'Unable to update calories. Try again.',
+        text: getRequestErrorMessage(
+          requestError,
+          'Unable to update calories. Try again.',
+        ),
       });
     } finally {
       setSubmitting(false);

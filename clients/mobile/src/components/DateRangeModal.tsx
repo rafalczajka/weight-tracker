@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getDateRangeError } from '@/date';
 import type { ThemeColors } from '@/theme';
@@ -54,6 +61,8 @@ export function DateRangeModal({
           style={StyleSheet.absoluteFill}
         />
         <View
+          accessibilityViewIsModal
+          onAccessibilityEscape={onClose}
           style={[
             styles.dialog,
             {
@@ -62,45 +71,56 @@ export function DateRangeModal({
             },
           ]}
         >
-          <Text style={[styles.title, { color: colors.text }]}>Date range</Text>
-          <DateField
-            colors={colors}
-            label="From"
-            onChange={setFrom}
-            placeholder="Any date"
-            value={from}
-          />
-          <DateField
-            colors={colors}
-            label="To"
-            onChange={setTo}
-            placeholder="Any date"
-            value={to}
-          />
-          <Text
-            accessibilityLiveRegion="polite"
-            style={[styles.error, { color: colors.error }]}
+          <ScrollView
+            bounces={false}
+            contentContainerStyle={styles.dialogContent}
+            keyboardShouldPersistTaps="handled"
           >
-            {error ?? ' '}
-          </Text>
-          <PrimaryButton
-            colors={colors}
-            disabled={Boolean(error)}
-            label="Apply filters"
-            loading={false}
-            onPress={() => onApply({ from, to })}
-          />
-          <View style={styles.actions}>
-            <TextButton
+            <Text
+              accessibilityRole="header"
+              style={[styles.title, { color: colors.text }]}
+            >
+              Date range
+            </Text>
+            <DateField
               colors={colors}
-              label="Clear"
-              onPress={() => {
-                setFrom(undefined);
-                setTo(undefined);
-              }}
+              label="From"
+              onChange={setFrom}
+              placeholder="Any date"
+              value={from}
             />
-            <TextButton colors={colors} label="Cancel" onPress={onClose} />
-          </View>
+            <DateField
+              colors={colors}
+              label="To"
+              onChange={setTo}
+              placeholder="Any date"
+              value={to}
+            />
+            <Text
+              accessibilityLiveRegion="polite"
+              style={[styles.error, { color: colors.error }]}
+            >
+              {error ?? ' '}
+            </Text>
+            <PrimaryButton
+              colors={colors}
+              disabled={Boolean(error)}
+              label="Apply filters"
+              loading={false}
+              onPress={() => onApply({ from, to })}
+            />
+            <View style={styles.actions}>
+              <TextButton
+                colors={colors}
+                label="Clear"
+                onPress={() => {
+                  setFrom(undefined);
+                  setTo(undefined);
+                }}
+              />
+              <TextButton colors={colors} label="Cancel" onPress={onClose} />
+            </View>
+          </ScrollView>
         </View>
       </View>
     </Modal>
@@ -117,10 +137,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     elevation: 8,
+    maxHeight: '90%',
     maxWidth: 720,
     padding: 20,
     width: '100%',
     zIndex: 1,
+  },
+  dialogContent: {
+    flexGrow: 1,
   },
   error: {
     fontSize: 13,
