@@ -30,6 +30,8 @@ updates:
 
   - package-ecosystem: npm
     directory: /
+    exclude-paths:
+      - legacy/**
     schedule:
       interval: weekly
     ignore:
