@@ -18,6 +18,7 @@ interface AddCalorieScreenProps {
   auth: AuthSessionController;
   colors: ThemeColors;
   initialDate?: string;
+  initialDescription?: string;
   onCreated: (entry: CalorieEntryDetailsResponse) => void;
 }
 
@@ -25,9 +26,10 @@ export function AddCalorieScreen({
   auth,
   colors,
   initialDate,
+  initialDescription,
   onCreated,
 }: AddCalorieScreenProps) {
-  const form = useCalorieForm();
+  const form = useCalorieForm(undefined, initialDescription);
   const { runMutation } = useMutationTracker();
   const [date, setDate] = useState(initialDate ?? formatApiDate(new Date()));
   const [submitting, setSubmitting] = useState(false);

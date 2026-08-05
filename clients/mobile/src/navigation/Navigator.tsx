@@ -88,7 +88,9 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
                     screen: 'EditWeight',
                   })
                 }
-                onScanProduct={() => navigation.navigate('Scan')}
+                onScanProduct={() =>
+                  navigation.navigate('Scan', { screen: 'Scanner' })
+                }
               />
             )}
           </Tab.Screen>
@@ -96,14 +98,33 @@ export function Navigator({ auth, colors, isDarkMode }: NavigatorProps) {
             {() => <WeightNavigator auth={auth} colors={colors} />}
           </Tab.Screen>
           <Tab.Screen name="Scan">
-            {() => <ScanNavigator colors={colors} />}
+            {({ navigation }) => (
+              <ScanNavigator
+                auth={auth}
+                colors={colors}
+                onAddCaloriesManually={initialDescription =>
+                  navigation.navigate('Calories', {
+                    params: { initialDescription },
+                    screen: 'AddCalorie',
+                  })
+                }
+                onCaloriesAdded={date =>
+                  navigation.navigate('Calories', {
+                    params: { date, initialNotice: 'Calories added.' },
+                    screen: 'DailyCalories',
+                  })
+                }
+              />
+            )}
           </Tab.Screen>
           <Tab.Screen name="Calories">
             {({ navigation }) => (
               <CaloriesNavigator
                 auth={auth}
                 colors={colors}
-                onScanProduct={() => navigation.navigate('Scan')}
+                onScanProduct={() =>
+                  navigation.navigate('Scan', { screen: 'Scanner' })
+                }
               />
             )}
           </Tab.Screen>

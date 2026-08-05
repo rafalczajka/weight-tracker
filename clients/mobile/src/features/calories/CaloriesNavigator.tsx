@@ -19,7 +19,7 @@ import { EditCalorieScreen } from './screens/EditCalorieScreen';
 export type CaloriesStackParamList = {
   CalorieHistory: undefined;
   DailyCalories: { date: string; initialNotice?: string };
-  AddCalorie: { date?: string } | undefined;
+  AddCalorie: { date?: string; initialDescription?: string } | undefined;
   CalorieEntryDetails: {
     date: string;
     id: string;
@@ -91,6 +91,7 @@ export function CaloriesNavigator({
               auth={auth}
               colors={colors}
               initialDate={route.params?.date}
+              initialDescription={route.params?.initialDescription}
               onCreated={entry =>
                 navigation.popTo('DailyCalories', {
                   date: entry.date,
