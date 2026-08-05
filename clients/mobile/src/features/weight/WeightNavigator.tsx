@@ -1,6 +1,7 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
+  type NativeStackNavigationOptions,
   type NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import { Plus } from 'lucide-react-native';
@@ -35,10 +36,7 @@ interface WeightNavigatorProps {
 export function WeightNavigator({ auth, colors }: WeightNavigatorProps) {
   return (
     <Stack.Navigator screenOptions={createStackScreenOptions(colors)}>
-      <Stack.Screen
-        name="WeightHistory"
-        options={{ headerRight: AddWeightHeaderButton, title: 'Weight' }}
-      >
+      <Stack.Screen name="WeightHistory" options={weightHistoryOptions}>
         {({ navigation, route }) => (
           <WeightHistoryScreen
             auth={auth}
@@ -111,16 +109,24 @@ export function WeightNavigator({ auth, colors }: WeightNavigatorProps) {
   );
 }
 
-function AddWeightHeaderButton() {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<WeightStackParamList>>();
+function weightHistoryOptions({
+  navigation,
+}: {
+  navigation: NativeStackNavigationProp<WeightStackParamList, 'WeightHistory'>;
+}): NativeStackNavigationOptions {
+  return {
+    headerRight: () => (
+      <AddWeightHeaderButton onPress={() => navigation.navigate('AddWeight')} />
+    ),
+    title: 'Weight',
+  };
+}
+
+function AddWeightHeaderButton({ onPress }: { onPress: () => void }) {
   const { colors } = useTheme();
 
   return (
-    <IconButton
-      accessibilityLabel="Add weight"
-      onPress={() => navigation.navigate('AddWeight')}
-    >
+    <IconButton accessibilityLabel="Add weight" onPress={onPress}>
       <Plus color={colors.text} size={22} strokeWidth={2} />
     </IconButton>
   );

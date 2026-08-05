@@ -1,6 +1,7 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
+  type NativeStackNavigationOptions,
   type NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import { Plus, ScanBarcode } from 'lucide-react-native';
@@ -50,10 +51,7 @@ export function CaloriesNavigator({
   return (
     <CaloriesNavigationContext.Provider value={{ onScanProduct }}>
       <Stack.Navigator screenOptions={createStackScreenOptions(colors)}>
-        <Stack.Screen
-          name="CalorieHistory"
-          options={{ headerRight: CaloriesHeaderActions, title: 'Calories' }}
-        >
+        <Stack.Screen name="CalorieHistory" options={calorieHistoryOptions}>
           {({ navigation }) => (
             <CalorieHistoryScreen
               auth={auth}
@@ -146,10 +144,30 @@ export function CaloriesNavigator({
   );
 }
 
-function CaloriesHeaderActions() {
+function calorieHistoryOptions({
+  navigation,
+}: {
+  navigation: NativeStackNavigationProp<
+    CaloriesStackParamList,
+    'CalorieHistory'
+  >;
+}): NativeStackNavigationOptions {
+  return {
+    headerRight: () => (
+      <CaloriesHeaderActions
+        onAddCalories={() => navigation.navigate('AddCalorie')}
+      />
+    ),
+    title: 'Calories',
+  };
+}
+
+function CaloriesHeaderActions({
+  onAddCalories,
+}: {
+  onAddCalories: () => void;
+}) {
   const { onScanProduct } = useContext(CaloriesNavigationContext);
-  const navigation =
-    useNavigation<NativeStackNavigationProp<CaloriesStackParamList>>();
   const { colors } = useTheme();
 
   return (
@@ -157,10 +175,7 @@ function CaloriesHeaderActions() {
       <IconButton accessibilityLabel="Scan product" onPress={onScanProduct}>
         <ScanBarcode color={colors.text} size={21} strokeWidth={2} />
       </IconButton>
-      <IconButton
-        accessibilityLabel="Add calories"
-        onPress={() => navigation.navigate('AddCalorie')}
-      >
+      <IconButton accessibilityLabel="Add calories" onPress={onAddCalories}>
         <Plus color={colors.text} size={22} strokeWidth={2} />
       </IconButton>
     </View>
