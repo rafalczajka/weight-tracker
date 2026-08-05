@@ -1,17 +1,10 @@
-import {
-  updateWeightEntry,
-  withBearerToken,
-  type WeightsEntryResponse,
-} from '@weight-tracker/api-client';
-import React, { useState } from 'react';
-import { Keyboard } from 'react-native';
-import { apiClient } from '@/apiClient';
-import { runAuthorized, type AuthSessionController } from '@/auth';
-import { FormScreen, type StatusNoticeValue } from '@/components';
-import { useMutationTracker } from '@/mutations';
+import type { WeightsEntryResponse } from '@weight-tracker/api-client';
+import React from 'react';
+import type { AuthSessionController } from '@/auth';
+import { FormScreen } from '@/components';
 import type { ThemeColors } from '@/theme';
 import { WeightForm } from '../components/WeightForm';
-import { useWeightForm } from '../hooks/useWeightForm';
+import { useEditWeight } from '../hooks/useEditWeight';
 
 interface EditWeightScreenProps {
   auth: AuthSessionController;
@@ -26,48 +19,7 @@ export function EditWeightScreen({
   entry,
   onSaved,
 }: EditWeightScreenProps) {
-  const form = useWeightForm(entry.weightKg);
-  const { runMutation } = useMutationTracker();
-  const [submitting, setSubmitting] = useState(false);
-  const [notice, setNotice] = useState<StatusNoticeValue | null>(null);
-
-  async function submit() {
-    if (submitting) {
-      return;
-    }
-
-    const weightKg = form.getWeightKg();
-
-    if (weightKg === null) {
-      return;
-    }
-
-    Keyboard.dismiss();
-    setSubmitting(true);
-    setNotice(null);
-
-    try {
-      const updatedEntry = await runMutation(() =>
-        runAuthorized(auth, async accessToken => {
-          const response = await updateWeightEntry({
-            ...withBearerToken(apiClient, accessToken),
-            body: { weightKg },
-            path: { date: entry.date },
-          });
-
-          return response.data;
-        }),
-      );
-
-      if (updatedEntry) {
-        onSaved(updatedEntry);
-      }
-    } catch {
-      setNotice({ kind: 'error', text: 'Unable to update weight. Try again.' });
-    } finally {
-      setSubmitting(false);
-    }
-  }
+  const model = useEditWeight({ auth, entry, onSaved });
 
   return (
     <FormScreen>
@@ -76,15 +28,15 @@ export function EditWeightScreen({
         colors={colors}
         date={entry.date}
         dateEditable={false}
-        disabled={submitting || auth.busy}
-        notice={notice}
+        disabled={model.submitting || model.authBusy}
+        notice={model.notice}
         onDateChange={() => undefined}
-        onSubmit={submit}
-        onWeightBlur={form.validateWeight}
-        onWeightChange={form.changeWeight}
-        submitting={submitting}
-        weight={form.weight}
-        weightError={form.weightError}
+        onSubmit={model.submit}
+        onWeightBlur={model.form.validateWeight}
+        onWeightChange={model.form.changeWeight}
+        submitting={model.submitting}
+        weight={model.form.weight}
+        weightError={model.form.weightError}
       />
     </FormScreen>
   );

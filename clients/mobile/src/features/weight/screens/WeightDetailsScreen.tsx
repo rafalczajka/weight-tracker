@@ -1,25 +1,10 @@
-import {
-  deleteWeightEntry,
-  withBearerToken,
-  type WeightsEntryResponse,
-} from '@weight-tracker/api-client';
-import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
-import { apiClient } from '@/apiClient';
-import { runAuthorized, type AuthSessionController } from '@/auth';
-import {
-  ListRow,
-  Screen,
-  ScreenState,
-  StatusNotice,
-  TextButton,
-  type StatusNoticeValue,
-} from '@/components';
-import { formatDisplayDate } from '@/date';
-import { formatWeightChange, formatWeightKg } from '@/format';
-import { useMutationTracker } from '@/mutations';
+import type { WeightsEntryResponse } from '@weight-tracker/api-client';
+import React from 'react';
+import type { AuthSessionController } from '@/auth';
+import { Screen, ScreenState } from '@/components';
 import type { ThemeColors } from '@/theme';
-import { useWeightEntry } from '../hooks/useWeightEntry';
+import { WeightDetailsContent } from '../components/WeightDetailsContent';
+import { useWeightDetails } from '../hooks/useWeightDetails';
 
 interface WeightDetailsScreenProps {
   auth: AuthSessionController;
@@ -40,62 +25,13 @@ export function WeightDetailsScreen({
   onEdit,
   previousWeightKg,
 }: WeightDetailsScreenProps) {
-  const details = useWeightEntry(auth, date);
-  const { runMutation } = useMutationTracker();
-  const [deleting, setDeleting] = useState(false);
-  const [notice, setNotice] = useState<StatusNoticeValue | null>(
-    initialNotice ? { kind: 'success', text: initialNotice } : null,
-  );
-
-  useEffect(() => {
-    setNotice(initialNotice ? { kind: 'success', text: initialNotice } : null);
-  }, [initialNotice]);
-
-  function confirmDelete() {
-    Alert.alert(
-      'Delete weight entry?',
-      `The measurement for ${formatDisplayDate(
-        date,
-      )} will be permanently deleted.`,
-      [
-        { style: 'cancel', text: 'Cancel' },
-        {
-          style: 'destructive',
-          text: 'Delete',
-          onPress: deleteEntry,
-        },
-      ],
-    );
-  }
-
-  async function deleteEntry() {
-    if (deleting) {
-      return;
-    }
-
-    setDeleting(true);
-    setNotice(null);
-
-    try {
-      const deleted = await runMutation(() =>
-        runAuthorized(auth, async accessToken => {
-          await deleteWeightEntry({
-            ...withBearerToken(apiClient, accessToken),
-            path: { date },
-          });
-          return true;
-        }),
-      );
-
-      if (deleted) {
-        onDeleted();
-      }
-    } catch {
-      setNotice({ kind: 'error', text: 'Unable to delete weight. Try again.' });
-    } finally {
-      setDeleting(false);
-    }
-  }
+  const details = useWeightDetails({
+    auth,
+    date,
+    initialNotice,
+    onDeleted,
+    previousWeightKg,
+  });
 
   if (details.loading && !details.entry) {
     return (
@@ -119,68 +55,19 @@ export function WeightDetailsScreen({
     );
   }
 
-  const changeKg =
-    previousWeightKg === undefined
-      ? undefined
-      : details.entry.weightKg - previousWeightKg;
   const entry = details.entry;
 
   return (
-    <Screen onRefresh={details.refresh} refreshing={details.refreshing}>
-      <Text style={[styles.value, { color: colors.text }]}>
-        {formatWeightKg(entry.weightKg)}
-      </Text>
-      <View style={[styles.section, { borderTopColor: colors.border }]}>
-        <ListRow
-          colors={colors}
-          title="Date"
-          value={formatDisplayDate(entry.date)}
-        />
-        <ListRow
-          colors={colors}
-          title="Change"
-          value={
-            changeKg === undefined
-              ? 'Not available'
-              : formatWeightChange(changeKg)
-          }
-        />
-      </View>
-      <View style={styles.actions}>
-        <TextButton
-          colors={colors}
-          disabled={deleting}
-          label="Edit"
-          onPress={() => onEdit(entry)}
-        />
-        <TextButton
-          colors={colors}
-          destructive
-          disabled={deleting}
-          label="Delete"
-          loading={deleting}
-          onPress={confirmDelete}
-        />
-      </View>
-      <StatusNotice colors={colors} notice={notice} />
-    </Screen>
+    <WeightDetailsContent
+      changeKg={details.changeKg}
+      colors={colors}
+      deleting={details.deleting}
+      entry={entry}
+      notice={details.notice}
+      onDelete={details.confirmDelete}
+      onEdit={() => onEdit(entry)}
+      onRefresh={details.refresh}
+      refreshing={details.refreshing}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 20,
-  },
-  section: {
-    borderTopWidth: 1,
-    marginTop: 28,
-  },
-  value: {
-    fontSize: 34,
-    fontWeight: '700',
-    letterSpacing: 0,
-    textAlign: 'center',
-  },
-});
