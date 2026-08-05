@@ -7,6 +7,7 @@ import type {
 import { formatDisplayDate } from '@/date';
 import { formatWeightChange, formatWeightKg } from '@/format';
 import type { ThemeColors } from '@/theme';
+import { createWeightHistoryRows, type WeightHistoryRow } from '../history';
 
 interface WeightHistoryTableProps {
   colors: ThemeColors;
@@ -14,18 +15,15 @@ interface WeightHistoryTableProps {
   result: WeightsGetResponse;
 }
 
-interface WeightRow {
-  changeKg?: number;
-  entry: WeightsEntryResponse;
-  previousWeightKg?: number;
-}
-
 export function WeightHistoryTable({
   colors,
   onOpenEntry,
   result,
 }: WeightHistoryTableProps) {
-  const rows = useMemo(() => createRows(result.data), [result.data]);
+  const rows = useMemo(
+    () => createWeightHistoryRows(result.data),
+    [result.data],
+  );
 
   return (
     <>
@@ -101,7 +99,7 @@ function WeightTableRow({
 }: {
   colors: ThemeColors;
   onPress: () => void;
-  row: WeightRow;
+  row: WeightHistoryRow;
 }) {
   return (
     <Pressable
@@ -136,20 +134,6 @@ function WeightTableRow({
       </Text>
     </Pressable>
   );
-}
-
-function createRows(entries: readonly WeightsEntryResponse[]): WeightRow[] {
-  return entries
-    .map((entry, index) => ({
-      entry,
-      ...(index > 0
-        ? {
-            changeKg: entry.weightKg - entries[index - 1].weightKg,
-            previousWeightKg: entries[index - 1].weightKg,
-          }
-        : {}),
-    }))
-    .reverse();
 }
 
 const styles = StyleSheet.create({
