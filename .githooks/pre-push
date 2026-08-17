@@ -6,7 +6,8 @@ root_dir=$(git rev-parse --show-toplevel)
 
 printf 'Running pre-push checks...\n'
 
-dotnet test "$root_dir/api"
+cd "$root_dir/api"
+dotnet test
 
 cd "$root_dir"
 corepack pnpm test

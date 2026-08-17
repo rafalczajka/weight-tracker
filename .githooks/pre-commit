@@ -12,8 +12,10 @@ corepack pnpm format:check
 corepack pnpm lint
 corepack pnpm typecheck
 
+cd "$root_dir/api"
 dotnet format style "$root_dir/api/WeightTracker.slnx" \
   --verify-no-changes \
   --no-restore
 
+cd "$root_dir"
 printf 'Pre-commit checks passed.\n'
