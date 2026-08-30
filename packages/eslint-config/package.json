@@ -7,9 +7,9 @@
     "./react-native": "./react-native.mjs"
   },
   "dependencies": {
-    "@react-native/eslint-config": "0.87.0",
+    "@react-native/eslint-config": "0.87.1",
     "globals": "17.11.0",
-    "typescript-eslint": "8.67.0"
+    "typescript-eslint": "8.68.0"
   },
   "peerDependencies": {
     "eslint": "^8.57.0",
