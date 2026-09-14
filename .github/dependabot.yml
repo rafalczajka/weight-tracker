@@ -42,3 +42,23 @@ updates:
       npm:
         patterns:
           - '*'
+
+  # Legacy apps
+
+  - package-ecosystem: npm
+    directory: /legacy/app-mobile
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    ignore:
+      - dependency-name: '*'
+
+  - package-ecosystem: pip
+    directories:
+      - /legacy/app-cli
+      - /legacy/app-cli/generated_client
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    ignore:
+      - dependency-name: '*'
