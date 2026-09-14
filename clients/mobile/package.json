@@ -21,7 +21,7 @@
     "@weight-tracker/api-client": "workspace:*",
     "@weight-tracker/client-config": "workspace:*",
     "@weight-tracker/client-core": "workspace:*",
-    "lucide-react-native": "1.44.0",
+    "lucide-react-native": "1.45.0",
     "react": "19.3.0",
     "react-native": "0.87.1",
     "react-native-app-auth": "8.4.1",
