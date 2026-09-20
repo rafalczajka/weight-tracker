@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@azure/msal-node": "5.6.0",
-    "@azure/msal-node-extensions": "5.5.0",
+    "@azure/msal-node-extensions": "5.5.1",
     "@weight-tracker/api-client": "workspace:*",
     "@weight-tracker/client-config": "workspace:*",
     "@weight-tracker/client-core": "workspace:*",
@@ -27,7 +27,7 @@
     "plotly.js-basic-dist-min": "3.7.0"
   },
   "devDependencies": {
-    "@types/node": "22.20.2",
+    "@types/node": "22.20.3",
     "@weight-tracker/eslint-config": "workspace:*",
     "@weight-tracker/typescript-config": "workspace:*",
     "esbuild": "0.28.2",
