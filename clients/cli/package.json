@@ -27,13 +27,13 @@
     "plotly.js-basic-dist-min": "3.7.0"
   },
   "devDependencies": {
-    "@types/node": "22.20.3",
+    "@types/node": "22.20.4",
     "@weight-tracker/eslint-config": "workspace:*",
     "@weight-tracker/typescript-config": "workspace:*",
     "esbuild": "0.28.2",
     "eslint": "8.57.1",
     "postject": "1.0.0-alpha.6",
-    "tsx": "4.23.13",
+    "tsx": "4.23.15",
     "typescript": "5.9.3"
   },
   "engines": {
