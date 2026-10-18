@@ -11,13 +11,13 @@
     <PackageVersion Include="FastEndpoints.Security" Version="8.3.0" />
     <PackageVersion Include="FastEndpoints.Swagger" Version="8.3.0" />
     <PackageVersion Include="Microsoft.Extensions.Azure" Version="1.14.1" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Identity.Web" Version="4.16.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Identity.Web" Version="4.16.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
     <PackageVersion Include="NSwag.MSBuild" Version="14.7.1" />
     <PackageVersion Include="PxBunny.Result" Version="0.0.1" />
     <PackageVersion Include="PxBunny.Result.Generator" Version="0.0.4" />
