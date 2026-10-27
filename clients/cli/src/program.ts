@@ -9,6 +9,7 @@ import {
   createProfileCommand,
   createWeightCommand,
 } from './commands';
+import { createWeightAddCommand } from './commands/weight/add';
 import { CLI_NAME } from './constants';
 import { AppError, CliUsageError } from './errors';
 import { formatApiError } from './presentation/errors';
@@ -37,6 +38,10 @@ export function createProgram(services: CliServices): Command {
     configureExitHandling(command);
     program.addCommand(command);
   }
+
+  const addCommand = createWeightAddCommand(services);
+  configureExitHandling(addCommand);
+  program.addCommand(addCommand, { hidden: true });
 
   return program;
 }
