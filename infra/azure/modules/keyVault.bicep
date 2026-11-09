@@ -2,15 +2,15 @@ param keyVaultName string
 param webAppIdentityPrincipalId string
 param storageAccountName string
 
-resource keyVault 'Microsoft.KeyVault/vaults@2026-02-01' existing = {
+resource keyVault 'Microsoft.KeyVault/vaults@2026-05-15' existing = {
   name: keyVaultName
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2026-09-01' existing = {
   name: storageAccountName
 }
 
-resource storageConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2026-02-01' = {
+resource storageConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2026-05-15' = {
   parent: keyVault
   name: 'storage-connection-string'
   properties: {
@@ -18,7 +18,7 @@ resource storageConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2026-0
   }
 }
 
-resource accessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2026-02-01' = {
+resource accessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2026-05-15' = {
   parent: keyVault
   name: 'add'
   properties: {

@@ -3,7 +3,7 @@ param appServicePlanId string
 param location string
 param customAppSettings array = []
 
-resource webApp 'Microsoft.Web/sites@2023-01-01' = {
+resource webApp 'Microsoft.Web/sites@2025-03-01' = {
   name: appName
   location: location
   identity: {

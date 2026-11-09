@@ -2,7 +2,7 @@ param appServicePlanName string
 param skuName string
 param location string
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2025-03-01' = {
   name: appServicePlanName
   location: location
   sku: {
