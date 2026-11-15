@@ -15,14 +15,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@azure/msal-node": "7.2.0",
-    "@azure/msal-node-extensions": "5.6.0",
+    "@azure/msal-node": "7.2.2",
+    "@azure/msal-node-extensions": "5.6.2",
     "@weight-tracker/api-client": "workspace:*",
     "@weight-tracker/client-config": "workspace:*",
     "@weight-tracker/client-core": "workspace:*",
     "chalk": "5.6.2",
     "cli-table3": "0.6.5",
-    "commander": "15.0.0",
+    "commander": "15.1.0",
     "ora": "9.4.1",
     "plotly.js-basic-dist-min": "3.7.0"
   },
