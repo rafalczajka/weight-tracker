@@ -8,14 +8,14 @@ Requirements:
 
 - Node.js 22 or newer
 - pnpm 10
-- .NET SDK 10
+- .NET SDK 11
 - Docker
 - Android SDK for mobile development
 
 ```bash
 corepack enable
 pnpm install
-dotnet restore api
+(cd api && dotnet restore)
 ```
 
 Runtime configuration is stored in `packages/client-config/config.json` and is
@@ -29,7 +29,7 @@ pnpm lint
 pnpm typecheck
 pnpm test
 pnpm build
-dotnet test api
+(cd api && dotnet test)
 ```
 
 Run the API:
@@ -37,7 +37,7 @@ Run the API:
 ```bash
 docker compose -f infra/local/compose.yml up -d azurite
 docker compose -f infra/local/compose.yml run --rm storage-init
-dotnet run --project api/src/WeightTracker.Api
+(cd api && dotnet run --project src/WeightTracker.Api)
 ```
 
 The `storage-init` service creates the local `CalorieData`, `UserData` and `WeightData`

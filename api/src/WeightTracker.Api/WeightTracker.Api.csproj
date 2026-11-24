@@ -6,6 +6,7 @@
     <PackageReference Include="FastEndpoints.Security" />
     <PackageReference Include="FastEndpoints.Swagger" />
     <PackageReference Include="Microsoft.Identity.Web" />
+    <PackageReference Include="NSwag.AspNetCore" />
     <PackageReference Include="NSwag.MSBuild" />
     <PackageReference Include="PxBunny.Result" />
   </ItemGroup>
@@ -17,7 +18,7 @@
   <Target Name="GenerateOpenApiDocument"
           AfterTargets="Build"
           Condition="'$(Configuration)' == 'Debug'">
-    <Exec Command="$(NSwagExe_Net100) run $(OpenApiConfigPath)" />
+    <Exec Command="$(NSwagExe_Net110) run &quot;$(OpenApiConfigPath)&quot;" />
   </Target>
 
   <ItemGroup>

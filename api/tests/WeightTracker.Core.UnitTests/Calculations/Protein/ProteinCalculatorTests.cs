@@ -5,17 +5,13 @@ namespace WeightTracker.Core.UnitTests.Calculations.Protein;
 
 public sealed class ProteinCalculatorTests
 {
-    [Theory]
-    [InlineData(80, 66.4, 96)]
-    public void Calculate_ForGeneralHealth_ReturnsRecommendedRange(
-        decimal weightKg,
-        decimal expectedMinimumProteinGramsPerDay,
-        decimal expectedMaximumProteinGramsPerDay)
+    [Fact]
+    public void Calculate_ForGeneralHealth_ReturnsRecommendedRange()
     {
-        var result = ProteinCalculator.Calculate(weightKg, ProteinGoal.GeneralHealth);
+        var result = ProteinCalculator.Calculate(80m, ProteinGoal.GeneralHealth);
 
-        Assert.Equal(expectedMinimumProteinGramsPerDay, result.MinimumProteinGramsPerDay);
-        Assert.Equal(expectedMaximumProteinGramsPerDay, result.MaximumProteinGramsPerDay);
+        Assert.Equal(66.4m, result.MinimumProteinGramsPerDay);
+        Assert.Equal(96m, result.MaximumProteinGramsPerDay);
     }
 
     [Fact]

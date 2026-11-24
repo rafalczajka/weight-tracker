@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.8.0.0 (NJsonSchema v11.6.2.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Weight Tracker",
@@ -58,11 +58,11 @@
           "404": {
             "description": "Not Found"
           },
-          "500": {
-            "description": "Server Error"
-          },
           "409": {
             "description": ""
+          },
+          "500": {
+            "description": "Server Error"
           }
         },
         "security": [
@@ -156,11 +156,11 @@
           "404": {
             "description": "Not Found"
           },
-          "500": {
-            "description": "Server Error"
-          },
           "409": {
             "description": ""
+          },
+          "500": {
+            "description": "Server Error"
           }
         },
         "security": [
@@ -215,11 +215,11 @@
           "404": {
             "description": "Not Found"
           },
-          "500": {
-            "description": "Server Error"
-          },
           "409": {
             "description": ""
+          },
+          "500": {
+            "description": "Server Error"
           }
         },
         "security": [
@@ -437,11 +437,11 @@
           "404": {
             "description": "Not Found"
           },
-          "500": {
-            "description": "Server Error"
-          },
           "409": {
             "description": ""
+          },
+          "500": {
+            "description": "Server Error"
           }
         },
         "security": [
@@ -603,11 +603,11 @@
           "404": {
             "description": "Not Found"
           },
-          "500": {
-            "description": "Server Error"
-          },
           "409": {
             "description": ""
+          },
+          "500": {
+            "description": "Server Error"
           }
         },
         "security": [
@@ -650,11 +650,11 @@
           "404": {
             "description": "Not Found"
           },
-          "500": {
-            "description": "Server Error"
-          },
           "409": {
             "description": ""
+          },
+          "500": {
+            "description": "Server Error"
           }
         },
         "security": [
@@ -709,11 +709,11 @@
           "404": {
             "description": "Not Found"
           },
-          "500": {
-            "description": "Server Error"
-          },
           "409": {
             "description": ""
+          },
+          "500": {
+            "description": "Server Error"
           }
         },
         "security": [
